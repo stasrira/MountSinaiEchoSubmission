@@ -107,7 +107,9 @@ venv.bak/
 /temp_files
 
 #pycharm workspace file
-.idea/workspace.xml
+/.idea
 
 #processed folders
 /DataFiles/study01/Processed/
+#added temporarily
+metadata_file_loader.py

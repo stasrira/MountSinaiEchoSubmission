@@ -1,91 +1,144 @@
-ASSAYS:
-    CYTOF:
-        assay_name: CyTOF
-        mssm_id: 6
-        mssm_postfix: _6
-        #path to the location where manifests for all projects are stored; this path will be combined with a path for a particular experiment
-        manifest_location: /mnt/researchsan02a/Projects
-        #path to the actual folder with manifests, should be concatenated to manifest location and project path
-        manifest_folder: /SampleManifests
+CYTOF:
+    assay_name: CyTOF
+    mssm_id: 6
+    mssm_postfix: _6
+    #path to the location where manifests for all projects are stored; this path will be combined with a path for a particular experiment
+    manifest_location: /mnt/researchsan02a/Projects
+    #path to the actual folder with manifests, should be concatenated to manifest location and project path
+    manifest_folder: /SampleManifests
 
-        #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
-        rawdata_location: /mnt/researchsan02a/Projects
-        #path to the actual folder with assay data files, should be concatenated to manifest location and project path
-        rawdata_folder: /AsayData/CyTOF
-        #rawdata file to be found inside of the folder with raw data for the current sample
-        rawdata_file: /outs/metrics_summary.csv
-        #path to the actual folder with assay attachments, should be concatenated to manifest location and project path
-        attachement_folder:  /AsayData/CyTOF
+    #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
+    rawdata_location: /mnt/researchsan02a/Projects
+    #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+    rawdata_folder: /AsayData/CyTOF
+    #rawdata file to be found inside of the folder with raw data for the current sample
+    rawdata_summary_file:
+        file_path:
+        row_num:
+    #path to the actual folder with assay attachments, should be concatenated to manifest location and project path
+    attachement_folder:  /AsayData/CyTOF
 
-        #search type for each type of info
-        search_manifest: file_content
-        search_rawdata: file_content
-        search_attachment: file_name
+    #search type for each type of info
+    search_manifest: file_content
+    search_rawdata_summary: file_content
+    read_rawdata_summary: file_content
+    search_attachment: file_name
 
-        #expected file formats
-        file_ext_manifest:
-            - xlsx
-            - xls
-            - csv
-        file_ext_rawdata:
-            - xlsx
-        file_ext_attachment:
-            - fsc
+    #expected file formats and sheet names (for excel formats only)
+    rawdata_summary_file_ext:
+        - xlsx
+        - xls
+    rawdata_summary_sheet_name: Sample Log
 
-    SCRNASEQ:
-        assay_name: csRNAseq
-        mssm_id: 1
-        mssm_postfix: _1
-        #path to the location where manifests for all projects are stored; this path will be combined with a path for a particular experiment
-        manifest_location: /mnt/researchsan02a/Projects
-        #path to the actual folder with manifests, should be concatenated to manifest location and project path
-        manifest_folder: /SampleManifests
+    attachment_file_ext:
+        - fsc
 
-        #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
-        rawdata_location: /ext_data/shared
-        #path to the actual folder with assay data files, should be concatenated to manifest location and project path
-        rawdata_folder: /scrna-seq
-        #rawdata file to be found inside of the folder with raw data for the current sample
-        rawdata_file: /outs/metrics_summary.csv
-        #path to the actual folder with assay attachments, should be concatenated to manifest location and project path
-        attachement_folder: /scrna-seq/FASTQs
+    attach_object: file
 
-        #search type for each type of info
-        search_manifest: file_content
-        search_rawdata: folder_name
-        search_attachment: folder_name
+    #defines if sample id has to be verified in the rawdata summary file
+    sample_id_verification: True
 
-        #expected file formats
-        file_ext_manifest:
-            - xlsx
-            - xls
-            - csv
-        file_ext_rawdata:
-        file_ext_attachment:
+    rawdata_summary_format:
+        #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
+        sample_id_fields: Subject ID
+        #expected values: "name" or "number"
+        sample_id_method: name
+        #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
+        sample_id_expression: "{Subject ID}"
+        #identifies if validation is required for sample_id_expression - expected values: True/False
+        sample_id_eval_required: False
 
-FORMATS:
-    MANIFESTS:
-        CENTERS:
-            HI:
-                #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
-                sample_id_fields: Barcode
-                #expected values: "name" or "number"
-                sample_id_method: name
-                #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
-                sample_id_expression: "{Barcode}" #"'-'.join(['{4}','{2}']) ##'{Col4}'"
-                #identifies if validation is required for sample_id_expression - expected values: True/False
-                sample_id_eval_required: False
-    RAWDATA:
-        ASSAYS:
-            CYTOF:
-                #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
-                sample_id_fields: Subject ID
-                #expected values: "name" or "number"
-                sample_id_method: name
-                #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
-                sample_id_expression: "{Subject ID}" #"'-'.join(['{4}','{2}']) ##'{Col4}'"
-                #identifies if validation is required for sample_id_expression - expected values: True/False
-                sample_id_eval_required: False
+SCRNASEQ:
+    assay_name: csRNAseq
+    mssm_id: 1
+    mssm_postfix: _1
+    #path to the location where manifests for all projects are stored; this path will be combined with a path for a particular experiment
+    manifest_location: /mnt/researchsan02a/Projects
+    #path to the actual folder with manifests, should be concatenated to manifest location and project path
+    manifest_folder: /SampleManifests
+
+    #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
+    rawdata_location: /ext_data/shared
+    #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+    rawdata_folder: /scrna-seq
+    #rawdata file to be found inside of the folder with raw data for the current sample
+    rawdata_summary_file:
+        file_path: /outs/metrics_summary.csv
+        row_num: 2
+    #path to the actual folder with assay attachments, should be concatenated to manifest location and project path
+    attachement_folder: /scrna-seq/FASTQs
+
+    #search type for each type of info
+    search_manifest: file_content
+    search_rawdata_summary: folder_name
+    read_rawdata_summary: file_content
+    search_attachment: folder_name
+
+    #expected file formats
+    rawdata_summary_file_ext:
+    rawdata__summary_sheet_name:
+    attachment_file_ext:
+
+    attach_object: folder
+
+    #defines if sample id has to be verified in the rawdata summary file
+    sample_id_verification: False
+
+    rawdata_summary_format:
+        #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
+        sample_id_fields:
+        #expected values: "name" or "number"
+        sample_id_method:
+        #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
+        sample_id_expression:
+        #identifies if validation is required for sample_id_expression - expected values: True/False
+        sample_id_eval_required:
+
+SCATACSEQ:
+    assay_name: csATACseq
+    mssm_id: 2
+    mssm_postfix: _2
+    #path to the location where manifests for all projects are stored; this path will be combined with a path for a particular experiment
+    manifest_location: /mnt/researchsan02a/Projects
+    #path to the actual folder with manifests, should be concatenated to manifest location and project path
+    manifest_folder: /SampleManifests
+
+    #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
+    rawdata_location: /ext_data/shared
+    #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+    rawdata_folder: /scatac-seq
+    #rawdata file to be found inside of the folder with raw data for the current sample
+    rawdata_summary_file:
+        file_path: /outs/summary.csv
+        row_num: 2
+    #path to the actual folder with assay attachments, should be concatenated to manifest location and project path
+    attachement_folder: /scrna-seq/FASTQs
+
+    #search type for each type of info
+    search_manifest: file_content
+    search_rawdata_summary: folder_name
+    read_rawdata_summary: file_content
+    search_attachment: folder_name
+
+    #expected file formats
+    rawdata_summary_file_ext:
+    rawdata__summary_sheet_name:
+    attachment_file_ext:
+
+    attach_object: folder
+
+    #defines if sample id has to be verified in the rawdata summary file
+    sample_id_verification: False
+
+    rawdata_summary_format:
+        #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
+        sample_id_fields:
+        #expected values: "name" or "number"
+        sample_id_method:
+        #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
+        sample_id_expression:
+        #identifies if validation is required for sample_id_expression - expected values: True/False
+        sample_id_eval_required:
 
 
 
