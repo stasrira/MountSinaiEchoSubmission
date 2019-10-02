@@ -1,0 +1,18 @@
+Sample Type: ECHO/HIV/HI/PBMC
+Assay Type: CyTOF
+Samples:
+    -
+        Aliquot ID: AS06-11984_6
+        Sample ID: AS06-11984
+    -
+        Aliquot ID: AS06-11984_6
+        Sample ID: AS06-11984
+    -
+        Aliquot ID: AS09-09992_6
+        Sample ID: AS09-09992
+    -
+        Aliquot ID: AS08-13555_6
+        Sample ID: AS08-13555
+
+
+
