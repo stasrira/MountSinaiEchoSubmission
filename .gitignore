@@ -110,6 +110,4 @@ venv.bak/
 /.idea
 
 #processed folders
-/DataFiles/study01/Processed/
-#added temporarily
-metadata_file_loader.py
+/requests/processed

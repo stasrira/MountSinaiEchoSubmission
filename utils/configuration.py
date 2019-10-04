@@ -1,5 +1,5 @@
 import yaml
-
+import os
 
 class ConfigData:
 
@@ -7,7 +7,9 @@ class ConfigData:
         self.loaded = False
         with open(cfg_path, 'r') as ymlfile:
             self.cfg = yaml.load(ymlfile)
-        self.loaded = True
+        if not self.cfg == None:
+            self.loaded = True
+        self.prj_wrkdir = os.path.dirname(os.path.abspath(cfg_path))
 
     def get_value(self, yaml_path, delim='/'):
         path_elems = yaml_path.split(delim)

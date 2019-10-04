@@ -15,11 +15,13 @@ LOG_FOLDER_NAME = 'logs'
 PROCESSED_FOLDER_NAME = 'processed'
 
 # predefined paths in the main config file for various variables
-# STUDY_LOGGER_NAME_CFG_PATH = 'Logging/file_log_name'
+STUDY_LOGGER_NAME_CFG_PATH = 'Logging/file_log_name'
 STUDY_LOGGING_LEVEL_CFG_PATH = 'Logging/file_log_level'
 
 # default values for Study config file properties
 DEFAULT_CONFIG_VALUE_LIST_SEPARATOR = ','
+
+DEFAULT_REQUEST_SAMPLE_TYPE_SEPARATOR = '/'
 
 # default study config file extension
 #DEFAULT_STUDY_CONFIG_FILE_EXT = '.cfg.yaml'

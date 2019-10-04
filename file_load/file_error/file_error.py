@@ -9,7 +9,7 @@ class FileError(EntityErrors):
         # earlier errors with file processing
         if self.entity.rows:
             for d in self.entity.rows.values():
-                if d.error.errors_exist():
+                if d.error.exist():
                     row_err_cnt += 1
         return row_err_cnt
 

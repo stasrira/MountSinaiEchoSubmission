@@ -1,6 +1,22 @@
 Sample Type: ECHO/HIV/HI/PBMC
 Assay Type: CyTOF
+
+#examples of array values in one line
+#MT_Study ID: ['STD_01','STD_02']
+
 Samples:
+    - AS06-11984
+    - AS06-11984
+    - AS09-09992
+    - AS08-13555
+
+Aliquots:
+    - AS06-11984_6
+    - AS06-11984_6
+    - AS09-09992_6
+    - AS08-13555_6
+
+Samples_Aliquots:
     -
         Aliquot ID: AS06-11984_6
         Sample ID: AS06-11984

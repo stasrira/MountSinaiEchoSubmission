@@ -298,7 +298,7 @@ class MetaFileText(File):
         # TODO: validate MDB study_id. If it not set, attempt to create a study.
         # If this process fails, report a File lever error.
 
-        if self.error.errors_exist():
+        if self.error.exist():
             # report file level errors to Log and do not process rows
             self.logger.error('File level errors we identified! Aborting the file processing.')
             self.logger.error('Summary of File lever errors: {}'.format(self.error.get_errors_to_str()))
@@ -313,7 +313,7 @@ class MetaFileText(File):
                 row = self.get_file_row(i + 1)
                 self.rows[row.row_number] = row  # add Row class reference to the list of all rows
 
-                if not row.error.errors_exist():
+                if not row.error.exist():
                     # print ('No Errors - Saving to DB, Row Info: {}'.format (row.to_str()))
                     self.logger.info(
                         'Row #{}. No Row level errors were identified. Saving it to database. Row data: {}'.format(
@@ -321,7 +321,7 @@ class MetaFileText(File):
                     mdb = MetadataDB(self.cfg_file)
 
                     mdb_resp = mdb.submit_row(row, self)
-                    if not row.error.errors_exist():
+                    if not row.error.exist():
                         _str = 'Row #{}. Sample Id "{}" was submitted to MDB. Status: {}; Description: {}'.format(
                             row.row_number, row.sample_id, mdb_resp[0][0]['status'], mdb_resp[0][0]['description'])
                         self.logger.info(_str)
@@ -343,11 +343,11 @@ class MetaFileText(File):
         # report error summary of processing the file
         self.logger.info('SUMMARY OF ERRORS ==============>')
         self.logger.info('File level errors: {}'.format(
-            self.error.get_errors_to_str())) if self.error.errors_exist() else self.logger.info(
+            self.error.get_errors_to_str())) if self.error.exist() else self.logger.info(
             'No File level errors were identified.')
         # print ('------> Summary of errors for file {}'.format(self.filename))
         # print('Summary of File level errors: {}'.
-        # format(self.error.get_errors_to_str())) if self.error.errors_exist() else print('No File level errors!')
+        # format(self.error.get_errors_to_str())) if self.error.exist() else print('No File level errors!')
 
         row_err_cnt = self.error.row_errors_count()
         if row_err_cnt == 0:
@@ -355,7 +355,7 @@ class MetaFileText(File):
             self.logger.info('No Row level errors were identified.')
         else:
             for d in self.rows.values():
-                if d.error.errors_exist():
+                if d.error.exist():
                     # print ('Row level error: {}'.format(d.error.get_errors_to_str()))
                     self.logger.info('Row level error: {}'.format(d.error.get_errors_to_str()))
 
