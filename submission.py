@@ -9,7 +9,7 @@ from utils.log_utils import setup_logger_common, deactivate_logger_common
 from utils import ConfigData
 from utils import global_const as gc
 from utils import send_email as email
-from utils import Request
+from file_load import Request
 
 # if executed by itself, do the following
 if __name__ == '__main__':
@@ -29,25 +29,25 @@ if __name__ == '__main__':
     requests_path = Path(requests_loc)
 
     # get current location of the script and create Log folder
-    wrkdir = Path(m_cfg.prj_wrkdir) / log_folder_name  # 'logs'
+    logdir = Path(m_cfg.prj_wrkdir) / log_folder_name  # 'logs'
     lg_filename = time.strftime("%Y%m%d_%H%M%S", time.localtime()) + '.log'
 
-    lg = setup_logger_common(common_logger_name, logging_level, wrkdir, lg_filename)  # logging_level
+    lg = setup_logger_common(common_logger_name, logging_level, logdir, lg_filename)  # logging_level
     mlog = lg['logger']
 
-    mlog.info('Start processing requests in "{}"'.format(requests_path))
+    mlog.info('Start processing submission requests in "{}"'.format(requests_path))
 
     try:
 
         (_, _, requests) = next(walk(requests_path))
         # print('Study requests: {}'.format(requests))
 
-        mlog.info('Requests to be processed (count = {}): {}'.format(len(requests), requests))
+        mlog.info('Submission requests to be processed (count = {}): {}'.format(len(requests), requests))
 
         req_proc_cnt = 0
 
         for req_file in requests:
-            if req_file.endswith(('yaml','yml')):
+            if req_file.endswith(('xlsx','xls')):
                 req_path = Path(requests_path) / req_file
 
                 # email_msgs_study = []
@@ -59,16 +59,12 @@ if __name__ == '__main__':
 
                     # save timestamp of beginning of the file processing
                     ts = time.strftime("%Y%m%d_%H%M%S", time.localtime())
-
+                    """
                     #load request file
                     rf = ConfigData(req_path)
                     if rf.loaded:
                         try:
-                            req_obj = Request (rf.get_value("Sample Type"),
-                                               rf.get_value("Assay Type"),
-                                               rf.get_value("Samples"),
-                                               rf.get_value("Aliquots"),
-                                               req_path)
+                            req_obj = Request ()
                         except Exception as ex:
                             _str = 'Attempt to read loaded request file failed with error: {}\n{} ' \
                                 .format(ex, traceback.format_exc())
@@ -76,21 +72,24 @@ if __name__ == '__main__':
                             req_obj = None
                     else:
                         mlog.error('Loaded request file was empty. Request file: "{}".'.format(req_path))
+                    """
+
+                    req_obj = Request(req_path)
 
                     if req_obj and req_obj.loaded:
                         # proceed processing request
-                        mlog.info('Request loading status: Success. Request file: "{}".'.format(req_path))
+                        mlog.info('Submission request loading status: Success. Submission request file: "{}".'.format(req_path))
 
                         # process selected requestS
                         #req_obj.process_file()
 
-                        mlog.info('Request processing was finished for {} request.'.format(req_path))
+                        mlog.info('Processing of Submission request was finished for {} request.'.format(req_path))
                         req_proc_cnt += 1
 
                     # identify if any errors were identified and set status variable accordingly
                     if not req_obj.error.exist():
                         fl_status = 'OK'
-                        _str = 'Processing status: "{}" Request: {}'.format(fl_status, req_path)
+                        _str = 'Processing status: "{}". Submission Request: {}'.format(fl_status, req_path)
                     else:
                         fl_status = 'ERROR'
                         _str = 'Processing status: "{}". Check processing log file for this request: {}'\
@@ -112,7 +111,7 @@ if __name__ == '__main__':
                     # print('New file name: {}'.format(ts + '_' + fl_status + '_' + fl))
                     # move processed files to Processed folder
                     os.rename(req_path, processed_dir / req_processed_name)
-                    mlog.info('Processed Request "{}" was moved and renamed as: "{}"'
+                    mlog.info('Processed Submission request "{}" was moved and renamed as: "{}"'
                               .format(req_path, processed_dir / req_processed_name))
 
                     """
@@ -147,7 +146,7 @@ if __name__ == '__main__':
                                .format(ex, req_path, traceback.format_exc()))
                     raise
 
-        mlog.info('Number of successfully processed requests = {}'.format(req_proc_cnt))
+        mlog.info('Number of successfully processed Submission requests = {}'.format(req_proc_cnt))
         """
         if req_proc_cnt > 0:
             # collect final details and send email about this study results

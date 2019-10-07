@@ -10,7 +10,7 @@ class RequestError(EntityErrors):
             err_lst.append({'error_desc': er.error_desc, 'error_number': er.error_number})
 
         error = {
-            'file': str(self.entity.file_path),
+            'file': str(self.entity.filepath),
             'errors': err_lst  # EntityErrors.get_errors(self)
         }
         return error
