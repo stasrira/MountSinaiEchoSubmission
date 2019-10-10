@@ -20,7 +20,7 @@ class MetadataDB:
     conn = None
 
     def __init__(self, study_cfg):
-        self.cfg = ConfigData(gc.MAIN_CONFIG_FILE)  # obj_cfg
+        self.cfg = ConfigData(gc.CONFIG_FILE_MAIN)  # obj_cfg
         self.s_conn = self.cfg.get_item_by_key(gc.CFG_DB_CONN).strip()
         self.study_cfg = study_cfg
 

@@ -1,33 +1,38 @@
-CYTOF:
-    assay_name: CyTOF
+CYTOFF:
+    assay_name: CyTOFF
     mssm_id: 6
     mssm_postfix: _6
     #path to the location where manifests for all projects are stored; this path will be combined with a path for a particular experiment
-    manifest_location: /mnt/researchsan02a/Projects
+    manifest_location: E:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive # /mnt/researchsan02a/Projects
     #path to the actual folder with manifests, should be concatenated to manifest location and project path
-    manifest_folder: /SampleManifests
+    manifest_folder: SampleManifests
 
     #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
-    rawdata_location: /mnt/researchsan02a/Projects
+    rawdata_location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # /mnt/researchsan02a/Projects
     #path to the actual folder with assay data files, should be concatenated to manifest location and project path
-    rawdata_folder: /AsayData/CyTOF
+    rawdata_folder: cytoff
     #rawdata file to be found inside of the folder with raw data for the current sample
     rawdata_summary_file:
         file_path:
+        get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+        # 'row_num' - retrieve data from a particular row of the file
         row_num:
     #path to the actual folder with assay attachments, should be concatenated to manifest location and project path
-    attachement_folder:  /AsayData/CyTOF
+    attachement_folder:  cytoff
 
     #search type for each type of info
     search_manifest: file_content
-    search_rawdata_summary: file_content
-    read_rawdata_summary: file_content
+    search_rawdata_summary: # file_content
+        search_by: file_content
+        search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+    read_rawdata_summary_method: file_content
     search_attachment: file_name
 
     #expected file formats and sheet names (for excel formats only)
     rawdata_summary_file_ext:
-        - xlsx
-        - xls
+        - .xlsx
+        - .xls
     rawdata_summary_sheet_name: Sample Log
 
     attachment_file_ext:
@@ -36,88 +41,102 @@ CYTOF:
     attach_object: file
 
     #defines if sample id has to be verified in the rawdata summary file
-    sample_id_verification: True
+    #pk_verification: True
 
-    rawdata_summary_format:
+    rawdata_summary_pk:
         #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
-        sample_id_fields: Subject ID
+        pk_fields: Subject ID
         #expected values: "name" or "number"
-        sample_id_method: name
+        pk_method: name
         #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
-        sample_id_expression: "{Subject ID}"
+        pk_expression: "{Subject ID}"
         #identifies if validation is required for sample_id_expression - expected values: True/False
-        sample_id_eval_required: False
+        pk_eval_required: False
 
 SCRNASEQ:
     assay_name: csRNAseq
     mssm_id: 1
     mssm_postfix: _1
     #path to the location where manifests for all projects are stored; this path will be combined with a path for a particular experiment
-    manifest_location: /mnt/researchsan02a/Projects
+    manifest_location: E:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive #/mnt/researchsan02a/Projects
     #path to the actual folder with manifests, should be concatenated to manifest location and project path
     manifest_folder: /SampleManifests
 
     #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
-    rawdata_location: /ext_data/shared
+    rawdata_location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive #/ext_data/shared
     #path to the actual folder with assay data files, should be concatenated to manifest location and project path
     rawdata_folder: /scrna-seq
     #rawdata file to be found inside of the folder with raw data for the current sample
     rawdata_summary_file:
         file_path: /outs/metrics_summary.csv
+        get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+                                        # 'row_num' - retrieve data from a particular row of the file
         row_num: 2
     #path to the actual folder with assay attachments, should be concatenated to manifest location and project path
     attachement_folder: /scrna-seq/FASTQs
 
-    #search type for each type of info
-    search_manifest: file_content
-    search_rawdata_summary: folder_name
-    read_rawdata_summary: file_content
-    search_attachment: folder_name
-
-    #expected file formats
-    rawdata_summary_file_ext:
-    rawdata__summary_sheet_name:
-    attachment_file_ext:
-
     attach_object: folder
 
-    #defines if sample id has to be verified in the rawdata summary file
-    sample_id_verification: False
+    #expected file formats
+    rawdata_summary_file_ext: csv
+    rawdata_summary_sheet_name:
+    attachment_file_ext:
 
-    rawdata_summary_format:
+    #search type for each type of info
+    search_manifest: file_content
+    search_rawdata_summary:
+        search_by: folder_name
+        search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+            - FASTQs
+            - fastqs
+    read_rawdata_summary_method: file_content
+    search_attachment: folder_name
+
+    #defines if sample id has to be verified in the rawdata summary file
+    #pk_verification: False
+
+    rawdata_summary_pk:
         #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
-        sample_id_fields:
+        pk_fields:
         #expected values: "name" or "number"
-        sample_id_method:
+        pk_method:
         #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
-        sample_id_expression:
+        pk_expression:
         #identifies if validation is required for sample_id_expression - expected values: True/False
-        sample_id_eval_required:
+        pk_eval_required:
 
 SCATACSEQ:
     assay_name: csATACseq
     mssm_id: 2
     mssm_postfix: _2
     #path to the location where manifests for all projects are stored; this path will be combined with a path for a particular experiment
-    manifest_location: /mnt/researchsan02a/Projects
+    manifest_location: E:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive #/mnt/researchsan02a/Projects
     #path to the actual folder with manifests, should be concatenated to manifest location and project path
     manifest_folder: /SampleManifests
 
     #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
-    rawdata_location: /ext_data/shared
+    rawdata_location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive #/ext_data/shared
     #path to the actual folder with assay data files, should be concatenated to manifest location and project path
     rawdata_folder: /scatac-seq
     #rawdata file to be found inside of the folder with raw data for the current sample
     rawdata_summary_file:
         file_path: /outs/summary.csv
+        get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+                             # 'row_num' - retrieve data from a particular row of the file
         row_num: 2
     #path to the actual folder with assay attachments, should be concatenated to manifest location and project path
     attachement_folder: /scrna-seq/FASTQs
 
     #search type for each type of info
     search_manifest: file_content
-    search_rawdata_summary: folder_name
-    read_rawdata_summary: file_content
+    search_rawdata_summary:
+        search_by: folder_name
+        search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+            - FASTQs
+            - fastqs
+    read_rawdata_summary_method: file_content
     search_attachment: folder_name
 
     #expected file formats
@@ -128,17 +147,17 @@ SCATACSEQ:
     attach_object: folder
 
     #defines if sample id has to be verified in the rawdata summary file
-    sample_id_verification: False
+    #pk_verification: False
 
-    rawdata_summary_format:
+    rawdata_summary_pk:
         #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
-        sample_id_fields:
+        pk_fields:
         #expected values: "name" or "number"
-        sample_id_method:
+        pk_method:
         #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
-        sample_id_expression:
+        pk_expression:
         #identifies if validation is required for sample_id_expression - expected values: True/False
-        sample_id_eval_required:
+        pk_eval_required:
 
 
 

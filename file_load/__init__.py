@@ -4,3 +4,4 @@ from .file import File
 from .meta_file_text import MetaFileText
 from .meta_file_excel import MetaFileExcel
 from .request_file import Request
+from .rawdata_text import RawData_Text

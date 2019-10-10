@@ -5,7 +5,7 @@ import yagmail
 
 def send_yagmail(emails_to, subject, message, email_from = None, attachment_path =  None, smtp_server = None, smtp_server_port = None):
     root_dir = cm.get_project_root()
-    cnf_path = str(root_dir.joinpath(gc.MAIN_CONFIG_FILE))
+    cnf_path = str(root_dir.joinpath(gc.CONFIG_FILE_MAIN))
     m_cfg = ConfigData(cnf_path)
     if not email_from:
         email_from = m_cfg.get_value('Email/default_from_email')

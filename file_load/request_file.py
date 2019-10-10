@@ -1,18 +1,18 @@
-import os
+# import os
 from pathlib import Path
 import time
 import xlrd
-import logging
+# import logging
 from utils import global_const as gc
 from utils.log_utils import setup_logger_common
-from file_load.file_error import RequestError
-from file_load.file_utils import StudyConfig
-from collections import OrderedDict
+# from file_load.file_utils import StudyConfig
+# from collections import OrderedDict
 from utils import ConfigData
-from file_load import File, MetaFileExcel
+from file_load import File # , MetaFileExcel
+from file_load.file_error import RequestError
+from raw_data_request import RawDataRequest
 
-
-class Request(MetaFileExcel):
+class Request(File):
 
     def __init__(self, filepath, cfg_path='', file_type=2, sheet_name=''):
 
@@ -46,6 +46,8 @@ class Request(MetaFileExcel):
 
         self.get_file_content()
 
+        self.conf_assay = None
+
     def get_file_content(self):
         if not self.columnlist:
             if self.file_exists(self.filepath):
@@ -76,13 +78,10 @@ class Request(MetaFileExcel):
                 sheet.cell_value(0, 0)
 
                 for i in range(sheet.ncols):
-                    # row = sheet.col_values(i)
-                    # print (row)
-
-                    row = []
+                    column = []
                     for j in range(sheet.nrows):
                         # print(sheet.cell_value(i, j))
-                        # row.append('"' + sheet.cell_value(i,j) + '"')
+                        # column.append('"' + sheet.cell_value(i,j) + '"')
                         cell = sheet.cell(j, i)
                         cell_value = cell.value
                         # take care of number and dates received from Excel and converted to float by default
@@ -97,9 +96,9 @@ class Request(MetaFileExcel):
                         if cell.ctype == 3:
                             cell_value_date = xlrd.xldate_as_datetime(cell_value, wb.datemode)
                             cell_value = cell_value_date.strftime("%Y-%m-%d")
-                        row.append(cell_value)
+                        column.append(cell_value)
 
-                    self.columnlist.append(','.join(row))
+                    self.columnlist.append(','.join(column))
 
                 wb.unload_sheet(sheet.name)
 
@@ -195,7 +194,7 @@ class Request(MetaFileExcel):
 
     def setup_logger(self, wrkdir, filename):
 
-        m_cfg = ConfigData(gc.MAIN_CONFIG_FILE)
+        m_cfg = ConfigData(gc.CONFIG_FILE_MAIN)
 
         log_folder_name = gc.LOG_FOLDER_NAME
 
@@ -211,3 +210,11 @@ class Request(MetaFileExcel):
 
         self.log_handler = lg['handler']
         return lg['logger']
+
+    def process_request(self):
+        self.conf_assay =  self.load_assay_conf(self.assay)
+        self.raw_data = RawDataRequest(self)
+
+    def load_assay_conf(self, assay):
+        cfg_assay = ConfigData(gc.CONFIG_FILE_ASSAY)
+        return cfg_assay.get_value(assay.upper())

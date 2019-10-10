@@ -15,7 +15,7 @@ from file_load import Request
 if __name__ == '__main__':
 
     # load main config file and get required values
-    m_cfg = ConfigData(gc.MAIN_CONFIG_FILE)
+    m_cfg = ConfigData(gc.CONFIG_FILE_MAIN)
 
     # print ('m_cfg = {}'.format(m_cfg.cfg))
     # assign values
@@ -80,6 +80,7 @@ if __name__ == '__main__':
                         # proceed processing request
                         mlog.info('Submission request loading status: Success. Submission request file: "{}".'.format(req_path))
 
+                        req_obj.process_request()
                         # process selected requestS
                         #req_obj.process_file()
 

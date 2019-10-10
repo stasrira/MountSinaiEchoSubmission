@@ -20,12 +20,12 @@ class FieldIdMethod:
 def load_configuration(fl_class, loc_cfg_path):
     # load global configuration
 
-    m_cfg = ConfigData(gc.MAIN_CONFIG_FILE)
+    m_cfg = ConfigData(gc.CONFIG_FILE_MAIN)
     m_logger_name = gc.MAIN_LOG_NAME  # m_cfg.get_value('Logging/main_log_name')
     m_logger = logging.getLogger(m_logger_name)
 
-    m_logger.debug('Loading Global config file {} for file: {}'.format(gc.MAIN_CONFIG_FILE, fl_class.filepath))
-    StudyConfig.config_glb = ConfigData(gc.MAIN_CONFIG_FILE)
+    m_logger.debug('Loading Global config file {} for file: {}'.format(gc.CONFIG_FILE_MAIN, fl_class.filepath))
+    StudyConfig.config_glb = ConfigData(gc.CONFIG_FILE_MAIN)
 
     m_logger.info('Loading Study config file {} for file: {}'.format(loc_cfg_path, fl_class.filepath))
     # load local configuration
