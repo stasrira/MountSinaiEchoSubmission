@@ -14,4 +14,4 @@ class RawData_Text(File):
         self.sheet_name = ''
         # self.config =
 
-        self.get_file_content()
+        # self.get_file_content()

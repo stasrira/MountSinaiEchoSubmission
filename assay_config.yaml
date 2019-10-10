@@ -33,25 +33,26 @@ CYTOFF:
     rawdata_summary_file_ext:
         - .xlsx
         - .xls
-    rawdata_summary_sheet_name: Sample Log
+    rawdata_summary:
+        sheet_name: Sample Log
+        header_row_number: 1 # 1-based numbering
+        pk_column_number: 6 # 1-based numbering
+
+        #start ========= the following currently not in use ===========================
+        #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
+        pk_fields: 6
+        #expected values: "name" or "number"
+        pk_method: number
+        #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
+        pk_expression: "{6}"
+        #identifies if validation is required for sample_id_expression - expected values: True/False
+        pk_eval_required: False
+        #end ======================
 
     attachment_file_ext:
         - fsc
 
     attach_object: file
-
-    #defines if sample id has to be verified in the rawdata summary file
-    #pk_verification: True
-
-    rawdata_summary_pk:
-        #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
-        pk_fields: Subject ID
-        #expected values: "name" or "number"
-        pk_method: name
-        #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
-        pk_expression: "{Subject ID}"
-        #identifies if validation is required for sample_id_expression - expected values: True/False
-        pk_eval_required: False
 
 SCRNASEQ:
     assay_name: csRNAseq
@@ -77,8 +78,7 @@ SCRNASEQ:
 
     attach_object: folder
 
-    #expected file formats
-    rawdata_summary_file_ext: csv
+    rawdata_summary_file_ext:
     rawdata_summary_sheet_name:
     attachment_file_ext:
 
@@ -92,19 +92,6 @@ SCRNASEQ:
             - fastqs
     read_rawdata_summary_method: file_content
     search_attachment: folder_name
-
-    #defines if sample id has to be verified in the rawdata summary file
-    #pk_verification: False
-
-    rawdata_summary_pk:
-        #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
-        pk_fields:
-        #expected values: "name" or "number"
-        pk_method:
-        #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
-        pk_expression:
-        #identifies if validation is required for sample_id_expression - expected values: True/False
-        pk_eval_required:
 
 SCATACSEQ:
     assay_name: csATACseq
@@ -139,25 +126,8 @@ SCATACSEQ:
     read_rawdata_summary_method: file_content
     search_attachment: folder_name
 
-    #expected file formats
-    rawdata_summary_file_ext:
-    rawdata__summary_sheet_name:
-    attachment_file_ext:
-
     attach_object: folder
 
-    #defines if sample id has to be verified in the rawdata summary file
-    #pk_verification: False
-
-    rawdata_summary_pk:
-        #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
-        pk_fields:
-        #expected values: "name" or "number"
-        pk_method:
-        #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
-        pk_expression:
-        #identifies if validation is required for sample_id_expression - expected values: True/False
-        pk_eval_required:
 
 
 
