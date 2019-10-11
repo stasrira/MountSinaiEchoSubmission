@@ -9,7 +9,7 @@ from file_load.rawdata_excel import RawData_Excel
 class RawDataRequest():
 
     def __init__(self, request):
-        self.sub_aliqs_rawdata_dict = {}
+        self.aliquots_rawdata_dict = {}
         # self.path_sub_aliqs = {}
         self.req_obj = request  # reference to the current request object
         self.error = self.req_obj.error
@@ -44,7 +44,7 @@ class RawDataRequest():
                 rda.get_rawdata_by_rownum(file_index[sa][1], file_index[sa][0])
                 if rda.loaded:
                     _str = 'Summary Raw Data for aliquot "{}" was successfully loaded from file "{}".'.format(sa, file_index[sa][1])
-                    self.sub_aliqs_rawdata_dict[sa] = rda
+                    self.aliquots_rawdata_dict[sa] = rda
                     # self.path_sub_aliqs[dbn] = sa
                     self.logger.info(_str)
                 else:
@@ -77,8 +77,9 @@ class RawDataRequest():
                             rn = i + 1
                         else:
                             rn = 1
-                        index_dict[col_vals[i]] = (rn, file)
-                print(index_dict)
+                        index_dict[col_vals[i]] = (rn+1, file)  # row number (rn) is increased by
+                                                                # 1 to convert to 1-base numbering
+                # print(index_dict)
             f = None
         return index_dict
 
@@ -101,7 +102,7 @@ class RawDataRequest():
                         _str = 'Summary Raw Data for aliquot "{}" was successfully loaded from sub-aliquot ' \
                                'raw data location "{}".'\
                             .format(sa, d)
-                        self.sub_aliqs_rawdata_dict[sa] = rda
+                        self.aliquots_rawdata_dict[sa] = rda
                         # self.path_sub_aliqs[dbn] = sa
                         self.logger.info(_str)
                     else:
@@ -110,7 +111,7 @@ class RawDataRequest():
                             .format(sa, d)
                         self.logger.warning(_str)
 
-        # print(self.sub_aliqs_rawdata_dict)
+        # print(self.aliquots_rawdata_dict)
         # print(self.path_sub_aliqs)
         print('')
 
