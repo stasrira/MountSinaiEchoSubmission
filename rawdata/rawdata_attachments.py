@@ -1,4 +1,4 @@
-from raw_data_request import RawDataRequest
+from rawdata import RawDataRequest
 from pathlib import Path
 import os
 

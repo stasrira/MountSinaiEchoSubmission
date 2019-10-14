@@ -1,5 +1,5 @@
-from file_load.rawdata_text import RawData_Text
-from file_load.rawdata_excel import RawData_Excel
+from file_load import RawData_Text
+from file_load import RawData_Excel
 from pathlib import Path
 
 class RawDataAliquot():

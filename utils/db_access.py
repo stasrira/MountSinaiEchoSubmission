@@ -1,6 +1,6 @@
 import pyodbc
 import traceback
-from .configuration import ConfigData
+from utils import ConfigData
 from utils import global_const as gc
 
 

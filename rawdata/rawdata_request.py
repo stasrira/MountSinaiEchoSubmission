@@ -1,9 +1,8 @@
 from pathlib import Path
 import os
 import glob
-from raw_data_aliquot import RawDataAliquot
-from file_load.rawdata_excel import RawData_Excel
-# TODO: figure out why import statement does not read __init__.py file and require full path to the module
+from rawdata import RawDataAliquot
+from file_load import RawData_Excel
 
 
 class RawDataRequest():
@@ -78,7 +77,6 @@ class RawDataRequest():
         header_row_num = header_row_num - 1  # accommodate for 0-based numbering
         col_num = self.conf_assay['rawdata_summary']['pk_column_number']  # 6
         col_num = col_num - 1  # accommodate for 0-based numbering
-        # col_num = 6 #TODO: remove hardcodded value with a proper implementation
         exlude_header = True
 
         index_dict = {}

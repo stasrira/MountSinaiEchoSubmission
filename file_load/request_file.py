@@ -1,17 +1,13 @@
-# import os
 from pathlib import Path
 import time
 import xlrd
-# import logging
 from utils import global_const as gc
-from utils.log_utils import setup_logger_common
-# from file_load.file_utils import StudyConfig
-# from collections import OrderedDict
+from utils import setup_logger_common
 from utils import ConfigData
 from file_load import File # , MetaFileExcel
 from file_load.file_error import RequestError
-from raw_data_request import RawDataRequest
-from raw_data_attachments import RawDataAttachment
+from rawdata import RawDataRequest
+from rawdata import RawDataAttachment
 
 class Request(File):
 

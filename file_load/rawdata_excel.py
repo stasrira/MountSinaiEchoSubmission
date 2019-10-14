@@ -1,7 +1,6 @@
-from utils import global_const as gc
-from file_load import MetaFileExcel, File
-from utils import ConfigData
+from file_load import File
 import xlrd
+
 
 class RawData_Excel(File):
 
