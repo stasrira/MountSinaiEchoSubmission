@@ -4,7 +4,7 @@ import glob
 import sys
 
 def get_file_system_items(dir_cur, search_deep_level, exclude_dirs=[], item_type='dir', ext_match = []):
-    # base_loc = self.rawdata_loc / dir_cur
+    # base_loc = self.data_loc / dir_cur
     deep_cnt = 0
     cur_lev = ''
     items = []

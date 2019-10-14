@@ -8,10 +8,10 @@ class RawDataAliquot():
         self.req_obj = request_obl
         self.error = self.req_obj.error
         self.logger = self.req_obj.logger
+        self.conf_assay = self.req_obj.conf_assay
         self.rawdata_summary_path = ''
         self.loaded = False  # default value
         self.rawdata_summary = {}  # dictionary to hold final rawdata summary data
-        self.conf_assay = self.req_obj.conf_assay
 
     def get_rawdata_by_rownum(self, filepath, rawdata_row_num, isexcel = True):
         self.rawdata_summary_path = filepath

@@ -11,6 +11,7 @@ from utils import ConfigData
 from file_load import File # , MetaFileExcel
 from file_load.file_error import RequestError
 from raw_data_request import RawDataRequest
+from raw_data_attachments import RawDataAttachment
 
 class Request(File):
 
@@ -214,6 +215,8 @@ class Request(File):
     def process_request(self):
         self.conf_assay =  self.load_assay_conf(self.assay)
         self.raw_data = RawDataRequest(self)
+        self.attachments = RawDataAttachment(self)
+        print()
 
     def load_assay_conf(self, assay):
         cfg_assay = ConfigData(gc.CONFIG_FILE_ASSAY)
