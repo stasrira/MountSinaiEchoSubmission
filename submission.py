@@ -80,10 +80,9 @@ if __name__ == '__main__':
                         mlog.info('Submission request loading status: Success. Submission request file: "{}".'.format(req_path))
 
                         req_obj.process_request()
-                        # process selected requestS
-                        #req_obj.process_file()
 
                         mlog.info('Processing of Submission request was finished for {} request.'.format(req_path))
+
                         req_proc_cnt += 1
 
                     # identify if any errors were identified and set status variable accordingly

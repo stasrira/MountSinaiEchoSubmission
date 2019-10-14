@@ -212,7 +212,15 @@ class Request(File):
         self.conf_assay =  self.load_assay_conf(self.assay)
         self.raw_data = RawDataRequest(self)
         self.attachments = RawDataAttachment(self)
-        print()
+
+        # check for errors and put final log entry for the request.
+        if self.error.exist():
+            _str = 'Processing of the current request was finished with the following errors: {}'.format(self.error.get_errors_to_str())
+            self.logger.error(_str)
+        else:
+            _str = 'Processing of the current request was finished successfully.'
+            self.logger.info(_str)
+
 
     def load_assay_conf(self, assay):
         cfg_assay = ConfigData(gc.CONFIG_FILE_ASSAY)

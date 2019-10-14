@@ -15,16 +15,8 @@ class RawDataRequest():
         self.logger = self.req_obj.logger
         self.conf_assay = request.conf_assay
         self.init_specific_settings()
-        """
-        self.data_loc = Path(self.convert_aliquot_properties_to_path())
-        # print (self.data_loc)
-        search_by = self.conf_assay['search_rawdata_summary']['search_by']
-        if search_by == 'folder_name':
-            self.get_data_by_folder_name()
-        elif search_by == 'file_content':
-            self.get_data_by_file_content()
-        """
         # print ('')
+
 
     def init_specific_settings(self):
         # should be overwritten in classed that inherit this one
@@ -38,6 +30,14 @@ class RawDataRequest():
             self.get_data_by_folder_name(search_deep_level, exclude_dirs)
         elif search_by == 'file_content':
             self.get_data_by_file_content()
+
+        # check if some rawdata was assigned to an aliquot and warn if none were assigned
+        for sa in self.req_obj.sub_aliquots:
+            if not sa in self.aliquots_data_dict:
+                # no attachments were assigned to an aliquot
+                _str = 'Aliquot "{}" was not assigned with any Raw Data.'.format(sa)
+                self.logger.error(_str)
+                self.error.add_error(_str)
 
     def convert_aliquot_properties_to_path(self, last_part_path):
         return '/'.join ([self.conf_assay['rawdata_location'],
@@ -111,26 +111,6 @@ class RawDataRequest():
                 # print ('Aliquot = {}'.format(sa))
                 if sa in dbn:
                     self.get_data_for_aliquot(sa, d)
-                    """
-                    rda = RawDataAliquot(sa, self.req_obj)
-                    rda.get_rawdata_predefined_file_text(d)
-                    if rda.loaded:
-                        _str = 'Summary Raw Data for aliquot "{}" was successfully loaded from sub-aliquot ' \
-                               'raw data location "{}".'\
-                            .format(sa, d)
-                        self.aliquots_data_dict[sa] = rda
-                        # self.path_sub_aliqs[dbn] = sa
-                        self.logger.info(_str)
-                    else:
-                        _str = 'Summary Raw Data for aliquot "{}" failed to load from sub-aliquot ' \
-                               'raw data location "{}"; see earlier error(s) in this log.'\
-                            .format(sa, d)
-                        self.logger.warning(_str)
-                    """
-
-        # print(self.aliquots_data_dict)
-        # print(self.path_sub_aliqs)
-        print('')
 
     def get_data_for_aliquot(self, sa, d):
         # this retrieves data related to the purpose of the current class - raw data or attachment info.
@@ -142,7 +122,6 @@ class RawDataRequest():
                    'raw data location "{}".' \
                 .format(sa, d)
             self.aliquots_data_dict[sa] = rda.rawdata_summary
-            # self.path_sub_aliqs[dbn] = sa
             self.logger.info(_str)
         else:
             _str = 'Summary Raw Data for aliquot "{}" failed to load from sub-aliquot ' \
@@ -174,9 +153,6 @@ class RawDataRequest():
         dirs_path = [str(Path(path / fn)) for fn in dirs]
         return dirs_path
 
-    #def get_sub_level_dirs(self, sub_dir, search_deep_level, exclude_dirs = []):
-    #    return self.get_file_system_items (sub_dir, search_deep_level, exclude_dirs, 'dir')
-
     def get_file_system_items (self, dir_cur, search_deep_level, exclude_dirs = [], item_type ='dir', ext_match = []):
         # base_loc = self.data_loc / dir_cur
         deep_cnt = 0
@@ -190,15 +166,6 @@ class RawDataRequest():
                 items_clean = [fn for fn in items_cur if
                              Path.is_dir(Path(fn)) and not os.path.basename(fn) in exclude_dirs]
             elif item_type == 'file':
-                items_clean = []
-                # for fn in items_cur:
-                    # print(os.path.splitext(fn)[1])
-                    # print('not Path.is_dir(Path(fn)) => {}'.format(not Path.is_dir(Path(fn))))
-                    # print('len(ext_match) == 0 => {}'.format(len(ext_match) == 0))
-                    # print ('os.path.splitext(fn)[1] => {}'.format(os.path.splitext(fn)[1]))
-                    # print('os.path.splitext(fn)[1] in ext_match => {}'.format(os.path.splitext(fn)[1] in ext_match))
-                    # if not Path.is_dir(Path(fn)) and (len(ext_match) == 0 or os.path.splitext(fn)[1] in ext_match):
-                    #   items_clean.append(fn)
                 items_clean = [fn for fn in items_cur if not Path.is_dir(Path(fn))
                                and (len(ext_match) == 0 or os.path.splitext(fn)[1] in ext_match)]
             items.extend(items_clean)
