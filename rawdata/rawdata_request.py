@@ -1,8 +1,8 @@
 from pathlib import Path
 import os
 import glob
-from rawdata import RawDataAliquot
-from file_load import RawData_Excel
+from rawdata import ProcessedDataAliquot
+from file_load import Processed_Data_Excel
 
 
 class RawDataRequest():
@@ -57,8 +57,8 @@ class RawDataRequest():
         file_index = self.index_rawdata_files(files)
         for sa  in file_index:
             if sa in self.req_obj.sub_aliquots:
-                rda = RawDataAliquot(sa, self)
-                rda.get_rawdata_by_rownum(file_index[sa][1], file_index[sa][0])
+                rda = ProcessedDataAliquot(sa, self)
+                rda.get_processed_data_by_rownum(file_index[sa][1], file_index[sa][0])
                 if rda.loaded:
                     _str = 'Summary Raw Data for aliquot "{}" was successfully loaded from file "{}".'.format(sa, file_index[sa][1])
                     self.aliquots_data_dict[sa] = rda.rawdata_summary
@@ -81,7 +81,7 @@ class RawDataRequest():
 
         index_dict = {}
         for file in files:
-            f = RawData_Excel(file, self.error, self.logger, worksheet)
+            f = Processed_Data_Excel(file, self.error, self.logger, worksheet)
             col_vals = f.get_column_values(col_num, header_row_num, exlude_header)
             if col_vals:
                 # if list of values returned, loop to create a dictionary with key = aliquot_id and
@@ -115,8 +115,8 @@ class RawDataRequest():
     def get_data_for_aliquot(self, sa, d):
         # this retrieves data related to the purpose of the current class - raw data or attachment info.
         # should be overwritten in classes that inherit this one
-        rda = RawDataAliquot(sa, self.req_obj)
-        rda.get_rawdata_predefined_file_text(d)
+        rda = ProcessedDataAliquot(sa, self.req_obj)
+        rda.get_processed_data_predefined_file_text(d)
         if rda.loaded:
             _str = 'Summary Raw Data for aliquot "{}" was successfully loaded from sub-aliquot ' \
                    'raw data location "{}".' \

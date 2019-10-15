@@ -9,25 +9,26 @@ class RawDataAttachment(RawDataRequest):
         RawDataRequest.__init__(self, request)
 
     def init_specific_settings(self):
-        last_part_path = self.conf_assay['attachement_folder']
-        self.data_loc = Path(self.convert_aliquot_properties_to_path(last_part_path))
-        # print (self.data_loc)
-        search_by = self.conf_assay['search_attachment']['search_by']
-        if search_by == 'folder_name':
-            search_deep_level = self.conf_assay['search_attachment']['search_deep_level_max']
-            exclude_dirs = self.conf_assay['search_attachment']['exclude_folders']
-            self.get_data_by_folder_name(search_deep_level, exclude_dirs)
-        elif search_by == 'file_name':
-            self.get_data_by_file_name()
+        last_part_path_list = self.conf_assay['attachement_folder']
+        for last_part_path in last_part_path_list:
+            self.data_loc = Path(self.convert_aliquot_properties_to_path(last_part_path))
+            # print (self.data_loc)
+            search_by = self.conf_assay['search_attachment']['search_by']
+            if search_by == 'folder_name':
+                search_deep_level = self.conf_assay['search_attachment']['search_deep_level_max']
+                exclude_dirs = self.conf_assay['search_attachment']['exclude_folders']
+                self.get_data_by_folder_name(search_deep_level, exclude_dirs)
+            elif search_by == 'file_name':
+                self.get_data_by_file_name()
 
-        # check if any attachments were assigned to an aliquot and warn if none were assigned
-        for sa in self.req_obj.sub_aliquots:
-            # print ('Aliquot = {}'.format(sa))
-            if not sa in self.aliquots_data_dict:
-                # no attachments were assigned to an aliquot
-                _str = 'Aliquot "{}" was not assigned with any attachments.'.format(sa)
-                self.logger.error(_str)
-                self.error.add_error(_str)
+            # check if any attachments were assigned to an aliquot and warn if none were assigned
+            for sa in self.req_obj.sub_aliquots:
+                # print ('Aliquot = {}'.format(sa))
+                if not sa in self.aliquots_data_dict:
+                    # no attachments were assigned to an aliquot
+                    _str = 'Aliquot "{}" was not assigned with any attachments.'.format(sa)
+                    self.logger.error(_str)
+                    self.error.add_error(_str)
 
     def get_data_for_aliquot(self, sa, attach_dir):
         # this will record path of the found directory as one of the rawdata_attachments for the request

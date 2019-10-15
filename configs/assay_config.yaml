@@ -52,7 +52,8 @@ CYTOFF:
         exclude_folders:
 
     #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
-    attachement_folder:  /cytoff
+    attachement_folder:
+        - /cytoff
     attachment_file_ext: #must include dot (.) in-front of an extension
         - .fcs
     attach_object: file
@@ -96,7 +97,9 @@ SCRNASEQ:
         exclude_folders:
 
     #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
-    attachement_folder: /scrna-seq/FASTQs
+    attachement_folder:
+        - /scrna-seq/FASTQs
+        - /scrna-seq
     attachment_file_ext:
     attach_object: folder
 
@@ -136,7 +139,9 @@ SCATACSEQ:
         exclude_folders:
 
     #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
-    attachement_folder: /scatac-seq/fastqs
+    attachement_folder:
+        - /scatac-seq/fastqs
+        - /scatac-seq
     attachment_file_ext:
     attach_object: folder
 

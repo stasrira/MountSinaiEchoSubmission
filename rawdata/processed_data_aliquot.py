@@ -1,8 +1,8 @@
-from file_load import RawData_Text
-from file_load import RawData_Excel
+from file_load import Processed_Data_Text
+from file_load import Processed_Data_Excel
 from pathlib import Path
 
-class RawDataAliquot():
+class ProcessedDataAliquot():
     def __init__(self, sub_aliquot, request_obl):  # sub_aliquot, rawdata_folder, request_obl, rawdata_row_num =''
         self.sub_aliquot = sub_aliquot
         self.req_obj = request_obl
@@ -13,9 +13,9 @@ class RawDataAliquot():
         self.loaded = False  # default value
         self.rawdata_summary = {}  # dictionary to hold final rawdata summary data
 
-    def get_rawdata_by_rownum(self, filepath, rawdata_row_num, isexcel = True):
+    def get_processed_data_by_rownum(self, filepath, rawdata_row_num, isexcel = True):
         self.rawdata_summary_path = filepath
-        self.rawdata_summary_file = RawData_Excel(self.rawdata_summary_path, self.error, self.logger)
+        self.rawdata_summary_file = Processed_Data_Excel(self.rawdata_summary_path, self.error, self.logger)
         self.rawdata_summary_file.get_file_content()
         if not self.rawdata_summary_file.loaded:
             # summary file was not loaded property; return with loaded = False
@@ -26,7 +26,7 @@ class RawDataAliquot():
     # this function is used by csRNAseq and scATACseq assays that have rawdata summary file located in
     # a predefined location and the predefined file name. This info is picked up from a config file
     # All summary files are csv files
-    def get_rawdata_predefined_file_text(self, rawdata_folder, rawdata_row_num =''):
+    def get_processed_data_predefined_file_text(self, rawdata_folder, rawdata_row_num =''):
         self.rawdata_folder = rawdata_folder
 
         read_data_method = self.conf_assay['read_rawdata_summary_method']
@@ -48,7 +48,7 @@ class RawDataAliquot():
             self.error.add_error(_str)
             return
 
-        self.rawdata_summary_file = RawData_Text(self.rawdata_summary_path, self.error, self.logger)
+        self.rawdata_summary_file = Processed_Data_Text(self.rawdata_summary_path, self.error, self.logger)
         self.rawdata_summary_file.get_file_content()
         if not self.rawdata_summary_file.loaded:
             # summary file was not loaded property; return with loaded = False

@@ -1,7 +1,7 @@
 from file_load import File
 
 
-class RawData_Text(File):
+class Processed_Data_Text(File):
 
     def __init__(self, filepath, req_error, req_logger, file_type=1):
 
