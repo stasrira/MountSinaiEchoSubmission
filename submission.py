@@ -1,11 +1,10 @@
-from file_load import MetaFileText, MetaFileExcel
 from pathlib import Path
 import sys
 import os
 from os import walk
 import time
 import traceback
-from utils.log_utils import setup_logger_common, deactivate_logger_common
+from utils import setup_logger_common, deactivate_logger_common
 from utils import ConfigData
 from utils import global_const as gc
 from utils import send_email as email
@@ -81,10 +80,9 @@ if __name__ == '__main__':
                         mlog.info('Submission request loading status: Success. Submission request file: "{}".'.format(req_path))
 
                         req_obj.process_request()
-                        # process selected requestS
-                        #req_obj.process_file()
 
                         mlog.info('Processing of Submission request was finished for {} request.'.format(req_path))
+
                         req_proc_cnt += 1
 
                     # identify if any errors were identified and set status variable accordingly

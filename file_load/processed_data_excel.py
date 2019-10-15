@@ -1,9 +1,8 @@
-from utils import global_const as gc
-from file_load import MetaFileExcel, File
-from utils import ConfigData
+from file_load import File
 import xlrd
 
-class RawData_Excel(File):
+
+class Processed_Data_Excel(File):
 
     def __init__(self, filepath, req_error, req_logger, sheet_name = '', file_type=2):
 

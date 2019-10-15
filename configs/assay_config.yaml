@@ -17,8 +17,6 @@ CYTOFF:
         get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
         # 'row_num' - retrieve data from a particular row of the file
         row_num:
-    #path to the actual folder with assay attachments, should be concatenated to manifest location and project path
-    attachement_folder:  cytoff
 
     #search type for each type of info
     search_manifest: file_content
@@ -27,10 +25,9 @@ CYTOFF:
         search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.
         exclude_folders:
     read_rawdata_summary_method: file_content
-    search_attachment: file_name
 
     #expected file formats and sheet names (for excel formats only)
-    rawdata_summary_file_ext:
+    rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
         - .xlsx
         - .xls
     rawdata_summary:
@@ -49,9 +46,16 @@ CYTOFF:
         pk_eval_required: False
         #end ======================
 
-    attachment_file_ext:
-        - fsc
+    search_attachment:
+        search_by: file_name
+        search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
 
+    #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
+    attachement_folder:
+        - /cytoff
+    attachment_file_ext: #must include dot (.) in-front of an extension
+        - .fcs
     attach_object: file
 
 SCRNASEQ:
@@ -73,14 +77,9 @@ SCRNASEQ:
         get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
                                         # 'row_num' - retrieve data from a particular row of the file
         row_num: 2
-    #path to the actual folder with assay attachments, should be concatenated to manifest location and project path
-    attachement_folder: /scrna-seq/FASTQs
-
-    attach_object: folder
 
     rawdata_summary_file_ext:
     rawdata_summary_sheet_name:
-    attachment_file_ext:
 
     #search type for each type of info
     search_manifest: file_content
@@ -91,7 +90,18 @@ SCRNASEQ:
             - FASTQs
             - fastqs
     read_rawdata_summary_method: file_content
-    search_attachment: folder_name
+
+    search_attachment:
+        search_by: folder_name
+        search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+
+    #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
+    attachement_folder:
+        - /scrna-seq/FASTQs
+        - /scrna-seq
+    attachment_file_ext:
+    attach_object: folder
 
 SCATACSEQ:
     assay_name: csATACseq
@@ -112,8 +122,6 @@ SCATACSEQ:
         get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
                              # 'row_num' - retrieve data from a particular row of the file
         row_num: 2
-    #path to the actual folder with assay attachments, should be concatenated to manifest location and project path
-    attachement_folder: /scrna-seq/FASTQs
 
     #search type for each type of info
     search_manifest: file_content
@@ -124,8 +132,17 @@ SCATACSEQ:
             - FASTQs
             - fastqs
     read_rawdata_summary_method: file_content
-    search_attachment: folder_name
 
+    search_attachment:
+        search_by: folder_name
+        search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+
+    #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
+    attachement_folder:
+        - /scatac-seq/fastqs
+        - /scatac-seq
+    attachment_file_ext:
     attach_object: folder
 
 

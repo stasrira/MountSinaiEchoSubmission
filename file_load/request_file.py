@@ -1,16 +1,13 @@
-# import os
 from pathlib import Path
 import time
 import xlrd
-# import logging
 from utils import global_const as gc
-from utils.log_utils import setup_logger_common
-# from file_load.file_utils import StudyConfig
-# from collections import OrderedDict
+from utils import setup_logger_common
 from utils import ConfigData
 from file_load import File # , MetaFileExcel
 from file_load.file_error import RequestError
-from raw_data_request import RawDataRequest
+from rawdata import RawDataRequest
+from rawdata import RawDataAttachment
 
 class Request(File):
 
@@ -214,6 +211,16 @@ class Request(File):
     def process_request(self):
         self.conf_assay =  self.load_assay_conf(self.assay)
         self.raw_data = RawDataRequest(self)
+        self.attachments = RawDataAttachment(self)
+
+        # check for errors and put final log entry for the request.
+        if self.error.exist():
+            _str = 'Processing of the current request was finished with the following errors: {}'.format(self.error.get_errors_to_str())
+            self.logger.error(_str)
+        else:
+            _str = 'Processing of the current request was finished successfully.'
+            self.logger.info(_str)
+
 
     def load_assay_conf(self, assay):
         cfg_assay = ConfigData(gc.CONFIG_FILE_ASSAY)
