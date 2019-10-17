@@ -6,11 +6,21 @@ class RawDataAttachment(RawDataRequest):
 
     def __init__(self, request):
         # self.rawdata_attachments = {}
+        self.tar_folder = ''
         RawDataRequest.__init__(self, request)
 
     def init_specific_settings(self):
         last_part_path_list = self.conf_assay['attachement_folder']
-        for last_part_path in last_part_path_list:
+        for last_part_path_item in last_part_path_list:
+            # check if value received from config file is a dictionary
+            if isinstance(last_part_path_item, dict):
+                # if it is a dictionary, get values from it to a local variables
+                last_part_path = last_part_path_item['folder']
+                self.tar_folder = last_part_path_item['tar_dir']
+            else:
+                last_part_path = last_part_path_item
+                self.tar_folder = ''
+
             self.data_loc = Path(self.convert_aliquot_properties_to_path(last_part_path))
             # print (self.data_loc)
             search_by = self.conf_assay['search_attachment']['search_by']
@@ -37,9 +47,10 @@ class RawDataAttachment(RawDataRequest):
     def add_attachment(self, sa, attach_path):
         if not sa in self.aliquots_data_dict:
             self.aliquots_data_dict[sa] = []
-        self.aliquots_data_dict[sa].append(attach_path)
+        attach_details = {'path': attach_path, 'tar_dir': self.tar_folder}
+        self.aliquots_data_dict[sa].append(attach_details)
 
-        _str = 'Aliquot "{}" was successfully assigned with an attachment object "{}".'.format(sa, attach_path)
+        _str = 'Aliquot "{}" was successfully assigned with an attachment object "{}".'.format(sa, attach_details)
         self.logger.info(_str)
 
     def get_data_by_file_name(self):

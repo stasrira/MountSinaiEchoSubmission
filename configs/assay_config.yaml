@@ -53,7 +53,7 @@ CYTOFF:
 
     #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
     attachement_folder:
-        - /cytoff
+        - /cytof
     attachment_file_ext: #must include dot (.) in-front of an extension
         - .fcs
     attach_object: file
@@ -98,8 +98,12 @@ SCRNASEQ:
 
     #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
     attachement_folder:
-        - /scrna-seq/FASTQs
-        - /scrna-seq
+        -
+            folder: /scrna-seq/FASTQs
+            tar_dir: fastq
+        -
+            folder: /scrna-seq
+            tar_dir: processed
     attachment_file_ext:
     attach_object: folder
 
