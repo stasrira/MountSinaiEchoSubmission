@@ -1,0 +1,16 @@
+{
+	"study_name": "A name for this study",
+	"category": "Viral|Bacterial|explosives|chem agent|radiation|etc...",
+	"num_subjects": "Number of exposed subjects",
+	"timepoints": "Number of timepoints available for each subject",
+	"total_number": "Total number of samples (num_subjects * timepoints)",
+	"additional_samples_possible": "Are additional samples possibly available? If so, what's the cost",
+	"sample_type": "The type of samples collected (livePBMC)",
+	"cost": "Cost for sample collection of this study",
+	"start_date_irb": "Date of IRB approval",
+	"start_date_sampling": "Sampling start date (ex. MAC3)",
+	"date_available": "When will samples from this study be made available? (ex. MAC3)",
+	"source": "Source of the samples in this study (ex. WRAIR)",
+	"base_or_option": "Is this study a base study, or is it optional?",
+	"poc": "Point of contact for this study"
+}

@@ -1,0 +1,6 @@
+{
+	"study_id": "Study ID of study that this subject belongs to",
+	"subject_id": "ECHO subject ID",
+	"collecting_institution": "Institution that collected samples from this subject",
+	"prime_institution": "ECHO owner of this subject's data"
+}

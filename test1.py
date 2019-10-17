@@ -1,58 +1,69 @@
+from file_load import File_Json
 import os
+import tarfile
 from pathlib import Path
-import glob
-import sys
 
-def get_file_system_items(dir_cur, search_deep_level, exclude_dirs=[], item_type='dir', ext_match = []):
-    # base_loc = self.data_loc / dir_cur
-    deep_cnt = 0
-    cur_lev = ''
-    items = []
-    while deep_cnt < search_deep_level:
-        temp_dir = []
-        cur_lev = cur_lev + '/*'
-        items_cur = glob.glob(str(Path(str(dir_cur) + cur_lev)))
-        if item_type == 'dir':
-            items_clean = [fn for fn in items_cur if
-                         Path.is_dir(Path(fn)) and not os.path.basename(fn) in exclude_dirs]
-        elif item_type == 'file':
-            items_clean = [fn for fn in items_cur if not Path.is_dir(Path(fn)) and (len(ext_match) == 0 or os.path.splitext(fn)[1] in ext_match)]
+# filepath = 'json/experiment_metadata.json'
+filepath = 'json/sequence_item_metadata.json'
+# filepath = 'json/aliquot_metadata.json'
+cur_assay = 'scrnaseq'
 
-        items.extend(items_clean)
-        deep_cnt += 1
-    return items
+def get_json_keys(json_node, parent_keys = ''):
+    for key, val in json_node.items():
+        if isinstance(val, dict):
+            if parent_keys:
+                cur_parents = '/'.join([parent_keys, key])
+            else:
+                cur_parents = key
+            get_json_keys(val, cur_parents)
+        else:
+            if parent_keys:
+                full_key_name = '/'.join([parent_keys, key])
+            else:
+                full_key_name = key
 
-l = ['1', '2', '3', '4', '3']
-print(l.index('3'))
+            json_node[key] = 'update_function("{}", "{}", "{}")'.format(full_key_name, cur_assay, os.path.basename(filepath))
+            json_node[key] = eval(json_node[key])
+            print("{} : {}".format(key, json_node[key])) # val
 
-a = [[1, 2, 3, 4], [5, 6], [7, 8, 9]]
-print (len(a))
+def update_function(key, assay, filename):
+    return 'Assay: {}; Json Key: {}; Requested for filling out file: "{}"'.format(assay, key, filename)
 
-[(['AS06-11984_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']),
- (['AS10-16739_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']),
- (['AS09-09992_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']), (['AS08-13555_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']), (['AS11-18755_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']), (['AS17-00144_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']), (['AS09-13278_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']), (['AS14-03700_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx'])]
+def process_json():
+    err = None
+    log = None
 
-if 2 in a[0]:
-    print('2 in 0 part of array')
-if 6 in a[1]:
-    print ('6 in part 1')
-if 8 in a[2]:
-    print ('8 in part 2')
+    fl = File_Json(filepath, err, log)
 
-for i in range(len(a)):
-    for j in range(len(a[i])):
-        print(a[i][j], end=' ')
-    print()
+    # for key, item in fl.json_data.items():
+    #    print ('key="{}"; value={}'.format(key, item))
 
-sys.exit()
+    get_json_keys(fl.json_data)
 
-path = 'E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\cytoff'
-path2 = 'E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scatac-seq'
-exclude_dirs = []
-ext_match = ['.xlsx', '.xls']
+def process_tar():
+    output_filename = "submission_out\sample.tar.gz"
+    arch_list = [
+        ("processed","E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scrna-seq\\690_3GEX_AS17-00144_1"),
+        ("fastq", "E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scrna-seq\FASTQs\\690_3GEX_AS17-00144_1"),
+        ("","E:\MounSinai\Darpa\Programming\submission\json\\aliquot_metadata.json"),
+        ("", "E:\MounSinai\Darpa\Programming\submission\json\experiment_metadata.json"),
+        ("", "E:\MounSinai\Darpa\Programming\submission\json\sequence_item_metadata.json")
+    ]
 
-files = get_file_system_items(path, 2, [], 'file', ext_match)
-print (files)
+    with tarfile.open(output_filename, "w:") as tar:
 
-dirs =  get_file_system_items(path2, 2, ['fastqs', 'FASTQs'], 'dir')
-print (dirs)
+        for item in arch_list:
+            if len(item[0].strip()) > 0:
+                _str = '{}/{}'.format(item[0],os.path.basename(item[1]))
+            else:
+                _str = '{}'.format(os.path.basename(item[1]))
+            tar.add(str(Path(item[1])), arcname=_str)
+        tar.close()
+
+# process_json()
+
+process_tar()
+
+
+
+
