@@ -17,7 +17,14 @@ class ConfigData:
         # loop through the path to get the required value
         val = self.cfg
         for el in path_elems:
-            val = val[el]
+            if el in val:
+                try:
+                    val = val[el]
+                except Exception as ex:
+                    val = None
+                    break
+            else:
+                val = None
 
         return val
 

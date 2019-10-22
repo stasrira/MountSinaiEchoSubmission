@@ -107,6 +107,11 @@ SCRNASEQ:
     attachment_file_ext:
     attach_object: folder
 
+    submission_forms:
+        - experiment_metadata
+        - aliquot_metadata
+        #- sequence_item_metadata
+
 SCATACSEQ:
     assay_name: csATACseq
     mssm_id: 2
@@ -144,8 +149,12 @@ SCATACSEQ:
 
     #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
     attachement_folder:
-        - /scatac-seq/fastqs
-        - /scatac-seq
+        -
+            folder: /scatac-seq/fastqs
+            tar_dir: fastq
+        -
+            folder: /scatac-seq
+            tar_dir: processed
     attachment_file_ext:
     attach_object: folder
 

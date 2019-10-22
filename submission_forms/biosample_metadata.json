@@ -17,7 +17,7 @@
 		"commute": "walk, bike, drive, public transit, etc...",
 		"pesticide_use": "Frequency of pesticide use outside of work over the last 5 years",
 		"fertilizer_use": "Frequency of fertilizer use outside of work over the last 5 years",
-		"herbicide_use": "Frequency of herbicide use outside of work over the last 5 years",		
+		"herbicide_use": "Frequency of herbicide use outside of work over the last 5 years"
 	},
 	
 	"clinical_data": {
@@ -33,7 +33,7 @@
 			"mode": "mode of ingestion (smoking, chewing, etc...)",
 			"frequency": "frequency of consumption",
 			"last_use": "last incident of consumption"
-		}
+		},
 		
 		"drug_use": {
 			"marijuana": "Mode of ingestion|F",
@@ -121,7 +121,7 @@
 			"first_use": "Approximate date of first handling event",
 			"last use": "Approximate date of last handling event"
 		}
-	]
+	],
 	
 	"pbmc_metadata": {
 		"tubes_collected": "Number of tubes that were collected",

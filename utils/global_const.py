@@ -4,6 +4,8 @@ CONFIG_FILE_MAIN = 'configs/main_config.yaml'
 CONFIG_FILE_ASSAY = 'configs/assay_config.yaml'
 CONFIG_FILE_CENTER = 'configs/center_config'
 
+SUBMISSION_FORMS_DIR = 'submission_forms'
+
 # study level default name for the config file
 #DEFAULT_STUDY_CONFIG_FILE = 'study.cfg.yaml'
 

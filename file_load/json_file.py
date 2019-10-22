@@ -10,6 +10,7 @@ class File_Json(File):
         File.__init__(self, filepath, file_type)
         self.error = req_error
         self.logger = req_logger
+        self.json_data = None
         self.load_file()
 
     def load_file(self, filepath = ''):

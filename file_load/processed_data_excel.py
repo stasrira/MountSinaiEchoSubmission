@@ -34,7 +34,7 @@ class Processed_Data_Excel(File):
                                 pass
                             else:
                                 cell = sheet.cell(i, col_number)
-                                cell_value = self.validate_cell_value(cell)
+                                cell_value = self.validate_cell_value(cell, wb)
                                 col_values.append(cell_value)
                 else:
                     col_values = None
@@ -74,7 +74,7 @@ class Processed_Data_Excel(File):
 
         return sheet
 
-    def validate_cell_value(self, cell):
+    def validate_cell_value(self, cell, wb):
         cell_value = cell.value
         # take care of number and dates received from Excel and converted to float by default
         if cell.ctype == 2 and int(cell_value) == cell_value:
@@ -132,7 +132,7 @@ class Processed_Data_Excel(File):
                         # print(sheet.cell_value(i, j))
                         # ln.append('"' + sheet.cell_value(i,j) + '"')
                         cell = sheet.cell(i, j)
-                        cell_value = self.validate_cell_value(cell)
+                        cell_value = self.validate_cell_value(cell, wb)
                         """
                         cell_value = cell.value
                         # take care of number and dates received from Excel and converted to float by default

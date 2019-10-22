@@ -3,9 +3,10 @@ import os
 import tarfile
 from pathlib import Path
 
-# filepath = 'json/experiment_metadata.json'
-filepath = 'json/sequence_item_metadata.json'
-# filepath = 'json/aliquot_metadata.json'
+# filepath = 'submission_forms/experiment_metadata.submission_forms'
+filepath = 'submission_forms\experiment_metadata\experiment_metadata.json'
+filepath = 'submission_forms\experiment_metadata\experiment_metadata.json'
+# filepath = 'submission_forms/aliquot_metadata.submission_forms'
 cur_assay = 'scrnaseq'
 
 def get_json_keys(json_node, parent_keys = ''):
@@ -37,17 +38,17 @@ def process_json():
 
     # for key, item in fl.json_data.items():
     #    print ('key="{}"; value={}'.format(key, item))
-
-    get_json_keys(fl.json_data)
+    if fl.json_data:
+        get_json_keys(fl.json_data)
 
 def process_tar():
     output_filename = "submission_out\sample.tar.gz"
     arch_list = [
         ("processed","E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scrna-seq\\690_3GEX_AS17-00144_1"),
         ("fastq", "E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scrna-seq\FASTQs\\690_3GEX_AS17-00144_1"),
-        ("","E:\MounSinai\Darpa\Programming\submission\json\\aliquot_metadata.json"),
-        ("", "E:\MounSinai\Darpa\Programming\submission\json\experiment_metadata.json"),
-        ("", "E:\MounSinai\Darpa\Programming\submission\json\sequence_item_metadata.json")
+        ("","E:\MounSinai\Darpa\Programming\submission\submission_forms\\aliquot_metadata.submission_forms"),
+        ("", "E:\MounSinai\Darpa\Programming\submission\submission_forms\experiment_metadata.submission_forms"),
+        ("", "E:\MounSinai\Darpa\Programming\submission\submission_forms\sequence_item_metadata.submission_forms")
     ]
 
     with tarfile.open(output_filename, "w:") as tar:
@@ -60,9 +61,9 @@ def process_tar():
             tar.add(str(Path(item[1])), arcname=_str)
         tar.close()
 
-# process_json()
+process_json()
 
-process_tar()
+# process_tar()
 
 
 

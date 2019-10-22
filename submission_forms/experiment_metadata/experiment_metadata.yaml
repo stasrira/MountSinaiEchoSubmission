@@ -1,0 +1,5 @@
+__assay: common
+experiment_id: eval!get_value(!yaml_path!)
+assay: eval!self.req_obj.assay # eval!get_value(!yaml_path!)
+site: MSSM
+aliquot_manifest:  eval!self.req_obj.sub_aliquots #eval!get_value(!yaml_path!)

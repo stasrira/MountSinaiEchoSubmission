@@ -1,0 +1,11 @@
+__assay: common
+aliquot_id: eval!self.req_obj.sub_aliquot
+biosample_id:
+creation_date:
+volume:
+num_cells:
+transfer:
+sender:
+send_date:
+receiver:
+receive_date:

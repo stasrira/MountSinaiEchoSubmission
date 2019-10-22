@@ -8,6 +8,7 @@ from file_load import File # , MetaFileExcel
 from file_load.file_error import RequestError
 from rawdata import RawDataRequest
 from rawdata import RawDataAttachment
+from submission_forms.submission_forms import SubmissionForms
 
 class Request(File):
 
@@ -212,6 +213,7 @@ class Request(File):
         self.conf_assay =  self.load_assay_conf(self.assay)
         self.raw_data = RawDataRequest(self)
         self.attachments = RawDataAttachment(self)
+        self.submission_forms = SubmissionForms(self)
 
         # check for errors and put final log entry for the request.
         if self.error.exist():
