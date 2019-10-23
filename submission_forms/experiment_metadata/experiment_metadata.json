@@ -2,5 +2,5 @@
 	"experiment_id": "The ECHO ID of this experiment",
 	"assay": "RNA-seq|scRNA-seq|ATAC-seq|etc...",
 	"site": "Performer site that ran the assay",
-	"aliquot_manifest": [ "List of aliquot IDs that will be run in this experiment" ]
+	"aliquot_manifest":  "List of aliquot IDs that will be run in this experiment"
 }

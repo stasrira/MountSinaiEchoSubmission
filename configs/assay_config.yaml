@@ -108,9 +108,16 @@ SCRNASEQ:
     attach_object: folder
 
     submission_forms:
-        - experiment_metadata
-        - aliquot_metadata
-        #- sequence_item_metadata
+        -
+            name: experiment_metadata
+            assignment: request
+        #-
+        #    name: aliquot_metadata
+        #    assignment: aliquot
+        -
+            name: sequence_item_metadata
+            assignment: aliquot
+
 
 SCATACSEQ:
     assay_name: csATACseq

@@ -24,11 +24,13 @@ if __name__ == '__main__':
     log_folder_name = gc.LOG_FOLDER_NAME
     processed_folder_name = gc.PROCESSED_FOLDER_NAME
 
+    prj_wrkdir = os.path.dirname(os.path.abspath(__file__))
+
     # requests_loc = 'E:/MounSinai/MoTrPac_API/ProgrammaticConnectivity/MountSinai_metadata_file_loader/DataFiles'
     requests_path = Path(requests_loc)
 
     # get current location of the script and create Log folder
-    logdir = Path(m_cfg.prj_wrkdir) / log_folder_name  # 'logs'
+    logdir = Path(prj_wrkdir) / log_folder_name  # 'logs'
     lg_filename = time.strftime("%Y%m%d_%H%M%S", time.localtime()) + '.log'
 
     lg = setup_logger_common(common_logger_name, logging_level, logdir, lg_filename)  # logging_level

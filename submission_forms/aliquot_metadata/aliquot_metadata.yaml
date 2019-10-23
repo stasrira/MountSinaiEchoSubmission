@@ -1,11 +1,11 @@
 __assay: common
-aliquot_id: eval!self.req_obj.sub_aliquot
-biosample_id:
+aliquot_id: eval!get_submission_form_value('sub_aliquot')
+biosample_id: eval!get_submission_form_value('biosample')
 creation_date:
 volume:
 num_cells:
 transfer:
 sender:
 send_date:
-receiver:
+receiver: MSSM
 receive_date:
