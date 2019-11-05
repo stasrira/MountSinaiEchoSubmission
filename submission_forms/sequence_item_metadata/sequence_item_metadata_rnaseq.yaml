@@ -1,0 +1,20 @@
+rna_seq_metadata:
+    rna_extr_date: eval!get_assaydata_value_by_col_number(2, True) #1st parameter stands for column number, 2nd if the value is required (True) or can be left blank (False)
+    rna_extr_method: Direct-zol RNA MiniPrep #constant value
+    total_cell_num: 200000  #constant value
+    cell_type:  PBMC #constant value
+    total_rna_conc: eval!get_assaydata_value_by_col_number(11, True)
+    total_rna_qc_method: Bioanalyzer #constant value
+    rin: eval!get_assaydata_value_by_col_number(10, True)
+    r_260_280: eval!get_assaydata_value_by_col_number(5, True)
+    r_260_230: eval!get_assaydata_value_by_col_number(6, True)
+    lib_vendor: NuGEN #constant value
+    lib_type: mRNA library #constant value
+    lib_prep_method: eval!get_assaydata_value_by_col_number(14, True)
+    lib_qc_method: Bioanalyzer #constant value
+    lib_adaptor_1: eval!get_assaydata_value_by_col_number(16, True)
+    lib_adaptor_2: eval!get_assaydata_value_by_col_number(17, True)
+    lib_umi_cycle_num: 8 #constant value
+    lib_adaptor_size: 143 #constant value
+    lib_frag_size: eval!get_assaydata_value_by_col_number(19, True)
+    lib_dna_conc: eval!get_assaydata_value_by_col_number(20, True)

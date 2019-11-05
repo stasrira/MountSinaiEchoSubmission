@@ -111,9 +111,9 @@ SCRNASEQ:
         -
             name: experiment_metadata
             assignment: request
-        #-
-        #    name: aliquot_metadata
-        #    assignment: aliquot
+        -
+            name: aliquot_metadata
+            assignment: aliquot
         -
             name: sequence_item_metadata
             assignment: aliquot
@@ -165,6 +165,88 @@ SCATACSEQ:
     attachment_file_ext:
     attach_object: folder
 
+RNASEQ:
+    assay_name: RNAseq
+    mssm_id: 3
+    mssm_postfix: _3
+    #path to the location where manifests for all projects are stored; this path will be combined with a path for a particular experiment
+    manifest_location: E:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive #/mnt/researchsan02a/Projects
+    #path to the actual folder with manifests, should be concatenated to manifest location and project path
+    manifest_folder: /SampleManifests
+
+    #path to the location where manifests for all projects are stored; this path will be combined with a path for a particular experiment
+    assaydata_location: E:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive #/mnt/researchsan02a/Projects
+    #path to the actual folder with manifests, should be concatenated to manifest location and project path
+    assaydata_folder:
+        file_path: /AssayData/RNAseq/DataQC
+        get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+        # 'row_num' - retrieve data from a particular row of the file
+        row_num:
+
+    #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
+    rawdata_location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive #/ext_data/shared
+    #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+    rawdata_folder: /scrna-seq
+    #rawdata file to be found inside of the folder with raw data for the current sample
+    rawdata_summary_file:
+        file_path: /outs/metrics_summary.csv
+        get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+                                        # 'row_num' - retrieve data from a particular row of the file
+        row_num: 2
+
+    rawdata_summary_file_ext:
+    rawdata_summary_sheet_name:
+
+    #search type for each type of info
+    search_manifest: file_content
+    search_rawdata_summary:
+        search_by: folder_name
+        search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+            - FASTQs
+            - fastqs
+    read_rawdata_summary_method: file_content
+
+    search_assaydata_summary: # file_content
+        search_by: file_content
+        search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+        read_rawdata_summary_method: file_content
+
+    assaydata_summary_file_ext:  #must include dot (.) in-front of an extension
+        - .xlsx
+        - .xls
+    assaydata_summary:
+        sheet_name: # if blank, the system will be looking for the first available sheet
+        header_row_number:  # 1-based numbering
+        pk_column_number: 3 # 1-based numbering
+
+    search_attachment:
+        search_by: folder_name
+        search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+
+    #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
+    attachement_folder:
+        -
+            folder: /scrna-seq/FASTQs
+            tar_dir: fastq
+        -
+            folder: /scrna-seq
+            tar_dir: processed
+    attachment_file_ext:
+    attach_object: folder
+
+    submission_forms:
+        -
+            name: experiment_metadata
+            assignment: request
+        #-
+        #    name: aliquot_metadata
+        #    assignment: aliquot
+        -
+            name: sequence_item_metadata
+            assignment: aliquot
 
 
 

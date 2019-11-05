@@ -26,13 +26,14 @@ class Request(File):
         # self.rows = OrderedDict()
 
         self.columnlist = []
-        self.aliquots = []
+        self.samples = []
         self.sub_aliquots = []
         self.project = ''
         self.exposure = ''
         self.center = ''
         self.source_spec_type = ''
         self.assay = ''
+        self.experiment_id = ''
 
         # self.sheet_name = ''
         self.sheet_name = sheet_name.strip()
@@ -107,7 +108,7 @@ class Request(File):
                 self.logger.info('Validating provided request parameters. Project: "{}", Exposure: "{}", '
                                  'Center: "{}", Source specimen type: "{}", Sub-Aliquots: "{}", Aliquots: "{}"'
                                  .format(self.project, self.exposure, self.center, self.source_spec_type,
-                                         self.sub_aliquots, self.aliquots))
+                                         self.sub_aliquots, self.samples))
                 self.validate_request_params()
 
                 if self.error.exist():
@@ -132,6 +133,7 @@ class Request(File):
                 self.loaded = False
         return self.lineList
 
+    # get all values provided in the request file
     def get_request_parameters(self):
         self.project = self.columnlist[0].split(',')[1]
         self.exposure = self.columnlist[1].split(',')[1]
@@ -141,9 +143,11 @@ class Request(File):
         self.sub_aliquots = self.columnlist[5].split(',')
         if self.sub_aliquots and len(self.sub_aliquots) > 0:
             self.sub_aliquots.pop(0)
-        self.aliquots =  self.columnlist[6].split(',')
-        if self.aliquots and len(self.aliquots) > 0:
-            self.aliquots.pop(0)
+        self.samples =  self.columnlist[6].split(',')
+        if self.samples and len(self.samples) > 0:
+            self.samples.pop(0)
+        self.experiment_id = self.columnlist[7].split(',')[1]
+        print()
 
     # validates provided parameters (loaded from the submission request file)
     def validate_request_params(self):
@@ -151,17 +155,17 @@ class Request(File):
         _str_err = ''
         _str_warn = ''
         if len(self.sub_aliquots) == 0:
-            _str_err = '\n'.join ([_str_err, 'List of provided sub-aliquots is empty. ' \
+            _str_err = '\n'.join ([_str_err, 'List of provided sub-samples is empty. ' \
                                     'Aborting processing of the submission request.'])
-        # Check if empty sub-aliquots were provided
+        # Check if empty sub-samples were provided
         if '' in self.sub_aliquots:
             i = 0
             cleaned_cnt = 0
-            for s, a in zip(self.sub_aliquots, self.aliquots):
+            for s, a in zip(self.sub_aliquots, self.samples):
                 # check for any empty sub-aliquot values and remove them. Also remove corresponded Aliquot values
                 if len(s.strip()) == 0:
                     self.sub_aliquots.pop(i)
-                    self.aliquots.pop(i)
+                    self.samples.pop(i)
                     cleaned_cnt += 1
                 else:
                     i += 1

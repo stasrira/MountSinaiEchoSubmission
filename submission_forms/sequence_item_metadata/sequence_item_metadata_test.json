@@ -1,0 +1,70 @@
+{
+	"biosample_id": "ECHO_BIOSAMPLE_ID of the biosample used to generate this sequencing dataset",
+	"aliquot_id": "ECHO_ALIQUOT_ID of the aliquot used",
+
+	"spike_ins_present": "Are there any spike ins? (T|F)",
+	"spike_ins": [
+		{
+			"name": "spike in name",
+			"sequence": "spike in sequence"
+		}
+	],
+
+	"reagents": [
+		{
+			"reagent": "Name of this reagent",
+			"source": "Source of this reagent"
+		}
+	],
+
+	"rna_seq_metadata": {
+		"rna_extr_date": "RNA extraction date",
+		"rna_extr_method": "RNA extraction method"
+	},
+
+	"scrna_seq_metadata": {
+		"viability": "Assessment of cells' viability",
+		"number_cells": "Number of cells loaded into the chip"
+	},
+
+	"atac_seq_metadata": {
+		"lib_ba_quality": "Visual assessment of the library quality with the bioanalyzer track (Good|Bad)",
+		"seq_dna_conc": "DNA concentration for sequencing"
+	},
+
+	"chipmentation_metadata": {
+		"starting_cell_num": "Starting number of cells",
+		"live_cells_perc": "% of live cells"
+	},
+
+	"snatac_seq_metadata": {
+		"sub_cellular_faction": "Sub-cellular fraction (i.e. Antibodies)",
+		"starting_cell_num": "Starting number of cells",
+		"live_cells_perc": "% of live cells",
+		"antibody_staining_date": "Antibody staining date",
+		"facs_sorting_date": "Facs sorting date",
+		"assay_version": "10X ATAC-seq assay version",
+		"loading_density": "Loading density",
+		"pre_incubation_time": "Pre-incubation time",
+		"lysis_method": "Lysis method"
+	},
+
+	"mint_chip_metadata": {
+		"target": "Target",
+		"starting_cell_num": "Starting number of cells",
+		"antibody_barcode": "Antibody Barcode (PCR)",
+		"antibody": "H3|H3K27ac|H3K4me1|H3K4me3|H3K27Kme3|H3K9me3|H3K36me3",
+		"pooled_from_assays": "Pooled from assays"
+	},
+
+	"snmc_seq_metadata": {
+		"target": "Target (i.e. Whole Genome)",
+		"sub_cellular_faction": "Sub-cellular fraction (i.e. Antibodies)",
+		"assay_protocol": "Assay protocol (i.e. snmC-seq2)",
+		"starting_cell_num": "Starting number of cells",
+		"live_cells_perc": "% of live cells",
+		"antibody_staining_date": "Antibody staining date",
+		"facs_sorting_date": "Facs sorting date"
+	}
+
+}

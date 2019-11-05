@@ -1,0 +1,10 @@
+scrna_seq_metadata:
+    viability: eval!self.get_rawdata_value('Mean_Reads_per_Cell')
+    number_cells: eval!self.get_rawdata_value('Estimated_Number_of_Cells')
+    lib_reagents: Lib Reagents Constant List
+    kit_name: Kit Name Constant List
+    lib_frag_size:
+    lib_dna_conc:
+    lib_molarity:
+    lib_adaptor_1: AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[8bp]ATCTCGTATGCCGTCTTCTGCTTG
+    lib_adaptor_2: AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT

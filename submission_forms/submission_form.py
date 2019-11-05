@@ -5,10 +5,11 @@ from utils import ConfigData
 import traceback
 
 class SubmissionForm():
-    def __init__(self, form_name, request, sub_aliquot):
+    def __init__(self, form_name, request, sub_aliquot, sample):
         self.form_name = form_name
         self.req_obj = request  # reference to the current request object
         self.sub_aliquot = sub_aliquot
+        self.sample = sample
         self.error = self.req_obj.error
         self.logger = self.req_obj.logger
         self.conf_assay = request.conf_assay
@@ -35,6 +36,7 @@ class SubmissionForm():
 
     def get_json_keys(self, json_node, parent_keys=''):
         for key, val in json_node.items():
+            # TODO: add functionality to handle JSON arrays
             if isinstance(val, dict):
                 if parent_keys:
                     cur_parents = '/'.join([parent_keys, key])
@@ -73,8 +75,8 @@ class SubmissionForm():
             if eval_flag in cfg_val:
                 cfg_val = cfg_val.replace(eval_flag, '', 1) #replace 'eval!' flag value
                 # cfg_val = cfg_val.replace(yaml_path_flag, "'" + key + "'", 1)  # replace 'eval!' flag value
-                if not cfg_val[0:5] == 'self.':
-                    cfg_val = 'self.'+ cfg_val
+                #if not cfg_val[0:5] == 'self.':
+                #    cfg_val = 'self.'+ cfg_val
                 try:
                     out_val = eval(cfg_val)
                 except Exception as ex:
@@ -102,10 +104,19 @@ class SubmissionForm():
     def get_submission_form_value(self, property_name):
         return self.get_property_value_from_object(self, property_name)
 
+    # it will retrieve any existing property from rawdata object
+    def get_rawdata_value(self, property_name):
+        return self.get_property_value_from_object(self.req_obj.raw_data.aliquots_data_dict[self.sub_aliquot],
+                                                   property_name, 'dict')
+
     # it will retrieve a value of a property named in "property_name" parameter
     # from the object passed as a reference in "obj" parameter
-    def get_property_value_from_object(self, obj, property_name):
-        get_item = 'obj.' + property_name
+    def get_property_value_from_object(self, obj, property_name, obj_type = 'class'):
+        if obj_type == 'class':
+            get_item = 'obj.' + property_name
+        elif obj_type == 'dict':
+            get_item = 'obj["' + property_name +'"]'
+
         try:
             out = eval(get_item)
         except Exception as ex:

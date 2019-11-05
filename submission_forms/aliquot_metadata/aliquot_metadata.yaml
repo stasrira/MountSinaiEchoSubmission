@@ -1,6 +1,6 @@
 __assay: common
-aliquot_id: eval!get_submission_form_value('sub_aliquot')
-biosample_id: eval!get_submission_form_value('biosample')
+aliquot_id: eval!self.get_submission_form_value('sub_aliquot')
+biosample_id: eval!self.get_submission_form_value('sample')
 creation_date:
 volume:
 num_cells:

@@ -21,11 +21,11 @@ class SubmissionForms():
                 submission_form = None  # reset the submission form reference
                 if form['assignment'] == 'aliquot': # TODO store strings "aliquot" and "assignments" in global const module
                     # prepare an instance of the current form for each aliquot
-                    for sa in self.req_obj.sub_aliquots:
-                        submission_form = SubmissionForm(form['name'], self.req_obj, sa) # TODO: store "name" in global const
+                    for sa, smpl in zip(self.req_obj.sub_aliquots, self.req_obj.samples):
+                        submission_form = SubmissionForm(form['name'], self.req_obj, sa, smpl) # TODO: store "name" in global const
                         self.add_submission_form(sa, form['assignment'], submission_form) # .json_form.json_data
                 elif form['assignment'] == 'request':  # TODO: store "request" in global const
-                    submission_form = SubmissionForm(form['name'], self.req_obj, None)  # TODO: store "name" and "assignments" in global const
+                    submission_form = SubmissionForm(form['name'], self.req_obj, None, None)  # TODO: store "name" and "assignments" in global const
                     self.add_submission_form(form['assignment'], form['assignment'], submission_form)  # .json_form.json_data
                 else:
                     _str = 'Submission form "{}" had an unexpected configuration "assignment" value "{}" ' \

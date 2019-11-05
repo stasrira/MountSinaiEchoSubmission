@@ -74,8 +74,8 @@
 	"scrna_seq_metadata": {
 		"viability": "Assessment of cells' viability",
 		"number_cells": "Number of cells loaded into the chip",
-		"lib_reagents?": "-",
-		"kit_name?": "-",
+		"lib_reagents": "-",
+		"kit_name": "-",
 		"lib_frag_size": "Average library fragment size",
 		"lib_dna_conc": "DNA concentration for the library (stock)",
 		"lib_molarity": "Library molarity",

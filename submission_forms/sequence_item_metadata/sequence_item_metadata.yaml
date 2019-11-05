@@ -1,45 +1,32 @@
-biosample_id:
-aliquot_id: eval!get_submission_form_value('sub_aliquot')
-experiment_id:
+biosample_id: eval!self.get_submission_form_value('sample')
+aliquot_id: eval!self.get_submission_form_value('sub_aliquot')
+experiment_id: eval!self.get_request_value('experiment_id')
 filename:
 md5sum:
 format:
 paired_file:
-assay: eval!get_request_value('assay')
-seq_length:
+assay: eval!self.get_request_value('assay')
+seq_length: # constant blank value
 seq_depth:
 seq_end_type:
 strand_specificity:
 seq_platform:
 seq_instrument:
-seq_date:
-sequenced_by:
-seq_run_number:
-seq_machine_id:
-seq_flowcell_id:
-seq_flowcell_run:
-seq_flowcell_lane:
-seq_flowcell_type:
-pcr_cycle_nr:
-sample_barcode:
-pcr_barcode:
+seq_date:  # constant blank value
+sequenced_by:  # constant blank value
+seq_run_number:  # constant blank value
+seq_machine_id:  # constant blank value
+seq_flowcell_id:  # constant blank value
+seq_flowcell_run:  # constant blank value
+seq_flowcell_lane:  # constant blank value
+seq_flowcell_type:  # constant blank value
+pcr_cycle_nr:  # constant blank value
+sample_barcode:  # constant blank value
+pcr_barcode:  # constant blank value
 comments:
-spike_ins_present:
-spike_ins:
-    #array
-    name: eval!get_submission_form_value('sub_aliquot')
-    sequence: Test_spike_seq_1
-reagents:
-    #array
-    reagent:
-    source:
-    product_id:
-    lot_number:
-    antigen_sequence:
-    clonality:
-    host_organism:
-    isotype:
-    comments:
+spike_ins_present: F  # constant F value
+spike_ins: eval![] # constant blank array value
+reagents:  eval![] # constant blank array value
 rna_seq_metadata:
     rna_extr_date:
     rna_extr_method:

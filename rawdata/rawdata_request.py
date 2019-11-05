@@ -54,7 +54,13 @@ class RawDataRequest():
         exclude_dirs = self.conf_assay['search_rawdata_summary']['exclude_folders']
         ext_match = self.conf_assay['rawdata_summary_file_ext']
         files = self.get_file_system_items (self.data_loc, search_deep_level, exclude_dirs, 'file', ext_match)
-        file_index = self.index_rawdata_files(files)
+
+        file_struct = {'worksheet': self.conf_assay['rawdata_summary']['sheet_name'],
+                       'header_row_num': self.conf_assay['rawdata_summary']['header_row_number'],
+                       'col_num': self.conf_assay['rawdata_summary']['pk_column_number'],
+                        'exlude_header': True
+                        }
+        file_index = self.index_rawdata_files(files, file_struct)
         for sa  in file_index:
             if sa in self.req_obj.sub_aliquots:
                 rda = ProcessedDataAliquot(sa, self)
@@ -70,14 +76,20 @@ class RawDataRequest():
                     self.logger.warning(_str)
         # print('')
 
-    def index_rawdata_files(self, files):
+    def index_rawdata_files(self, files, file_struct):
         # combine content of selected files and create dictionary pr_key/file path
-        worksheet = self.conf_assay['rawdata_summary']['sheet_name']
-        header_row_num = self.conf_assay['rawdata_summary']['header_row_number'] # 1
-        header_row_num = header_row_num - 1  # accommodate for 0-based numbering
-        col_num = self.conf_assay['rawdata_summary']['pk_column_number']  # 6
-        col_num = col_num - 1  # accommodate for 0-based numbering
-        exlude_header = True
+        worksheet = file_struct['worksheet']  # self.conf_assay['rawdata_summary']['sheet_name']
+        header_row_num = file_struct['header_row_num']  # self.conf_assay['rawdata_summary']['header_row_number'] # 1
+        if str(header_row_num).isnumeric():
+            header_row_num = header_row_num - 1  # accommodate for 0-based numbering
+        else:
+            header_row_num = None
+        col_num = file_struct['col_num']  # self.conf_assay['rawdata_summary']['pk_column_number']  # 6
+        if str(col_num).isnumeric():
+            col_num = col_num - 1  # accommodate for 0-based numbering
+        else:
+            col_num = None
+        exlude_header = file_struct['exlude_header']  # True
 
         index_dict = {}
         for file in files:
