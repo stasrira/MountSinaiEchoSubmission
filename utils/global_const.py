@@ -2,9 +2,12 @@
 # main config file name
 CONFIG_FILE_MAIN = 'configs/main_config.yaml'
 CONFIG_FILE_ASSAY = 'configs/assay_config.yaml'
-CONFIG_FILE_CENTER = 'configs/center_config'
+CONFIG_FILE_CENTER = 'configs/center_config.yaml'
+CONFIG_FILE_DICTIONARY = 'configs/dict_config.yaml'
 
 SUBMISSION_FORMS_DIR = 'submission_forms'
+
+PROJECT_NAME = 'ECHO'  # this value is stored in here instead of being passed from a request.
 
 # study level default name for the config file
 #DEFAULT_STUDY_CONFIG_FILE = 'study.cfg.yaml'

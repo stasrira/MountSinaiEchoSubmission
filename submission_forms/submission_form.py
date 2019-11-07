@@ -22,16 +22,18 @@ class SubmissionForm():
         fl_path_cfg_assay = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_' + str(self.req_obj.assay).lower() + '.yaml')
 
         # load json and config files
-        fl_json = File_Json(fl_path_json, self.req_obj.error, self.req_obj.logger)
-        self.json_form = fl_json
-        fl_cfg_common = ConfigData(fl_path_cfg_common)
-        self.fl_cfg_common = fl_cfg_common
-        fl_cfg_assay = ConfigData(fl_path_cfg_assay)
-        self.fl_cfg_assay = fl_cfg_assay
+        self.fl_json = File_Json(fl_path_json, self.req_obj.error, self.req_obj.logger)
+        # self.json_form = fl_json
+        self.fl_cfg_common = ConfigData(fl_path_cfg_common)
+        # self.fl_cfg_common = fl_cfg_common
+        self.fl_cfg_assay = ConfigData(fl_path_cfg_assay)
+        # self.fl_cfg_assay = fl_cfg_assay
+        self.fl_cfg_dict = ConfigData(gc.CONFIG_FILE_DICTIONARY)
 
-        print(fl_json.json_data)
-        self.get_json_keys(fl_json.json_data)
-        print(fl_json.json_data)
+        print(self.fl_json.json_data)
+        # loop through all json keys and fill those with associated data
+        self.get_json_keys(self.fl_json.json_data)
+        print(self.fl_json.json_data)
         print ()
 
     def get_json_keys(self, json_node, parent_keys=''):
@@ -97,21 +99,21 @@ class SubmissionForm():
         return out_val
 
     # it will retrieve any existing property from the request object
-    def get_request_value(self, property_name):
-        return self.get_property_value_from_object (self.req_obj, property_name)
+    def get_request_value(self, property_name, check_dict = False):
+        return self.get_property_value_from_object (self.req_obj, property_name, check_dict)
 
     # it will retrieve any existing property from the submission_form object
-    def get_submission_form_value(self, property_name):
-        return self.get_property_value_from_object(self, property_name)
+    def get_submission_form_value(self, property_name, check_dict = False):
+        return self.get_property_value_from_object(self, property_name, check_dict)
 
     # it will retrieve any existing property from rawdata object
-    def get_rawdata_value(self, property_name):
+    def get_rawdata_value(self, property_name, check_dict = False):
         return self.get_property_value_from_object(self.req_obj.raw_data.aliquots_data_dict[self.sub_aliquot],
-                                                   property_name, 'dict')
+                                                   property_name, check_dict, 'dict')
 
     # it will retrieve a value of a property named in "property_name" parameter
     # from the object passed as a reference in "obj" parameter
-    def get_property_value_from_object(self, obj, property_name, obj_type = 'class'):
+    def get_property_value_from_object(self, obj, property_name, check_dict = False, obj_type = 'class'):
         if obj_type == 'class':
             get_item = 'obj.' + property_name
         elif obj_type == 'dict':
@@ -119,6 +121,10 @@ class SubmissionForm():
 
         try:
             out = eval(get_item)
+
+            if check_dict:
+                out = self.get_dict_value (out, property_name)
+
         except Exception as ex:
             _str = 'Error "{}" occurred during preparing submission form "{}" for sub-aliquot "{}" ' \
                    'while attempting to evaluate property: "{}". \n{} ' \
@@ -127,3 +133,9 @@ class SubmissionForm():
             self.error.add_error(_str)
             out = ''
         return out
+
+    def get_dict_value(self, value, section):
+        try:
+            return self.fl_cfg_dict.get_item_by_key(section + "/" + value)
+        except Exception as ex:
+            return value

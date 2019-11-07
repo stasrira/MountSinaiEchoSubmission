@@ -101,8 +101,10 @@ class Request(File):
 
                 wb.unload_sheet(sheet.name)
 
-                #load passed request parameters (by columns)
+                # load passed request parameters (by columns)
                 self.get_request_parameters ()
+                # to support decision of not supplying Project Name from Request file, it will retrieved from gc module
+                self.project = gc.PROJECT_NAME
 
                 # validate provided information
                 self.logger.info('Validating provided request parameters. Project: "{}", Exposure: "{}", '
@@ -135,18 +137,18 @@ class Request(File):
 
     # get all values provided in the request file
     def get_request_parameters(self):
-        self.project = self.columnlist[0].split(',')[1]
-        self.exposure = self.columnlist[1].split(',')[1]
-        self.center = self.columnlist[2].split(',')[1]
-        self.source_spec_type = self.columnlist[3].split(',')[1]
-        self.assay = self.columnlist[4].split(',')[1]
-        self.sub_aliquots = self.columnlist[5].split(',')
+        # self.project = self.columnlist[0].split(',')[1] #project will be stored in the config file
+        self.exposure = self.columnlist[0].split(',')[1]
+        self.center = self.columnlist[1].split(',')[1]
+        self.source_spec_type = self.columnlist[2].split(',')[1]
+        self.assay = self.columnlist[3].split(',')[1]
+        self.sub_aliquots = self.columnlist[4].split(',')
         if self.sub_aliquots and len(self.sub_aliquots) > 0:
             self.sub_aliquots.pop(0)
-        self.samples =  self.columnlist[6].split(',')
+        self.samples =  self.columnlist[5].split(',')
         if self.samples and len(self.samples) > 0:
             self.samples.pop(0)
-        self.experiment_id = self.columnlist[7].split(',')[1]
+        self.experiment_id = self.columnlist[6].split(',')[1]
         print()
 
     # validates provided parameters (loaded from the submission request file)

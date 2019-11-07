@@ -95,7 +95,7 @@ def process_json():
         get_json_keys(fl.json_data)
 
 def process_tar():
-    output_filename = "submission_out\sample.tar.gz"
+    output_filename = "submission_packages\sample.tar.gz"
     arch_list = [
         ("processed","E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scrna-seq\\690_3GEX_AS17-00144_1"),
         ("fastq", "E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scrna-seq\FASTQs\\690_3GEX_AS17-00144_1"),
