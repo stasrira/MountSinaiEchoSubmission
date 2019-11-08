@@ -1,12 +1,12 @@
 import yaml
-import os
+from utils import common as cm
 
 class ConfigData:
 
     def __init__(self, cfg_path):
         self.loaded = False
 
-        if self.file_exists(cfg_path):
+        if cm.file_exists(cfg_path):
             with open(cfg_path, 'r') as ymlfile:
                 self.cfg = yaml.load(ymlfile)
             # self.prj_wrkdir = os.path.dirname(os.path.abspath(cfg_path))
@@ -36,13 +36,14 @@ class ConfigData:
     def get_item_by_key(self, key_name):
         return str(self.get_value(key_name))
 
+    """got moved to common.py library
     def file_exists(self, fn):
         try:
             with open(fn, "r"):
                 return 1
         except IOError:
             return 0
-
+    """
     """
     def is_iterable(maybe_iterable)
         try:

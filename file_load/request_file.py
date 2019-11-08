@@ -2,13 +2,15 @@ from pathlib import Path
 import time
 import xlrd
 from utils import global_const as gc
+from utils import common as cm
 from utils import setup_logger_common
 from utils import ConfigData
 from file_load import File # , MetaFileExcel
 from file_load.file_error import RequestError
 from rawdata import RawDataRequest
 from rawdata import RawDataAttachment
-from submission_forms.submission_forms import SubmissionForms
+from forms import SubmissionForms
+from forms import SubmissionPackage
 
 class Request(File):
 
@@ -49,7 +51,7 @@ class Request(File):
 
     def get_file_content(self):
         if not self.columnlist:
-            if self.file_exists(self.filepath):
+            if cm.file_exists(self.filepath):
                 self.logger.debug('Loading file content of "{}"'.format(self.filepath))
 
                 with xlrd.open_workbook(self.filepath) as wb:
@@ -105,12 +107,15 @@ class Request(File):
                 self.get_request_parameters ()
                 # to support decision of not supplying Project Name from Request file, it will retrieved from gc module
                 self.project = gc.PROJECT_NAME
+                # calculate Experiment_id out of request paramaters
+                self.experiment_id = "_".join([self.exposure, self.center, self.source_spec_type, self.assay])
 
                 # validate provided information
                 self.logger.info('Validating provided request parameters. Project: "{}", Exposure: "{}", '
-                                 'Center: "{}", Source specimen type: "{}", Sub-Aliquots: "{}", Aliquots: "{}"'
+                                 'Center: "{}", Source specimen type: "{}", Experiment: {}, '
+                                 'Sub-Aliquots: "{}", Aliquots: "{}"'
                                  .format(self.project, self.exposure, self.center, self.source_spec_type,
-                                         self.sub_aliquots, self.samples))
+                                         self.experiment_id, self.sub_aliquots, self.samples))
                 self.validate_request_params()
 
                 if self.error.exist():
@@ -148,8 +153,8 @@ class Request(File):
         self.samples =  self.columnlist[5].split(',')
         if self.samples and len(self.samples) > 0:
             self.samples.pop(0)
-        self.experiment_id = self.columnlist[6].split(',')[1]
-        print()
+        # self.experiment_id = self.columnlist[6].split(',')[1]
+        # print()
 
     # validates provided parameters (loaded from the submission request file)
     def validate_request_params(self):
@@ -220,6 +225,7 @@ class Request(File):
         self.raw_data = RawDataRequest(self)
         self.attachments = RawDataAttachment(self)
         self.submission_forms = SubmissionForms(self)
+        self.submission_package = SubmissionPackage(self)
 
         # check for errors and put final log entry for the request.
         if self.error.exist():

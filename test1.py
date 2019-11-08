@@ -3,10 +3,10 @@ import os
 import tarfile
 from pathlib import Path
 
-# filepath = 'submission_forms/experiment_metadata.submission_forms'
-# filepath = 'submission_forms\experiment_metadata\experiment_metadata.json'
-filepath = 'submission_forms\sequence_item_metadata\sequence_item_metadata_test.json'
-# filepath = 'submission_forms/aliquot_metadata.submission_forms'
+# filepath = 'forms/experiment_metadata.forms'
+# filepath = 'forms\experiment_metadata\experiment_metadata.json'
+filepath = 'forms\sequence_item_metadata\sequence_item_metadata_test.json'
+# filepath = 'forms/aliquot_metadata.forms'
 cur_assay = 'scrnaseq'
 
 def get_json_keys(json_node, parent_keys = ''):
@@ -95,13 +95,13 @@ def process_json():
         get_json_keys(fl.json_data)
 
 def process_tar():
-    output_filename = "submission_packages\sample.tar.gz"
+    output_filename = "packages\sample.tar.gz"
     arch_list = [
         ("processed","E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scrna-seq\\690_3GEX_AS17-00144_1"),
         ("fastq", "E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scrna-seq\FASTQs\\690_3GEX_AS17-00144_1"),
-        ("","E:\MounSinai\Darpa\Programming\submission\submission_forms\\aliquot_metadata.submission_forms"),
-        ("", "E:\MounSinai\Darpa\Programming\submission\submission_forms\experiment_metadata.submission_forms"),
-        ("", "E:\MounSinai\Darpa\Programming\submission\submission_forms\sequence_item_metadata.submission_forms")
+        ("","E:\MounSinai\Darpa\Programming\submission\forms\\aliquot_metadata.forms"),
+        ("", "E:\MounSinai\Darpa\Programming\submission\forms\experiment_metadata.forms"),
+        ("", "E:\MounSinai\Darpa\Programming\submission\forms\sequence_item_metadata.forms")
     ]
 
     with tarfile.open(output_filename, "w:") as tar:

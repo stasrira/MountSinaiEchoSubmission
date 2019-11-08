@@ -5,7 +5,8 @@ CONFIG_FILE_ASSAY = 'configs/assay_config.yaml'
 CONFIG_FILE_CENTER = 'configs/center_config.yaml'
 CONFIG_FILE_DICTIONARY = 'configs/dict_config.yaml'
 
-SUBMISSION_FORMS_DIR = 'submission_forms'
+SUBMISSION_FORMS_DIR = 'forms'
+SUBMISSION_PACKAGES_DIR = "submission_packages"
 
 PROJECT_NAME = 'ECHO'  # this value is stored in here instead of being passed from a request.
 

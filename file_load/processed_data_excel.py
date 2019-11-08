@@ -1,5 +1,6 @@
 from file_load import File
 import xlrd
+from utils import common as cm
 
 
 class Processed_Data_Excel(File):
@@ -21,7 +22,7 @@ class Processed_Data_Excel(File):
         # adjust passed numbers to the 0-based numbering
         # col_number = col_number - 1
         # header_row_number = header_row_number - 1
-        if self.file_exists(self.filepath):
+        if cm.file_exists(self.filepath):
             self.logger.debug('Loading column #{} from file "{}"'.format(col_number, self.filepath))
 
             with xlrd.open_workbook(self.filepath) as wb:
@@ -92,7 +93,7 @@ class Processed_Data_Excel(File):
 
     def get_file_content(self):
         if not self.lineList:
-            if self.file_exists(self.filepath):
+            if cm.file_exists(self.filepath):
                 self.logger.debug('Loading file content of "{}"'.format(self.filepath))
 
                 with xlrd.open_workbook(self.filepath) as wb:
@@ -164,6 +165,7 @@ class Processed_Data_Excel(File):
                 self.loaded = False
         return self.lineList
 
+    """got moved to utils\common.py library
     def file_exists(self, fn):
         try:
             with xlrd.open_workbook(fn):
@@ -171,3 +173,4 @@ class Processed_Data_Excel(File):
         except Exception:  # IOError
             # print (ex)
             return 0
+    """

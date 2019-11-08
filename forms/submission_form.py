@@ -1,6 +1,7 @@
 from file_load import File_Json
 from pathlib import Path
 from utils import global_const as gc
+from utils import common as cm
 from utils import ConfigData
 import traceback
 
@@ -17,9 +18,16 @@ class SubmissionForm():
 
     def prepare_form(self, form_name):
         # identify paths for json and config (yaml) files
-        fl_path_json = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '.json')
+        fl_path_json_common = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '.json')
+        fl_path_json_assay = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_' + str(self.req_obj.assay).lower() + '.json')
         fl_path_cfg_common = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '.yaml')
         fl_path_cfg_assay = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_' + str(self.req_obj.assay).lower() + '.yaml')
+
+        # check if assay specific json exists; if yes - use it, if not - use common one
+        if cm.file_exists(fl_path_json_assay):
+            fl_path_json = fl_path_json_assay
+        else:
+            fl_path_json = fl_path_json_common
 
         # load json and config files
         self.fl_json = File_Json(fl_path_json, self.req_obj.error, self.req_obj.logger)

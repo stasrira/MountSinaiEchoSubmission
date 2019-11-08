@@ -1,5 +1,6 @@
 from file_load import File
 import json
+from utils import common as cm
 
 class File_Json(File):
 
@@ -17,7 +18,7 @@ class File_Json(File):
         if len(str(filepath).strip()) == 0:
             filepath = self.filepath
 
-        if self.file_exists(filepath):
+        if cm.file_exists(filepath):
             with open(filepath) as json_file:
                 self.json_data = json.load(json_file)
 

@@ -1,4 +1,4 @@
-from submission_forms import SubmissionForm
+from forms import SubmissionForm
 import traceback
 
 class SubmissionForms():
