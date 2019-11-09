@@ -1,5 +1,5 @@
 biosample_id: eval!self.get_submission_form_value('sample')
-aliquot_id: eval!self.get_submission_form_value('sub_aliquot')
+aliquot_id: eval!self.get_submission_form_value('aliquot')
 experiment_id: eval!self.get_request_value('experiment_id')
 filename:
 md5sum:

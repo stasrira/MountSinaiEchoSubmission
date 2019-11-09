@@ -9,3 +9,11 @@ assay:
     atac-seq: atac_seq
     scatacseq: scatac_seq
     scatac-seq: scatac_seq
+
+assay_sub_aliquot_postfix:
+    scrnaseq: _1
+    scatacseq: _2
+    rnaseq: _3
+    atacseq: _4
+    methylation: _5
+    cytof: _6

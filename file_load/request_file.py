@@ -3,6 +3,7 @@ import time
 import xlrd
 from utils import global_const as gc
 from utils import common as cm
+from utils import common2 as cm2
 from utils import setup_logger_common
 from utils import ConfigData
 from file_load import File # , MetaFileExcel
@@ -154,7 +155,9 @@ class Request(File):
         if self.samples and len(self.samples) > 0:
             self.samples.pop(0)
         # self.experiment_id = self.columnlist[6].split(',')[1]
-        # print()
+
+        #get list of aliquots from list of subaliquots
+        self.aliquots=[cm2.convert_sub_aliq_to_aliquot(al, self.assay) for al in self.sub_aliquots]
 
     # validates provided parameters (loaded from the submission request file)
     def validate_request_params(self):

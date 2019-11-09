@@ -2,14 +2,18 @@ from file_load import File_Json
 from pathlib import Path
 from utils import global_const as gc
 from utils import common as cm
+from utils import common2 as cm2
 from utils import ConfigData
 import traceback
 
 class SubmissionForm():
-    def __init__(self, form_name, request, sub_aliquot, sample):
+    def __init__(self, form_name, request, sub_aliquot, aliquot, sample):
         self.form_name = form_name
         self.req_obj = request  # reference to the current request object
         self.sub_aliquot = sub_aliquot
+        self.aliquot = aliquot
+        #if sub_aliquot:
+        #    self.aliquot = cm2.convert_sub_aliq_to_aliquot(self.sub_aliquot, self.req_obj.assay)
         self.sample = sample
         self.error = self.req_obj.error
         self.logger = self.req_obj.logger
@@ -147,3 +151,4 @@ class SubmissionForm():
             return self.fl_cfg_dict.get_item_by_key(section + "/" + value)
         except Exception as ex:
             return value
+
