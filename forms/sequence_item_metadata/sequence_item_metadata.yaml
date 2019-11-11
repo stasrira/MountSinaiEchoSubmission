@@ -7,11 +7,11 @@ format:
 paired_file:
 assay: eval!self.get_request_value('assay', True)
 seq_length: # constant blank value
-seq_depth:
-seq_end_type:
-strand_specificity:
-seq_platform:
-seq_instrument:
+seq_depth: # constant blank value
+seq_end_type: # constant blank value
+strand_specificity: # constant blank value
+seq_platform: Illumina # Illumina except cytof--> Fluidigm
+seq_instrument: NovaSeq # except Cytof-->; methylation-->
 seq_date:  # constant blank value
 sequenced_by:  # constant blank value
 seq_run_number:  # constant blank value
@@ -23,82 +23,7 @@ seq_flowcell_type:  # constant blank value
 pcr_cycle_nr:  # constant blank value
 sample_barcode:  # constant blank value
 pcr_barcode:  # constant blank value
-comments:
+comments: # constant blank value
 spike_ins_present: F  # constant F value
 spike_ins: eval![] # constant blank array value
 reagents:  eval![] # constant blank array value
-rna_seq_metadata:
-    rna_extr_date:
-    rna_extr_method:
-    total_cell_num:
-    cell_type:
-    total_rna_conc:
-    total_rna_qc_method:
-    rin:
-    r_260_280:
-    r_260_230:
-    lib_vendor:
-    lib_type:
-    lib_prep_method:
-    lib_qc_method:
-    lib_adaptor_1:
-    lib_adaptor_2:
-    lib_umi_cycle_num:
-    lib_adaptor_size:
-    lib_frag_size:
-    lib_dna_conc:
-
-scrna_seq_metadata:
-    viability:
-    number_cells:
-    lib_reagents?:
-    kit_name?:
-    lib_frag_size:
-    lib_dna_conc:
-    lib_molarity:
-    lib_adaptor_1:
-    lib_adaptor_2:
-
-atac_seq_metadata:
-    lib_adaptor_1:
-    lib_adaptor_2:
-    nuclei_extr_date:
-    nuclei_extr_count:
-    nuclei_tagmentation:
-    tagmentation_date:
-    tagmentation_kit_id:
-    lib_dna_conc:
-    lib_frag_size:
-    lib_ba_quality:
-    seq_dna_conc:
-
-chipmentation_metadata:
-    starting_cell_num:
-    live_cells_perc:
-
-snatac_seq_metadata:
-    sub_cellular_faction:
-    starting_cell_num:
-    live_cells_perc:
-    antibody_staining_date:
-    facs_sorting_date:
-    assay_version:
-    loading_density:
-    pre_incubation_time:
-    lysis_method:
-
-mint_chip_metadata:
-    target:
-    starting_cell_num:
-    antibody_barcode:
-    antibody:
-    pooled_from_assays:
-
-snmc_seq_metadata:
-    target:
-    sub_cellular_faction:
-    assay_protocol:
-    starting_cell_num:
-    live_cells_perc:
-    antibody_staining_date:
-    facs_sorting_date:

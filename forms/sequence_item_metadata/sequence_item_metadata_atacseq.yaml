@@ -1,0 +1,13 @@
+format: fastq + txt
+atac_seq_metadata:
+    lib_adaptor_1:
+    lib_adaptor_2:
+    nuclei_extr_date:
+    nuclei_extr_count:
+    nuclei_tagmentation:
+    tagmentation_date:
+    tagmentation_kit_id:
+    lib_dna_conc:
+    lib_frag_size:
+    lib_ba_quality:
+    seq_dna_conc:

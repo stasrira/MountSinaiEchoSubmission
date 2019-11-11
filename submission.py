@@ -60,20 +60,6 @@ if __name__ == '__main__':
 
                     # save timestamp of beginning of the file processing
                     ts = time.strftime("%Y%m%d_%H%M%S", time.localtime())
-                    """
-                    #load request file
-                    rf = ConfigData(req_path)
-                    if rf.loaded:
-                        try:
-                            req_obj = Request ()
-                        except Exception as ex:
-                            _str = 'Attempt to read loaded request file failed with error: {}\n{} ' \
-                                .format(ex, traceback.format_exc())
-                            mlog.error(_str)
-                            req_obj = None
-                    else:
-                        mlog.error('Loaded request file was empty. Request file: "{}".'.format(req_path))
-                    """
 
                     req_obj = Request(req_path)
 

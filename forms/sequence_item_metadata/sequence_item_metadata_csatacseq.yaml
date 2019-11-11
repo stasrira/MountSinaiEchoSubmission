@@ -1,0 +1,11 @@
+format: multiple
+snatac_seq_metadata:
+    sub_cellular_faction:
+    starting_cell_num:
+    live_cells_perc:
+    antibody_staining_date:
+    facs_sorting_date:
+    assay_version:
+    loading_density:
+    pre_incubation_time:
+    lysis_method:

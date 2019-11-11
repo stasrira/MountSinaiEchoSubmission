@@ -2,6 +2,8 @@ from file_load import File_Json
 import os
 import tarfile
 from pathlib import Path
+import jsonschema
+from jsonschema import validate
 
 # filepath = 'forms/experiment_metadata.forms'
 # filepath = 'forms\experiment_metadata\experiment_metadata.json'
@@ -114,7 +116,14 @@ def process_tar():
             tar.add(str(Path(item[1])), arcname=_str)
         tar.close()
 
-process_json()
+def validate_schema (json, schema):
+    schema_path = ''
+    schema = File_Json(schema_path, None, None)
+    json_path = ''
+    json = File_Json(json_path, None, None)
+
+
+# process_json()
 
 # process_tar()
 
