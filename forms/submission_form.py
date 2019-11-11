@@ -1,5 +1,6 @@
 from file_load import File_Json
 from pathlib import Path
+import os
 from utils import global_const as gc
 from utils import common as cm
 from utils import common2 as cm2
@@ -87,7 +88,7 @@ class SubmissionForm():
         # check if some configuration instruction/value was retrieved for the given "key"
         if cfg_val:
             if eval_flag in cfg_val:
-                cfg_val = cfg_val.replace(eval_flag, '', 1) #replace 'eval!' flag value
+                cfg_val = cfg_val.replace(eval_flag, '') # replace 'eval!' flag value
                 # cfg_val = cfg_val.replace(yaml_path_flag, "'" + key + "'", 1)  # replace 'eval!' flag value
                 #if not cfg_val[0:5] == 'self.':
                 #    cfg_val = 'self.'+ cfg_val
@@ -109,6 +110,17 @@ class SubmissionForm():
             self.logger.warning(_str)
             out_val = ''
         return out_val
+
+    def get_tarball_property(self, sa, val_type):
+
+        value = ''
+        tar_obj = self.req_obj.attachments.aliquots_tarball_dict[sa]
+        if val_type == 'name':
+            value = os.path.basename(tar_obj['path'])
+        elif val_type == 'md5':
+            value = tar_obj['md5']
+        return value
+
 
     # it will retrieve any existing property from the request object
     def get_request_value(self, property_name, check_dict = False):

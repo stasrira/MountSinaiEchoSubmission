@@ -111,9 +111,9 @@ SCRNASEQ:
         -
             name: experiment_metadata
             assignment: request
-        -
-            name: aliquot_metadata
-            assignment: aliquot
+        #-
+        #    name: aliquot_metadata
+        #    assignment: aliquot
         -
             name: sequence_item_metadata
             assignment: aliquot

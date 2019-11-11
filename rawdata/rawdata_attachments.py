@@ -1,12 +1,15 @@
 from rawdata import RawDataRequest
 from pathlib import Path
 import os
+import tarfile
+import hashlib
 
 class RawDataAttachment(RawDataRequest):
 
     def __init__(self, request):
         # self.rawdata_attachments = {}
         self.tar_folder = ''
+        self.aliquots_tarball_dict = {}
         RawDataRequest.__init__(self, request)
 
     def init_specific_settings(self):
@@ -52,6 +55,31 @@ class RawDataAttachment(RawDataRequest):
 
         _str = 'Aliquot "{}" was successfully assigned with an attachment object "{}".'.format(sa, attach_details)
         self.logger.info(_str)
+
+    def add_tarball(self, sa, tarball_path):
+        with tarfile.open(tarball_path, "w:") as tar:
+            for item in self.aliquots_data_dict[sa]:
+                if len(item['tar_dir'].strip()) > 0:
+                    _str = '{}/{}'.format(item['tar_dir'], os.path.basename(item['path']))
+                else:
+                    _str = '{}'.format(os.path.basename(item['path']))
+                tar.add(str(Path(item['path'])), arcname=_str)
+            tar.close()
+        md5 = self.get_file_MD5(tarball_path)
+        tar_details = {'path': tarball_path, 'md5': md5}
+        self.aliquots_tarball_dict[sa] = tar_details
+        print()
+
+        _str = 'Aliquot "{}" was successfully assigned with an tarball file "{}; MD5sum = {}".'\
+            .format(sa, tarball_path, md5)
+        self.logger.info(_str)
+
+    def get_file_MD5(self, file_path):
+        with open(file_path, 'rb') as file:
+            # read contents of the file
+            data = file.read()
+            # pipe contents of the file through
+            return hashlib.md5(data).hexdigest()
 
     def get_data_by_file_name(self):
         # it retrieves all files potentially qualifying to be an attachment and searches through each to match

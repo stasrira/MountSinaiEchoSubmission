@@ -227,7 +227,8 @@ class Request(File):
         self.conf_assay =  self.load_assay_conf(self.assay)
         self.raw_data = RawDataRequest(self)
         self.attachments = RawDataAttachment(self)
-        self.submission_forms = SubmissionForms(self)
+        self.submission_forms = None  # submission forms will defined later inside of the SubmissionPackage class
+        # self.submission_forms = SubmissionForms(self)
         self.submission_package = SubmissionPackage(self)
 
         # check for errors and put final log entry for the request.
