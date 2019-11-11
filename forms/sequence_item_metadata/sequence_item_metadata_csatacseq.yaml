@@ -1,11 +1,11 @@
 format: multiple
 snatac_seq_metadata:
-    sub_cellular_faction:
-    starting_cell_num:
-    live_cells_perc:
-    antibody_staining_date:
-    facs_sorting_date:
-    assay_version:
-    loading_density:
-    pre_incubation_time:
-    lysis_method:
+    sub_cellular_faction: # constant blank value
+    starting_cell_num: 10000  # constant value
+    live_cells_perc: # constant blank value
+    antibody_staining_date: # constant blank value
+    facs_sorting_date: # constant blank value
+    assay_version: TO BE PROVIDED
+    loading_density: # constant blank value
+    pre_incubation_time: # constant blank value
+    lysis_method: # constant blank value
