@@ -56,10 +56,6 @@ def get_spike_ins():
         out_list.append(spike_dict)
     return out_list
 
-        {
-            "name": "spike in name",
-            "sequence": "spike in sequence"
-        }
 
 def get_json_keys_bkp1(json_node, parent_keys = '', islist = False):
     if islist:
@@ -116,17 +112,25 @@ def process_tar():
             tar.add(str(Path(item[1])), arcname=_str)
         tar.close()
 
-def validate_schema (json, schema):
-    schema_path = ''
+def validate_schema ():
+    # schema_path = 'E:\MounSinai\Darpa\Programming\submission\\forms\experiment_metadata\experiment_metadata_schema.json'
+    schema_path = 'E:\MounSinai\Darpa\Programming\submission\submission_packages\sequence_item_metadata_schema.json'
     schema = File_Json(schema_path, None, None)
-    json_path = ''
+    # json_path = 'E:\MounSinai\Darpa\Programming\submission\submission_packages\experiment_metadata_v1.json'
+    json_path = 'E:\MounSinai\Darpa\Programming\submission\submission_packages\\test_sequence_item_metadata.json'
     json = File_Json(json_path, None, None)
-
+    try:
+        validate(json.json_data, schema.json_data)
+        print('Validation was successful')
+        pass
+    except jsonschema.exceptions.ValidationError as ve:
+        print('Validation failed with this error: {}'.format(ve))
+        pass
 
 # process_json()
 
 # process_tar()
 
-
+validate_schema()
 
 

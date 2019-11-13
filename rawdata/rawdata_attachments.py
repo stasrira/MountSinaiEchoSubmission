@@ -68,7 +68,6 @@ class RawDataAttachment(RawDataRequest):
         md5 = self.get_file_MD5(tarball_path)
         tar_details = {'path': tarball_path, 'md5': md5}
         self.aliquots_tarball_dict[sa] = tar_details
-        print()
 
         _str = 'Aliquot "{}" was successfully assigned with an tarball file "{}; MD5sum = {}".'\
             .format(sa, tarball_path, md5)

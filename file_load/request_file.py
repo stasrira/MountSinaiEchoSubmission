@@ -233,10 +233,10 @@ class Request(File):
 
         # check for errors and put final log entry for the request.
         if self.error.exist():
-            _str = 'Processing of the current request was finished with the following errors: {}'.format(self.error.get_errors_to_str())
+            _str = 'Processing of the current request was finished with the following errors: {}\n'.format(self.error.get_errors_to_str())
             self.logger.error(_str)
         else:
-            _str = 'Processing of the current request was finished successfully.'
+            _str = 'Processing of the current request was finished successfully.\n'
             self.logger.info(_str)
 
 

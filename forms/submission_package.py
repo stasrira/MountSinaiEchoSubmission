@@ -22,7 +22,6 @@ class SubmissionPackage():
 
         self.prepare_submission_package()
 
-        print ()
 
     def prepare_submission_package(self):
         # create a package dir for this submission

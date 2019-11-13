@@ -24,8 +24,10 @@ class SubmissionForm():
         # identify paths for json and config (yaml) files
         fl_path_json_common = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '.json')
         fl_path_json_assay = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_' + str(self.req_obj.assay).lower() + '.json')
+        fl_path_json_schema = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_schema.json')
         fl_path_cfg_common = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '.yaml')
         fl_path_cfg_assay = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_' + str(self.req_obj.assay).lower() + '.yaml')
+
 
         # check if assay specific json exists; if yes - use it, if not - use common one
         if cm.file_exists(fl_path_json_assay):
@@ -35,18 +37,19 @@ class SubmissionForm():
 
         # load json and config files
         self.fl_json = File_Json(fl_path_json, self.req_obj.error, self.req_obj.logger)
-        # self.json_form = fl_json
+        self.fl_json_schema = File_Json(fl_path_json_schema, self.req_obj.error, self.req_obj.logger)
         self.fl_cfg_common = ConfigData(fl_path_cfg_common)
-        # self.fl_cfg_common = fl_cfg_common
         self.fl_cfg_assay = ConfigData(fl_path_cfg_assay)
-        # self.fl_cfg_assay = fl_cfg_assay
         self.fl_cfg_dict = ConfigData(gc.CONFIG_FILE_DICTIONARY)
 
         print(self.fl_json.json_data)
         # loop through all json keys and fill those with associated data
         self.get_json_keys(self.fl_json.json_data)
         print(self.fl_json.json_data)
-        print ()
+
+        # validate final json file against json schema (if present)
+        self.validate_json (self.fl_json, self.fl_json_schema)
+
 
     def get_json_keys(self, json_node, parent_keys=''):
         for key, val in json_node.items():
@@ -69,10 +72,24 @@ class SubmissionForm():
                 # print("Config Common - {} = {}".format(key, self.fl_cfg_common.get_value(key)))
                 # print("Config Assay - {} = {}".format(key, self.fl_cfg_assay.get_value(key)))
 
-                val = self.eval_cfg_value(full_key_name, self.fl_cfg_assay.get_value(full_key_name), self.fl_cfg_common.get_value(full_key_name))
+                val = self.eval_cfg_value(full_key_name,
+                                          self.fl_cfg_assay.get_value(full_key_name),
+                                          self.fl_cfg_common.get_value(full_key_name))
+                # assign retrieved value back to associated json key
                 json_node[key] = val
-
+                '''
+                if not str(val).strip() == '':
+                    # if value is not empty, assing it as is
+                    json_node[key] = val
+                elif isinstance(val, list):
+                    # if value is empty and a type of list, assign it as is
+                    json_node[key] = val
+                else:
+                    # if value is blank and did not qualify for any previous conditions, assign Null (None)
+                    json_node[key] = None
+                '''
                 print(key, '==>', json_node[key])
+                pass
 
     def eval_cfg_value(self, key, assay_cfg_val, common_cfg_val):
         # if assay config value is not provided, use common assay val
@@ -163,3 +180,23 @@ class SubmissionForm():
         except Exception as ex:
             return value
 
+    # converts an array of values (i.e. list of aliquots) in to list of dictionaries with a given key name
+    # For example: [1, 2, 3] => [{name: 1}, {name: 2}, {name: 3}]
+    def convert_simple_list_to_list_of_dict(self, sm_arr, key_name):
+        out = []
+        for a in sm_arr:
+            dict = {}
+            dict[key_name] = a
+            out.append(dict)
+        return out
+
+    def validate_json(self, json_file, schema_file):
+        try:
+            validate(json_file.json_data, schema_file.json_data)
+            _str = 'Validation of "{}" against "{}" was successful.'.format(json_file.filepath, schema_file.filepath)
+            self.logger.info(_str)
+        except jsonschema.exceptions.ValidationError as ve:
+            _str = 'Validation of "{}" file against schema "{}" failed with the following error: \n{}' \
+                .format(json_file.filepath, schema_file.filepath, ve)
+            self.logger.error(_str)
+            self.error.add_error(_str)

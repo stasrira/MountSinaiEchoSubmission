@@ -12,7 +12,6 @@ class SubmissionForms():
 
         self.prepare_submission_forms()
 
-        print ()
 
     def prepare_submission_forms(self):
         forms = self.conf_assay['submission_forms']
@@ -41,8 +40,6 @@ class SubmissionForms():
                     .format(ex, form, traceback.format_exc())
                 self.logger.error(_str)
                 self.error.add_error(_str)
-
-        print()
 
     def add_submission_form(self, assingment_id, assignment_name, submission_form):
         if not assingment_id in self.forms_dict:

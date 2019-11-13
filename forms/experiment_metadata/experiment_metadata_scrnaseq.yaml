@@ -1,4 +1,0 @@
-__assay: scrnaseq
-# experiment_id: eval!get_value(!yaml_path!)
-# assay: eval!self.req_obj.assay
-# aliquot_manifest: eval!get_value(!yaml_path!)

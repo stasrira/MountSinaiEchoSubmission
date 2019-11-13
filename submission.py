@@ -69,7 +69,7 @@ if __name__ == '__main__':
 
                         req_obj.process_request()
 
-                        mlog.info('Processing of Submission request was finished for {} request.'.format(req_path))
+                        mlog.info('Processing of Submission request was finished for {}'.format(req_path))
 
                         req_proc_cnt += 1
 

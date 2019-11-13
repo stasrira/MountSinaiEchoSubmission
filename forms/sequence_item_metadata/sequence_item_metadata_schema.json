@@ -1,0 +1,748 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "biosample_id": {
+      "type": "string"
+    },
+    "aliquot_id": {
+      "type": "string"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "filename": {
+      "type": "string"
+    },
+    "md5sum": {
+      "type": "string"
+    },
+    "format": {
+      "type": "string"
+    },
+    "paired_file": {
+      "type": "string"
+    },
+    "assay": {
+      "type": "string",
+      "enum": ["rna_seq", "scrna_seq", "atac_seq", "chip_seq", "scatac_seq", "medip_seq", "mint_chip", "wgbs", "snatac_seq", "snmc_seq", "CyTOF", "EPIC"]
+    },
+    "seq_length": {
+      "anyOf": [
+          {"type": "number"},
+          {"type": "null"}
+		  ]
+    },
+    "seq_depth": {
+      "type": "string"
+    },
+    "seq_end_type": {
+      "type": "string",
+      "enum": ["single-ended", "pair-ended", ""]
+    },
+    "strand_specificity": {
+      "type": "string",
+      "enum": ["forward", "reverse", "unstranded", ""]
+    },
+    "seq_platform": {
+      "type": "string"
+    },
+    "seq_instrument": {
+      "type": "string"
+    },
+    "seq_date": {
+      "type": "string"
+    },
+    "sequenced_by": {
+      "type": "string"
+    },
+    "seq_run_number": {
+      "anyOf": [
+          {"type": "number"},
+          {"type": "null"}
+		  ]
+    },
+    "seq_machine_id": {
+      "type": "string"
+    },
+    "seq_flowcell_id": {
+      "type": "string"
+    },
+    "seq_flowcell_run": {
+      "type": "string"
+    },
+    "seq_flowcell_lane": {
+      "type": "string"
+    },
+    "seq_flowcell_type": {
+      "type": "string"
+    },
+    "pcr_cycle_nr": {
+      "anyOf": [
+          {"type": "number"},
+          {"type": "null"}
+		  ]
+    },
+    "sample_barcode": {
+      "type": "string"
+    },
+    "pcr_barcode": {
+      "type": "string"
+    },
+    "comments": {
+      "type": "string"
+    },
+    "spike_ins_present": {
+      "type": "string",
+      "enum": ["T", "F", ""]
+    },
+    "spike_ins" : {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "sequence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "sequence"
+        ]
+      }
+    },
+    "reagents" : {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "reagent": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "product_id": {
+            "type": "string"
+          },
+          "lot_number": {
+            "type": "number"
+          },
+          "antigen_sequence": {
+            "type": "string"
+          },
+          "clonality": {
+            "type": "string"
+          },
+          "host_organism": {
+            "type": "string"
+          },
+          "isotype": {
+            "type": "string"
+          },
+          "comments": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reagent",
+          "source",
+          "product_id",
+          "lot_number",
+          "antigen_sequence",
+          "clonality",
+          "host_organism",
+          "isotype"
+        ]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "assay": { "const": "rna_seq" }}
+      },
+      "then": {
+        "properties": {
+          "rna_seq_metadata": {
+            "type": "object",
+            "properties": {
+              "rna_extr_data": {
+                "type": "string"
+              },
+              "rna_extr_method": {
+                "type": "string"
+              },
+              "total_cell_num": {
+                "anyOf": [
+                    {"type": "number"},
+                    {"type": "null"}
+                    ]
+              },
+              "cell_type": {
+                "type": "string"
+              },
+              "total_rna_conc": {
+                "type": "string"
+              },
+              "total_rna_qc_method": {
+                "type": "string"
+              },
+              "rin": {
+                "type": "string"
+              },
+              "r_260_280": {
+                "type": "string"
+              },
+              "r_260_230": {
+                "type": "string"
+              },
+              "lib_vendor": {
+                "type": "string"
+              },
+              "lib_type": {
+                "type": "string"
+              },
+              "lib_prep_method": {
+                "type": "string"
+              },
+              "lib_qc_method": {
+                "type": "string"
+              },
+              "lib_adaptor_1": {
+                "type": "string"
+              },
+              "lib_adaptor_2": {
+                "type": "string"
+              },
+              "lib_umi_cycle_num": {
+                "anyOf": [
+                    {"type": "number"},
+                    {"type": "null"}
+                    ]
+              },
+              "lib_adaptor_size": {
+                "type": "string"
+              },
+              "lib_frag_size": {
+                "type": "string"
+              },
+              "lib_dna_conc": {
+                "type": "string"
+              }
+            },
+            "required": [
+		      "rin"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "scrna_seq" }}
+      },
+      "then": {
+        "properties": {
+          "scrna_seq_metadata": {
+            "type": "object",
+            "properties": {
+              "viability": {
+                "type": "string"
+              },
+              "number_cells": {
+                "anyOf": [
+                  {"type": "number"},
+                  {"type": "null"}
+                  ]
+              },
+              "lib_reagents": {
+                "type": "string"
+              },
+              "kit_name": {
+                "type": "string"
+              },
+              "lib_frag_size": {
+                "type": "string"
+              },
+              "lib_dna_conc": {
+                "type": "string"
+              },
+              "lib_molarity": {
+                "type": "string"
+              },
+              "lib_adaptor_1": {
+                "type": "string"
+              },
+              "lib_adaptor_2": {
+                "type": "string"
+              }
+            },
+            "required": [
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "atac_seq" }}
+      },
+      "then": {
+        "properties": {
+          "atac_seq_metadata": {
+            "type": "object",
+            "properties": {
+              "lib_adaptor_1": {
+                "type": "string"
+              },
+              "lib_adaptor_2": {
+                "type": "string"
+              },
+              "nuclei_extr_date": {
+                "type": "string"
+              },
+              "nuclei_extr_count": {
+                "type": "string"
+              },
+              "nuclei_tagmentation": {
+                "type": "string"
+              },
+              "tagmentation_date": {
+                "type": "string"
+              },
+              "tagmentation_kit_id": {
+                "type": "string"
+              },
+              "lib_dna_conc": {
+                "type": "string"
+              },
+              "lib_frag_size": {
+                "type": "string"
+              },
+              "lib_ba_quality": {
+                "type": "string"
+              },
+              "seq_dna_conc": {
+                "type": "string"
+              }
+            },
+            "required": [
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "chipmentation" }}
+      },
+      "then": {
+        "properties": {
+          "chipmentation_metadata": {
+            "type": "object",
+            "properties": {
+              "starting_cell_num": {
+                "type": "number"
+              },
+              "live_cells_perc": {
+                "type": "string"
+              }
+            },
+            "required": [
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "snatac_seq" }}
+      },
+      "then": {
+        "properties": {
+          "snatac_seq_metadata": {
+            "type": "object",
+            "properties": {
+              "sub_cellular_faction": {
+                "type": "string"
+              },
+              "starting_cell_num": {
+                "anyOf": [
+                  {"type": "number"},
+                  {"type": "null"}
+                  ]
+              },
+              "live_cells_perc": {
+                "type": "string"
+              },
+              "antibody_staining_date": {
+                "type": "string"
+              },
+              "facs_sorting_date": {
+                "type": "string"
+              },
+              "assay_version": {
+                "type": "string"
+              },
+              "loading_density": {
+                "type": "string"
+              },
+              "pre_incubation_time": {
+                "type": "string"
+              },
+              "lysis_method": {
+                "type": "string"
+              }
+            },
+            "required": [
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "mint_chip" }}
+      },
+      "then": {
+        "properties": {
+          "mint_chip_metadata": {
+            "type": "object",
+            "properties": {
+              "target": {
+                "type": "string"
+              },
+              "starting_cell_count": {
+                "type": "number"
+              },
+              "antibody_barcode": {
+                "type": "string"
+              },
+              "antibody": {
+                "type": "string"
+              },
+              "pooled_from_assays": {
+                "type": "string"
+              }
+            },
+            "required": [
+		      "antibody_barcode",
+		      "antibody"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "snmc_seq" }}
+      },
+      "then": {
+        "properties": {
+          "snmc_seq_metadata": {
+            "type": "object",
+            "properties": {
+              "target": {
+                "type": "string"
+              },
+              "sub_cellular_fraction": {
+                "type": "string"
+              },
+              "assay_protocol": {
+                "type": "string"
+              },
+              "starting_cell_num": {
+                "type": "number"
+              },
+              "live_cells_perc": {
+                "type": "string"
+              },
+              "antibody_staining_date": {
+                "type": "string"
+              },
+              "facs_sorting_date": {
+                "type": "string"
+              }
+            },
+            "required": [
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "chip_seq" }}
+      },
+      "then": {
+        "properties": {
+          "chip_seq_metadata": {
+            "type": "object",
+            "properties": {
+              "target": {
+                "type": "string"
+              },
+              "population": {
+                "type": "string"
+              },
+              "sub_cellular_fraction": {
+                "type": "string"
+              },
+              "strand": {
+                "type": "string"
+              },
+              "protocol": {
+                "type": "string"
+              },
+              "starting_cell_count": {
+                "type": "number"
+              },
+              "live_cell_pct": {
+                "type": "string"
+              },
+              "date_sequence": {
+                "type": "string"
+              }
+            },
+            "required": [
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "medip_seq" }}
+      },
+      "then": {
+        "properties": {
+          "medip_seq_metadata": {
+            "type": "object",
+            "properties": {
+            },
+            "required": [
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "wgbs" }}
+      },
+      "then": {
+        "properties": {
+          "wgbs_metadata": {
+            "type": "object",
+            "properties": {
+            },
+            "required": [
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "sn5mc_seq" }}
+      },
+      "then": {
+        "properties": {
+          "sn5mc_seq_metadata": {
+            "type": "object",
+            "properties": {
+              "target": {
+                "type": "string"
+              },
+              "population": {
+                "type": "string"
+              },
+              "sub_cellular_fraction": {
+                "type": "string"
+              },
+              "strand": {
+                "type": "string"
+              },
+              "protocol": {
+                "type": "string"
+              },
+              "starting_cell_count": {
+                "type": "number"
+              },
+              "live_cell_pct": {
+                "type": "string"
+              },
+              "antibody_staining_date": {
+                "type": "string"
+              },
+              "facs_sorting_date": {
+                "type": "string"
+              },
+              "replicates": {
+                "type": "string"
+              },
+              "date_sequence": {
+                "type": "string"
+              }
+            },
+            "required": [
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "scatac_seq" }}
+      },
+      "then": {
+        "properties": {
+          "scatac_seq_metadata": {
+            "type": "object",
+            "properties": {
+              "lib_adaptor_1": {
+                "type": "string"
+              },
+              "lib_adaptor_2": {
+                "type": "string"
+              },
+              "nuclei_extr_date": {
+                "type": "string"
+              },
+              "nuclei_extr_count": {
+                "type": "string"
+              },
+              "nuclei_tagmentation": {
+                "type": "string"
+              },
+              "tagmentation_date": {
+                "type": "string"
+              },
+              "tagmentation_kit_id": {
+                "type": "string"
+              },
+              "pcr_cycle_nr": {
+                "type": "string"
+              },
+              "lib_dna_conc": {
+                "type": "string"
+              },
+              "lib_frag_size": {
+                "type": "string"
+              },
+              "lib_ba_quality": {
+                "type": "string"
+              },
+              "seq_dna_conc": {
+                "type": "string"
+              },
+              "seq_length": {
+                "type": "string"
+              },
+              "seq_end_type": {
+                "type": "string",
+                "enum": [ "single-ended", "pair-ended"]
+              },
+              "seq_platform": {
+                "type": "string"
+              },
+              "seq_date": {
+                "type": "string"
+              },
+              "seq_machine_id": {
+                "type": "string"
+              },
+              "seq_flowcell_id": {
+                "type": "string"
+              },
+              "seq_flowcell_run": {
+                "type": "string"
+              },
+              "seq_flowcell_lane": {
+                "type": "string"
+              },
+              "seq_flowcell_type": {
+                "type": "string"
+              }
+            },
+            "required": [
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "CyTOF" }}
+      },
+      "then": {
+        "properties": {
+          "cytof_seq_metadata": {
+            "type": "object",
+            "properties": {
+            },
+            "required": [
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "assay": { "const": "EPIC" }}
+      },
+      "then": {
+        "properties": {
+          "epic_seq_metadata": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string"
+              },
+              "seq_dna_conc": {
+                "type": "string"
+              },
+              "r_260_280": {
+                "type": "string"
+              },
+              "r_260_230": {
+                "type": "string"
+              },
+              "volume": {
+                "type": "number"
+              },
+              "total": {
+                "type": "number"
+              },
+              "sentrix_id": {
+                "type": "string"
+              },
+              "sentrix_position": {
+                "type": "string"
+              },
+              "filename_grn": {
+                "type": "string"
+              },
+              "filename_red": {
+                "type": "string"
+              }
+            },
+            "required": [
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "required": [
+    "biosample_id",
+	"aliquot_id",
+	"experiment_id",
+	"filename",
+	"assay"
+  ]
+}
