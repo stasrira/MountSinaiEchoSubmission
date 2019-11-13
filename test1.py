@@ -1,58 +1,136 @@
+from file_load import File_Json
 import os
+import tarfile
 from pathlib import Path
-import glob
-import sys
+import jsonschema
+from jsonschema import validate
 
-def get_file_system_items(dir_cur, search_deep_level, exclude_dirs=[], item_type='dir', ext_match = []):
-    # base_loc = self.data_loc / dir_cur
-    deep_cnt = 0
-    cur_lev = ''
-    items = []
-    while deep_cnt < search_deep_level:
-        temp_dir = []
-        cur_lev = cur_lev + '/*'
-        items_cur = glob.glob(str(Path(str(dir_cur) + cur_lev)))
-        if item_type == 'dir':
-            items_clean = [fn for fn in items_cur if
-                         Path.is_dir(Path(fn)) and not os.path.basename(fn) in exclude_dirs]
-        elif item_type == 'file':
-            items_clean = [fn for fn in items_cur if not Path.is_dir(Path(fn)) and (len(ext_match) == 0 or os.path.splitext(fn)[1] in ext_match)]
+# filepath = 'forms/experiment_metadata.forms'
+# filepath = 'forms\experiment_metadata\experiment_metadata.json'
+filepath = 'forms\sequence_item_metadata\sequence_item_metadata_test.json'
+# filepath = 'forms/aliquot_metadata.forms'
+cur_assay = 'scrnaseq'
 
-        items.extend(items_clean)
-        deep_cnt += 1
-    return items
+def get_json_keys(json_node, parent_keys = ''):
+    if isinstance(json_node, list):
+        get_json_keys_list(json_node, parent_keys)
+    else:
+        for key, val in json_node.items():
+            if parent_keys:
+                cur_parents = '/'.join([parent_keys, key])
+            else:
+                cur_parents = key
+            if isinstance(val, list):
+                list_val = get_json_keys_list(val, cur_parents)
+                json_node[key] = list_val
+                print ('Key = {}, Value: {}'.format(cur_parents, json_node[key]))
+            else:
+                if isinstance(val, dict):
+                    get_json_keys(val, cur_parents)
+                else:
+                    full_key_name = cur_parents
 
-l = ['1', '2', '3', '4', '3']
-print(l.index('3'))
+                    # eval_val = eval('update_function("{}", "{}", "{}")'.format(full_key_name, cur_assay, os.path.basename(filepath)))
+                    eval_val = 'Evaled value for key = {}'.format(full_key_name)
+                    json_node[key] = eval_val
+                    print('Key = {}, Value: {}'.format(full_key_name, json_node[key])) # val
 
-a = [[1, 2, 3, 4], [5, 6], [7, 8, 9]]
-print (len(a))
+def get_json_keys_list(json_node_list, parent_keys =''):
 
-[(['AS06-11984_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']),
- (['AS10-16739_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']),
- (['AS09-09992_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']), (['AS08-13555_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']), (['AS11-18755_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']), (['AS17-00144_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']), (['AS09-13278_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx']), (['AS14-03700_6'], ['E:\\MounSinai\\Darpa\\Programming\\submission\\data_examples\\Bulk_Drive\\ECHO\\HIV\\HI\\PBMC\\cytoff\\20190801_experiment_31600_files\\072519_Frederique_HIMC Sample Drop Off Form 190417-1.xlsx'])]
 
-if 2 in a[0]:
-    print('2 in 0 part of array')
-if 6 in a[1]:
-    print ('6 in part 1')
-if 8 in a[2]:
-    print ('8 in part 2')
+    return
 
-for i in range(len(a)):
-    for j in range(len(a[i])):
-        print(a[i][j], end=' ')
-    print()
+    list_out = []
+    if isinstance(json_node_list, list):
+        for item in json_node_list:
+            # get_json_keys(item, parent_keys)
+            print('Node: "{}". Member of list item = {}'.format(parent_keys, item))
+            list_out.append(item)
+        return list_out
 
-sys.exit()
+def get_spike_ins():
+    out_list = []
+    spikes = [1,2,3]
+    for spike in spikes:
+        spike_dict = {'name': 'spike #' + spike}
+        out_list.append(spike_dict)
+    return out_list
 
-path = 'E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\cytoff'
-path2 = 'E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scatac-seq'
-exclude_dirs = []
-ext_match = ['.xlsx', '.xls']
 
-files = get_file_system_items(path, 2, [], 'file', ext_match)
-print (files)
+def get_json_keys_bkp1(json_node, parent_keys = '', islist = False):
+    if islist:
+        for item in json_node:
+            get_json_keys(item, parent_keys)
+        return
+    for key, val in json_node.items():
+        if parent_keys:
+            cur_parents = '/'.join([parent_keys, key])
+        else:
+            cur_parents = key
+        if isinstance(val, list):
+            get_json_keys(val, cur_parents, True)
+        if isinstance(val, dict):
+            get_json_keys(val, cur_parents)
+        else:
+            full_key_name = cur_parents
 
-dirs =  get_file_system_items(path2, 2, ['fastqs', 'FASTQs'], 'dir')
-print (dirs)
+            json_node[key] = 'update_function("{}", "{}", "{}")'.format(full_key_name, cur_assay, os.path.basename(filepath))
+            json_node[key] = eval(json_node[key])
+            print("{} : {}".format(key, json_node[key])) # val
+
+def update_function(key, assay, filename):
+    return 'Assay: {}; Json Key: {}; Requested for filling out file: "{}"'.format(assay, key, filename)
+
+def process_json():
+    err = None
+    log = None
+
+    fl = File_Json(filepath, err, log)
+
+    # for key, item in fl.json_data.items():
+    #    print ('key="{}"; value={}'.format(key, item))
+    if fl.json_data:
+        get_json_keys(fl.json_data)
+
+def process_tar():
+    output_filename = "packages\sample.tar.gz"
+    arch_list = [
+        ("processed","E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scrna-seq\\690_3GEX_AS17-00144_1"),
+        ("fastq", "E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scrna-seq\FASTQs\\690_3GEX_AS17-00144_1"),
+        ("","E:\MounSinai\Darpa\Programming\submission\forms\\aliquot_metadata.forms"),
+        ("", "E:\MounSinai\Darpa\Programming\submission\forms\experiment_metadata.forms"),
+        ("", "E:\MounSinai\Darpa\Programming\submission\forms\sequence_item_metadata.forms")
+    ]
+
+    with tarfile.open(output_filename, "w:") as tar:
+
+        for item in arch_list:
+            if len(item[0].strip()) > 0:
+                _str = '{}/{}'.format(item[0],os.path.basename(item[1]))
+            else:
+                _str = '{}'.format(os.path.basename(item[1]))
+            tar.add(str(Path(item[1])), arcname=_str)
+        tar.close()
+
+def validate_schema ():
+    # schema_path = 'E:\MounSinai\Darpa\Programming\submission\\forms\experiment_metadata\experiment_metadata_schema.json'
+    schema_path = 'E:\MounSinai\Darpa\Programming\submission\submission_packages\sequence_item_metadata_schema.json'
+    schema = File_Json(schema_path, None, None)
+    # json_path = 'E:\MounSinai\Darpa\Programming\submission\submission_packages\experiment_metadata_v1.json'
+    json_path = 'E:\MounSinai\Darpa\Programming\submission\submission_packages\\test_sequence_item_metadata.json'
+    json = File_Json(json_path, None, None)
+    try:
+        validate(json.json_data, schema.json_data)
+        print('Validation was successful')
+        pass
+    except jsonschema.exceptions.ValidationError as ve:
+        print('Validation failed with this error: {}'.format(ve))
+        pass
+
+# process_json()
+
+# process_tar()
+
+validate_schema()
+
+

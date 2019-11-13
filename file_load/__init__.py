@@ -2,6 +2,8 @@
 from .file_error import FileError, RowError
 from .file_utils import *
 from .file import File
+from .json_file import File_Json
 from .processed_data_text import Processed_Data_Text
 from .processed_data_excel import Processed_Data_Excel
 from .request_file import Request
+

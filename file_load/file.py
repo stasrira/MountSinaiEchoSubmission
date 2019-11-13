@@ -5,6 +5,7 @@ import logging
 from file_load.file_error import FileError
 from utils import setup_logger_common
 from utils import global_const as gc
+from utils import common as cm
 from file_load import StudyConfig
 from csv import reader
 
@@ -61,7 +62,7 @@ class File:
             loc_log = self.logger
 
         if not self.lineList:
-            if self.file_exists(self.filepath):
+            if cm.file_exists(self.filepath):
                 loc_log.debug('Loading file content of "{}"'.format(self.filepath))
                 with open(self.filepath, "r") as fl:
                     self.lineList = [line.rstrip('\n') for line in fl]
@@ -76,12 +77,14 @@ class File:
                 self.loaded = False
         return self.lineList
 
+    """ got moved to utils\common.py library
     def file_exists(self, fn):
         try:
             with open(fn, "r"):
                 return 1
         except IOError:
             return 0
+    """
 
     def get_headers(self):
         if not self.__headers:

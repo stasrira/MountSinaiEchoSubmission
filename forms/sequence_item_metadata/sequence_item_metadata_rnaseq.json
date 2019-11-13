@@ -1,0 +1,73 @@
+{
+	"biosample_id": "ECHO_BIOSAMPLE_ID of the biosample used to generate this sequencing dataset",
+	"aliquot_id": "ECHO_ALIQUOT_ID of the aliquot used",
+	"experiment_id": "ECHO_EXPERIMENT_ID of the study that this sequencing dataset belongs to",
+	"filename": "The name of the file that contains data from this sequencing dataset",
+	"md5sum": "The md5 sum of this file",
+	"format": "The format of this file (Raw data must be provided in Fast) ",
+	"paired_file": "Name of paired file, or empty if seq_end_type==single-ended",
+	"assay": "rna_seq|atac_seq|scrna_seq|etc...",
+	"seq_length": "Read sequencing length",
+	"seq_depth": "Sequencing (read) depth",
+	"seq_end_type": "single-ended|pair-ended",
+	"strand_specificity": "forward|reverse|unstranded",
+	"seq_platform": "Sequencing platform",
+	"seq_instrument": "Sequencing instrument (ex.HiSeq 2500)",
+	"seq_date": "Sequencing date",
+	"sequenced_by": "Who performed this sequencing dataset's sequencing run",
+	"seq_run_number": "The run number for the sequencing run that produced this sequencing dataset",
+	"seq_machine_id": "The serial number of the sequencing machine",
+	"seq_flowcell_id": "Flow cell ID",
+	"seq_flowcell_run": "Flow cell run",
+	"seq_flowcell_lane": "Flow cell lane",
+	"seq_flowcell_type": "Flow cell type",
+	"pcr_cycle_nr": "Number of PCR cycles",
+	"sample_barcode": "Sample barcode (adapter)",
+	"pcr_barcode": "PCR barcode",
+	
+	"comments": "Optional text field for additional comments",
+
+	"spike_ins_present": "Are there any spike ins? (T|F)",
+	"spike_ins": [
+		{
+			"name": "spike in name",
+			"sequence": "spike in sequence"
+		}
+	],
+
+	"reagents": [
+		{
+			"reagent": "Name of this reagent",
+			"source": "Source of this reagent",
+			"product_id": "Product ID of this reagent",
+			"lot_number": "Lot number of this reagent",
+			"antigen_sequence": "Antigen sequence, if applicable",
+			"clonality": "Clonality, if applicable",
+			"host_organism": "Host organism, if applicable",
+			"isotype": "Isotype, if applicable",
+			"comments": "Optional comments"
+		}
+	],
+
+	"rna_seq_metadata": {
+		"rna_extr_date": "RNA extraction date",
+		"rna_extr_method": "RNA extraction method",
+		"total_cell_num": "Total number of cells",
+		"cell_type": "Cell type, if known",
+		"total_rna_conc": "Total RNA concentration",
+		"total_rna_qc_method": "Total RNA QC Method",
+		"rin": "RNA Integrity Number",
+		"r_260_280": "260/280 ratio",
+		"r_260_230": "260/230 ratio",
+		"lib_vendor": "Library prep vendor",
+		"lib_type": "Library prep type",
+		"lib_prep_method": "Library prep method",
+		"lib_qc_method": "Library QC method",
+		"lib_adaptor_1": "Truseq I7 index with 16bp index",
+		"lib_adaptor_2": "Truseq I5 index with 8bp index",
+		"lib_umi_cycle_num": "Number of UMI cycles (bases)",
+		"lib_adaptor_size": "The total size of the two adaptors",
+		"lib_frag_size": "Average library fragment size",
+		"lib_dna_conc": "DNA concentration for the library (stock)"
+	}
+}

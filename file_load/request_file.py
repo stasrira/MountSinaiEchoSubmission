@@ -2,12 +2,16 @@ from pathlib import Path
 import time
 import xlrd
 from utils import global_const as gc
+from utils import common as cm
+from utils import common2 as cm2
 from utils import setup_logger_common
 from utils import ConfigData
 from file_load import File # , MetaFileExcel
 from file_load.file_error import RequestError
 from rawdata import RawDataRequest
 from rawdata import RawDataAttachment
+from forms import SubmissionForms
+from forms import SubmissionPackage
 
 class Request(File):
 
@@ -25,13 +29,14 @@ class Request(File):
         # self.rows = OrderedDict()
 
         self.columnlist = []
-        self.aliquots = []
+        self.samples = []
         self.sub_aliquots = []
         self.project = ''
         self.exposure = ''
         self.center = ''
         self.source_spec_type = ''
         self.assay = ''
+        self.experiment_id = ''
 
         # self.sheet_name = ''
         self.sheet_name = sheet_name.strip()
@@ -47,7 +52,7 @@ class Request(File):
 
     def get_file_content(self):
         if not self.columnlist:
-            if self.file_exists(self.filepath):
+            if cm.file_exists(self.filepath):
                 self.logger.debug('Loading file content of "{}"'.format(self.filepath))
 
                 with xlrd.open_workbook(self.filepath) as wb:
@@ -99,14 +104,19 @@ class Request(File):
 
                 wb.unload_sheet(sheet.name)
 
-                #load passed request parameters (by columns)
+                # load passed request parameters (by columns)
                 self.get_request_parameters ()
+                # to support decision of not supplying Project Name from Request file, it will retrieved from gc module
+                self.project = gc.PROJECT_NAME
+                # calculate Experiment_id out of request paramaters
+                self.experiment_id = "_".join([self.exposure, self.center, self.source_spec_type, self.assay])
 
                 # validate provided information
                 self.logger.info('Validating provided request parameters. Project: "{}", Exposure: "{}", '
-                                 'Center: "{}", Source specimen type: "{}", Sub-Aliquots: "{}", Aliquots: "{}"'
+                                 'Center: "{}", Source specimen type: "{}", Experiment: {}, '
+                                 'Sub-Aliquots: "{}", Aliquots: "{}"'
                                  .format(self.project, self.exposure, self.center, self.source_spec_type,
-                                         self.sub_aliquots, self.aliquots))
+                                         self.experiment_id, self.sub_aliquots, self.samples))
                 self.validate_request_params()
 
                 if self.error.exist():
@@ -131,18 +141,23 @@ class Request(File):
                 self.loaded = False
         return self.lineList
 
+    # get all values provided in the request file
     def get_request_parameters(self):
-        self.project = self.columnlist[0].split(',')[1]
-        self.exposure = self.columnlist[1].split(',')[1]
-        self.center = self.columnlist[2].split(',')[1]
-        self.source_spec_type = self.columnlist[3].split(',')[1]
-        self.assay = self.columnlist[4].split(',')[1]
-        self.sub_aliquots = self.columnlist[5].split(',')
+        # self.project = self.columnlist[0].split(',')[1] #project will be stored in the config file
+        self.exposure = self.columnlist[0].split(',')[1]
+        self.center = self.columnlist[1].split(',')[1]
+        self.source_spec_type = self.columnlist[2].split(',')[1]
+        self.assay = self.columnlist[3].split(',')[1]
+        self.sub_aliquots = self.columnlist[4].split(',')
         if self.sub_aliquots and len(self.sub_aliquots) > 0:
             self.sub_aliquots.pop(0)
-        self.aliquots =  self.columnlist[6].split(',')
-        if self.aliquots and len(self.aliquots) > 0:
-            self.aliquots.pop(0)
+        self.samples =  self.columnlist[5].split(',')
+        if self.samples and len(self.samples) > 0:
+            self.samples.pop(0)
+        # self.experiment_id = self.columnlist[6].split(',')[1]
+
+        #get list of aliquots from list of subaliquots
+        self.aliquots=[cm2.convert_sub_aliq_to_aliquot(al, self.assay) for al in self.sub_aliquots]
 
     # validates provided parameters (loaded from the submission request file)
     def validate_request_params(self):
@@ -150,17 +165,17 @@ class Request(File):
         _str_err = ''
         _str_warn = ''
         if len(self.sub_aliquots) == 0:
-            _str_err = '\n'.join ([_str_err, 'List of provided sub-aliquots is empty. ' \
+            _str_err = '\n'.join ([_str_err, 'List of provided sub-samples is empty. ' \
                                     'Aborting processing of the submission request.'])
-        # Check if empty sub-aliquots were provided
+        # Check if empty sub-samples were provided
         if '' in self.sub_aliquots:
             i = 0
             cleaned_cnt = 0
-            for s, a in zip(self.sub_aliquots, self.aliquots):
+            for s, a in zip(self.sub_aliquots, self.samples):
                 # check for any empty sub-aliquot values and remove them. Also remove corresponded Aliquot values
                 if len(s.strip()) == 0:
                     self.sub_aliquots.pop(i)
-                    self.aliquots.pop(i)
+                    self.samples.pop(i)
                     cleaned_cnt += 1
                 else:
                     i += 1
@@ -212,13 +227,16 @@ class Request(File):
         self.conf_assay =  self.load_assay_conf(self.assay)
         self.raw_data = RawDataRequest(self)
         self.attachments = RawDataAttachment(self)
+        self.submission_forms = None  # submission forms will defined later inside of the SubmissionPackage class
+        # self.submission_forms = SubmissionForms(self)
+        self.submission_package = SubmissionPackage(self)
 
         # check for errors and put final log entry for the request.
         if self.error.exist():
-            _str = 'Processing of the current request was finished with the following errors: {}'.format(self.error.get_errors_to_str())
+            _str = 'Processing of the current request was finished with the following errors: {}\n'.format(self.error.get_errors_to_str())
             self.logger.error(_str)
         else:
-            _str = 'Processing of the current request was finished successfully.'
+            _str = 'Processing of the current request was finished successfully.\n'
             self.logger.info(_str)
 
 
