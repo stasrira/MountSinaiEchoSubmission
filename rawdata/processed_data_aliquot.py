@@ -2,6 +2,7 @@ from file_load import Processed_Data_Text
 from file_load import Processed_Data_Excel
 from pathlib import Path
 
+
 class ProcessedDataAliquot():
     def __init__(self, sub_aliquot, request_obl):  # sub_aliquot, rawdata_folder, request_obl, rawdata_row_num =''
         self.sub_aliquot = sub_aliquot
@@ -10,10 +11,13 @@ class ProcessedDataAliquot():
         self.logger = self.req_obj.logger
         self.conf_assay = self.req_obj.conf_assay
         self.rawdata_summary_path = ''
+        self.rawdata_summary_file = None
+        self.rawdata_folder = None
         self.loaded = False  # default value
         self.rawdata_summary = {}  # dictionary to hold final rawdata summary data
 
-    def get_processed_data_by_rownum(self, filepath, rawdata_row_num, isexcel = True):
+    def get_processed_data_by_rownum(self, filepath, rawdata_row_num, isexcel=True):
+        # TODO: validate usage of isexcel variable
         self.rawdata_summary_path = filepath
         self.rawdata_summary_file = Processed_Data_Excel(self.rawdata_summary_path, self.error, self.logger)
         self.rawdata_summary_file.get_file_content()
@@ -26,7 +30,7 @@ class ProcessedDataAliquot():
     # this function is used by csRNAseq and scATACseq assays that have rawdata summary file located in
     # a predefined location and the predefined file name. This info is picked up from a config file
     # All summary files are csv files
-    def get_processed_data_predefined_file_text(self, rawdata_folder, rawdata_row_num =''):
+    def get_processed_data_predefined_file_text(self, rawdata_folder, rawdata_row_num=''):
         self.rawdata_folder = rawdata_folder
 
         read_data_method = self.conf_assay['read_rawdata_summary_method']

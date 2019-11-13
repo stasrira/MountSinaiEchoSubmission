@@ -7,7 +7,7 @@ import traceback
 from utils import setup_logger_common, deactivate_logger_common
 from utils import ConfigData
 from utils import global_const as gc
-from utils import send_email as email
+# from utils import send_email as email
 from file_load import Request
 
 # if executed by itself, do the following
@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     # print ('m_cfg = {}'.format(m_cfg.cfg))
     # assign values
-    common_logger_name = gc.MAIN_LOG_NAME # m_cfg.get_value('Logging/main_log_name')
+    common_logger_name = gc.MAIN_LOG_NAME  # m_cfg.get_value('Logging/main_log_name')
     logging_level = m_cfg.get_value('Logging/main_log_level')
     requests_loc = m_cfg.get_value('Location/requests')
     log_folder_name = gc.LOG_FOLDER_NAME
@@ -48,7 +48,7 @@ if __name__ == '__main__':
         req_proc_cnt = 0
 
         for req_file in requests:
-            if req_file.endswith(('xlsx','xls')):
+            if req_file.endswith(('xlsx', 'xls')):
                 req_path = Path(requests_path) / req_file
 
                 # email_msgs_study = []
@@ -65,7 +65,8 @@ if __name__ == '__main__':
 
                     if req_obj and req_obj.loaded:
                         # proceed processing request
-                        mlog.info('Submission request loading status: Success. Submission request file: "{}".'.format(req_path))
+                        mlog.info('Submission request loading status: Success. Submission request file: "{}".'
+                                  .format(req_path))
 
                         req_obj.process_request()
 
@@ -79,7 +80,7 @@ if __name__ == '__main__':
                         _str = 'Processing status: "{}". Submission Request: {}'.format(fl_status, req_path)
                     else:
                         fl_status = 'ERROR'
-                        _str = 'Processing status: "{}". Check processing log file for this request: {}'\
+                        _str = 'Processing status: "{}". Check processing log file for this request: {}' \
                             .format(fl_status, req_obj.logger.handlers[0])
 
                     if fl_status == "OK":
@@ -164,10 +165,9 @@ if __name__ == '__main__':
 
     except Exception as ex:
         # report unexpected error to log file
-        _str = 'Unexpected Error "{}" occurred during processing file: {}\n{} '\
+        _str = 'Unexpected Error "{}" occurred during processing file: {}\n{} ' \
             .format(ex, os.path.abspath(__file__), traceback.format_exc())
         mlog.critical(_str)
         raise
 
     sys.exit()
-

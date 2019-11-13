@@ -1,12 +1,10 @@
-import traceback
 import os
-# from os import walk
 from pathlib import Path
 import time
 import json
-import tarfile
 from utils import global_const as gc
 from forms import SubmissionForms
+
 
 class SubmissionPackage():
     def __init__(self, request):
@@ -15,13 +13,12 @@ class SubmissionPackage():
         self.logger = self.req_obj.logger
         self.conf_assay = request.conf_assay
         self.attachments = request.attachments
-        # self.submission_forms = request.submission_forms
+        self.submission_forms = None
         self.submission_dir = gc.SUBMISSION_PACKAGES_DIR + "/" \
                               + time.strftime("%Y%m%d_%H%M%S", time.localtime()) \
                               + "_" + self.req_obj.experiment_id
 
         self.prepare_submission_package()
-
 
     def prepare_submission_package(self):
         # create a package dir for this submission
@@ -34,7 +31,6 @@ class SubmissionPackage():
         for dir in dirs:
             os.remove(dir)
         """
-
 
         self.prepare_submission_package_attachments()
 

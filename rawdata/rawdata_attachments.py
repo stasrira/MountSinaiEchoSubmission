@@ -4,12 +4,14 @@ import os
 import tarfile
 import hashlib
 
+
 class RawDataAttachment(RawDataRequest):
 
     def __init__(self, request):
         # self.rawdata_attachments = {}
         self.tar_folder = ''
         self.aliquots_tarball_dict = {}
+        self.data_loc = None
         RawDataRequest.__init__(self, request)
 
     def init_specific_settings(self):
@@ -37,7 +39,7 @@ class RawDataAttachment(RawDataRequest):
             # check if any attachments were assigned to an aliquot and warn if none were assigned
             for sa in self.req_obj.sub_aliquots:
                 # print ('Aliquot = {}'.format(sa))
-                if not sa in self.aliquots_data_dict:
+                if sa not in self.aliquots_data_dict:
                     # no attachments were assigned to an aliquot
                     _str = 'Aliquot "{}" was not assigned with any attachments.'.format(sa)
                     self.logger.error(_str)
@@ -48,7 +50,7 @@ class RawDataAttachment(RawDataRequest):
         self.add_attachment(sa, attach_dir)
 
     def add_attachment(self, sa, attach_path):
-        if not sa in self.aliquots_data_dict:
+        if sa not in self.aliquots_data_dict:
             self.aliquots_data_dict[sa] = []
         attach_details = {'path': attach_path, 'tar_dir': self.tar_folder}
         self.aliquots_data_dict[sa].append(attach_details)
@@ -69,11 +71,12 @@ class RawDataAttachment(RawDataRequest):
         tar_details = {'path': tarball_path, 'md5': md5}
         self.aliquots_tarball_dict[sa] = tar_details
 
-        _str = 'Aliquot "{}" was successfully assigned with an tarball file "{}; MD5sum = {}".'\
+        _str = 'Aliquot "{}" was successfully assigned with an tarball file "{}; MD5sum = {}".' \
             .format(sa, tarball_path, md5)
         self.logger.info(_str)
 
-    def get_file_MD5(self, file_path):
+    @staticmethod
+    def get_file_MD5(file_path):
         with open(file_path, 'rb') as file:
             # read contents of the file
             data = file.read()

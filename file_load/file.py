@@ -33,6 +33,7 @@ class File:
         self.error = FileError(self)
         self.lineList = []
         self.__headers = []
+        self.log_handler = None
         self.header_row_num = 1  # default header row number
         self.sample_id_field_names = []
         self.replace_blanks_in_header = replace_blanks_in_header
@@ -77,15 +78,6 @@ class File:
                 self.loaded = False
         return self.lineList
 
-    """ got moved to utils\common.py library
-    def file_exists(self, fn):
-        try:
-            with open(fn, "r"):
-                return 1
-        except IOError:
-            return 0
-    """
-
     def get_headers(self):
         if not self.__headers:
             hdrs = self.get_row_by_number_to_list(self.header_row_num)
@@ -103,12 +95,12 @@ class File:
             return ''
 
     def get_row_by_number_to_list(self, rownum):
-        row = self.get_row_by_number (rownum)
-        row_list =  list(reader([row], delimiter=self.file_delim, skipinitialspace=True))[0]
+        row = self.get_row_by_number(rownum)
+        row_list = list(reader([row], delimiter=self.file_delim, skipinitialspace=True))[0]
         return row_list
 
     def get_row_by_number_with_headers(self, rownum):
-        row = self.get_row_by_number_to_list (rownum)
+        row = self.get_row_by_number_to_list(rownum)
         row_with_header = {}  # output dictionary
         header = self.get_headers()
         for field, title in zip(row, header):

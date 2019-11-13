@@ -6,12 +6,12 @@ from utils import common as cm
 from utils import common2 as cm2
 from utils import setup_logger_common
 from utils import ConfigData
-from file_load import File # , MetaFileExcel
+from file_load import File  # , MetaFileExcel
 from file_load.file_error import RequestError
 from rawdata import RawDataRequest
 from rawdata import RawDataAttachment
-from forms import SubmissionForms
 from forms import SubmissionPackage
+
 
 class Request(File):
 
@@ -37,6 +37,13 @@ class Request(File):
         self.source_spec_type = ''
         self.assay = ''
         self.experiment_id = ''
+
+        self.aliquots = None
+        self.log_handler = None
+        self.raw_data = None
+        self.attachments = None
+        self.submission_forms = None
+        self.submission_package = None
 
         # self.sheet_name = ''
         self.sheet_name = sheet_name.strip()
@@ -105,7 +112,7 @@ class Request(File):
                 wb.unload_sheet(sheet.name)
 
                 # load passed request parameters (by columns)
-                self.get_request_parameters ()
+                self.get_request_parameters()
                 # to support decision of not supplying Project Name from Request file, it will retrieved from gc module
                 self.project = gc.PROJECT_NAME
                 # calculate Experiment_id out of request paramaters
@@ -151,13 +158,13 @@ class Request(File):
         self.sub_aliquots = self.columnlist[4].split(',')
         if self.sub_aliquots and len(self.sub_aliquots) > 0:
             self.sub_aliquots.pop(0)
-        self.samples =  self.columnlist[5].split(',')
+        self.samples = self.columnlist[5].split(',')
         if self.samples and len(self.samples) > 0:
             self.samples.pop(0)
         # self.experiment_id = self.columnlist[6].split(',')[1]
 
-        #get list of aliquots from list of subaliquots
-        self.aliquots=[cm2.convert_sub_aliq_to_aliquot(al, self.assay) for al in self.sub_aliquots]
+        # get list of aliquots from list of subaliquots
+        self.aliquots = [cm2.convert_sub_aliq_to_aliquot(al, self.assay) for al in self.sub_aliquots]
 
     # validates provided parameters (loaded from the submission request file)
     def validate_request_params(self):
@@ -165,8 +172,8 @@ class Request(File):
         _str_err = ''
         _str_warn = ''
         if len(self.sub_aliquots) == 0:
-            _str_err = '\n'.join ([_str_err, 'List of provided sub-samples is empty. ' \
-                                    'Aborting processing of the submission request.'])
+            _str_err = '\n'.join([_str_err, 'List of provided sub-samples is empty. ' 
+                                            'Aborting processing of the submission request.'])
         # Check if empty sub-samples were provided
         if '' in self.sub_aliquots:
             i = 0
@@ -180,19 +187,21 @@ class Request(File):
                 else:
                     i += 1
             if cleaned_cnt > 0:
-                _str_warn = '\n'.join ([_str_warn, 'Empty sub-aliqouts (count = {}) were removed from the list. '
-                                        'Here is the list of sub-aliqouts after cleaning (count = {}): "{}" '
-                                       .format(cleaned_cnt, len(self.sub_aliquots), self.sub_aliquots)])
+                _str_warn = '\n'.join([_str_warn, 'Empty sub-aliqouts (count = {}) were removed from the list. '
+                                                  'Here is the list of sub-aliqouts after cleaning (count = {}): "{}" '
+                                      .format(cleaned_cnt, len(self.sub_aliquots), self.sub_aliquots)])
         if len(self.project) == 0:
-            _str_err = '\n'.join ([_str_err, 'No Project name was provided. Aborting processing of the submission request.'])
+            _str_err = '\n'.join(
+                [_str_err, 'No Project name was provided. Aborting processing of the submission request.'])
         if len(self.exposure) == 0:
-            _str_err = '\n'.join ([_str_err, 'No Exposure was provided. Aborting processing of the submission request.'])
+            _str_err = '\n'.join([_str_err, 'No Exposure was provided. Aborting processing of the submission request.'])
         if len(self.center) == 0:
-            _str_err = '\n'.join ([_str_err, 'No Center was provided. Aborting processing of the submission request.'])
+            _str_err = '\n'.join([_str_err, 'No Center was provided. Aborting processing of the submission request.'])
         if len(self.source_spec_type) == 0:
-            _str_err = '\n'.join ([_str_err, 'No Specimen type was provided. Aborting processing of the submission request.'])
+            _str_err = '\n'.join(
+                [_str_err, 'No Specimen type was provided. Aborting processing of the submission request.'])
         if len(self.assay) == 0:
-            _str_err = '\n'.join ([_str_err, 'No Assay was provided. Aborting processing of the submission request.'])
+            _str_err = '\n'.join([_str_err, 'No Assay was provided. Aborting processing of the submission request.'])
 
         # report any collected errors
         if len(_str_err) > 0:
@@ -224,7 +233,7 @@ class Request(File):
         return lg['logger']
 
     def process_request(self):
-        self.conf_assay =  self.load_assay_conf(self.assay)
+        self.conf_assay = self.load_assay_conf(self.assay)
         self.raw_data = RawDataRequest(self)
         self.attachments = RawDataAttachment(self)
         self.submission_forms = None  # submission forms will defined later inside of the SubmissionPackage class
@@ -233,13 +242,14 @@ class Request(File):
 
         # check for errors and put final log entry for the request.
         if self.error.exist():
-            _str = 'Processing of the current request was finished with the following errors: {}\n'.format(self.error.get_errors_to_str())
+            _str = 'Processing of the current request was finished with the following errors: {}\n'.format(
+                self.error.get_errors_to_str())
             self.logger.error(_str)
         else:
             _str = 'Processing of the current request was finished successfully.\n'
             self.logger.info(_str)
 
-
-    def load_assay_conf(self, assay):
+    @staticmethod
+    def load_assay_conf(assay):
         cfg_assay = ConfigData(gc.CONFIG_FILE_ASSAY)
         return cfg_assay.get_value(assay.upper())

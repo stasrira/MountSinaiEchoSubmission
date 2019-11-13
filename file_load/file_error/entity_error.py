@@ -3,6 +3,7 @@ from .error import Error
 
 class EntityErrors:
     entity = None  # link to an object that these errors belongs to.
+
     # errors = None
 
     def __init__(self, new_entity):

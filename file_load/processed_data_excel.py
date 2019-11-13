@@ -5,7 +5,7 @@ from utils import common as cm
 
 class Processed_Data_Excel(File):
 
-    def __init__(self, filepath, req_error, req_logger, sheet_name = '', file_type=2):
+    def __init__(self, filepath, req_error, req_logger, sheet_name='', file_type=2):
 
         # rec_error parameter is a pointer to the current request error object
 
@@ -17,7 +17,7 @@ class Processed_Data_Excel(File):
 
         # self.get_file_content()
 
-    def get_column_values(self, col_number, header_row_number = 0, exclude_header = True):
+    def get_column_values(self, col_number, header_row_number=0, exclude_header=True):
         col_values = []
         # adjust passed numbers to the 0-based numbering
         # col_number = col_number - 1
@@ -29,7 +29,7 @@ class Processed_Data_Excel(File):
                 sheet = self.get_wksheet_name(wb)
                 if sheet:
                     sheet.cell_value(0, 0)
-                    if col_number <= sheet.ncols and col_number >= 0:
+                    if sheet.ncols >= col_number >= 0:
                         for i in range(sheet.nrows):
                             if i == header_row_number and exclude_header:
                                 pass
@@ -43,7 +43,7 @@ class Processed_Data_Excel(File):
                     # return col_values
         else:
             # no file found
-            _str = 'Loading content of the file "{}" failed since the file does not appear to exist".'\
+            _str = 'Loading content of the file "{}" failed since the file does not appear to exist".' \
                 .format(self.filepath)
             self.error.add_error(_str)
             self.logger.error(_str)
@@ -51,8 +51,6 @@ class Processed_Data_Excel(File):
             col_values = None
 
         return col_values
-
-
 
     def get_wksheet_name(self, wb):
         if not self.sheet_name or len(self.sheet_name) == 0:
@@ -67,7 +65,7 @@ class Processed_Data_Excel(File):
             else:
                 # report an error if given sheet name not in the list of available sheets
                 _str = ('Given sheet name "{}" was not found in the file "{}". '
-                        'Verify that the sheet name exists in the file.')\
+                        'Verify that the sheet name exists in the file.') \
                     .format(self.sheet_name, self.filepath)
                 self.error.add_error(_str)
                 self.logger.error(_str)
@@ -75,7 +73,8 @@ class Processed_Data_Excel(File):
 
         return sheet
 
-    def validate_cell_value(self, cell, wb):
+    @staticmethod
+    def validate_cell_value(cell, wb):
         cell_value = cell.value
         # take care of number and dates received from Excel and converted to float by default
         if cell.ctype == 2 and int(cell_value) == cell_value:
@@ -149,7 +148,7 @@ class Processed_Data_Excel(File):
                             cell_value_date = xlrd.xldate_as_datetime(cell_value, wb.datemode)
                             cell_value = cell_value_date.strftime("%Y-%m-%d")
                         """
-                        ln.append('"' + cell_value + '"')  #TODO: consider adding double quotes around values
+                        ln.append('"' + cell_value + '"')  # TODO: consider adding double quotes around values
 
                     self.lineList.append(','.join(ln))
 
@@ -165,12 +164,3 @@ class Processed_Data_Excel(File):
                 self.loaded = False
         return self.lineList
 
-    """got moved to utils\common.py library
-    def file_exists(self, fn):
-        try:
-            with xlrd.open_workbook(fn):
-                return 1
-        except Exception:  # IOError
-            # print (ex)
-            return 0
-    """
