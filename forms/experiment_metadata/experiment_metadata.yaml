@@ -1,4 +1,4 @@
 name: eval!self.get_request_value('experiment_id')
-assay_type: eval!self.get_request_value('assay', True) # eval!self.req_obj.assay # eval!get_value(!yaml_path!)
+assay: eval!self.get_request_value('assay', True) # eval!self.req_obj.assay # eval!get_value(!yaml_path!)
 source: ISMMS
 sequence_datasets: eval!self.convert_simple_list_to_list_of_dict(eval!self.get_request_value('aliquots'), 'name') # eval!self.req_obj.sub_aliquots #eval!get_value(!yaml_path!)

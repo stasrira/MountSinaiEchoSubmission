@@ -7,7 +7,7 @@ from jsonschema import validate
 
 # filepath = 'forms/experiment_metadata.forms'
 # filepath = 'forms\experiment_metadata\experiment_metadata.json'
-filepath = 'forms\sequence_item_metadata\sequence_item_metadata_test.json'
+filepath = 'E:\MounSinai\Darpa\Programming\submission\Temp\sequence_item_v3.json'
 # filepath = 'forms/aliquot_metadata.forms'
 cur_assay = 'scrnaseq'
 
@@ -36,7 +36,6 @@ def get_json_keys(json_node, parent_keys = ''):
                     print('Key = {}, Value: {}'.format(full_key_name, json_node[key])) # val
 
 def get_json_keys_list(json_node_list, parent_keys =''):
-
 
     return
 
@@ -78,6 +77,48 @@ def get_json_keys_bkp1(json_node, parent_keys = '', islist = False):
             json_node[key] = eval(json_node[key])
             print("{} : {}".format(key, json_node[key])) # val
 
+def get_json_schema_keys_names_printed(json_node, parent_keys ='', islist = False):
+    child_printed = False
+    if islist:
+        for item in json_node:
+            ch_prt = get_json_schema_keys_names_printed(item, parent_keys)
+            if ch_prt:
+                child_printed = True
+        return child_printed
+    for key, val in json_node.items():
+        if key not in ['type', 'examples', 'comment', 'enum', 'minItems']:
+            if parent_keys:
+                cur_parents = '/'.join([parent_keys, key])
+            else:
+                cur_parents = key
+            if isinstance(val, list):
+                if key not in ['examples', 'enum', 'required']:
+                    # print("{} \t {}".format(key, val))
+                    ch_prt = get_json_schema_keys_names_printed(val, cur_parents, True)
+                    if ch_prt:
+                        child_printed = True
+                    if not ch_prt:
+                        print("{} \t {}".format(key, val))
+            if isinstance(val, dict):
+                #if key != 'properties':
+                #    print("{}: {}".format(key, val))
+                # print ('{} -------------'.format(key))
+                ch_prt = get_json_schema_keys_names_printed(val, cur_parents)
+                if ch_prt:
+                    child_printed = True
+                if not ch_prt and key != 'properties':
+                    print("{} \t {}".format(key, val))
+            else:
+                full_key_name = cur_parents
+
+                #json_node[key] = 'update_function("{}", "{}", "{}")'.format(full_key_name, cur_assay, os.path.basename(filepath))
+                #json_node[key] = eval(json_node[key])
+                print("{} \t {}".format(key, val)) # val
+                child_printed = True
+
+    return child_printed
+
+
 def update_function(key, assay, filename):
     return 'Assay: {}; Json Key: {}; Requested for filling out file: "{}"'.format(assay, key, filename)
 
@@ -90,7 +131,10 @@ def process_json():
     # for key, item in fl.json_data.items():
     #    print ('key="{}"; value={}'.format(key, item))
     if fl.json_data:
-        get_json_keys(fl.json_data)
+        # get_json_keys(fl.json_data)
+        get_json_schema_keys_names_printed(fl.json_data)
+
+
 
 def process_tar():
     output_filename = "packages\sample.tar.gz"
@@ -127,10 +171,10 @@ def validate_schema ():
         print('Validation failed with this error: {}'.format(ve))
         pass
 
-# process_json()
+process_json()
 
 # process_tar()
 
-validate_schema()
+# validate_schema()
 
 

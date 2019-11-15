@@ -112,4 +112,5 @@ venv.bak/
 #processed folders
 /requests/processed
 /submission_packages
+/temp
 

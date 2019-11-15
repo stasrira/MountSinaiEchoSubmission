@@ -5,7 +5,7 @@
     "name": {
       "type": "string"
     },
-    "assay_type": {
+    "assay": {
       "type": "string",
       "enum": ["rna_seq", "scrna_seq", "atac_seq", "chip_seq", "scatac_seq", "medip_seq", "mint_chip", "wgbs", "snatac_seq", "snmc_seq", "cytof", "epic"]
     },
@@ -32,7 +32,7 @@
   },
   "required": [
     "name",
-    "assay_type",
+    "assay",
     "source",
     "sequence_datasets"
   ]

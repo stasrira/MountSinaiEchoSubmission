@@ -11,6 +11,3 @@ class Processed_Data_Text(File):
         self.error = req_error
         self.logger = req_logger
         self.sheet_name = ''
-        # self.config =
-
-        # self.get_file_content()

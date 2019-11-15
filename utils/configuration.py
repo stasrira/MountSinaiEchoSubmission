@@ -1,6 +1,7 @@
 import yaml
 from utils import common as cm
 
+
 class ConfigData:
 
     def __init__(self, cfg_path):
@@ -25,7 +26,7 @@ class ConfigData:
             if val and el in val:
                 try:
                     val = val[el]
-                except Exception as ex:
+                except Exception:
                     val = None
                     break
             else:
@@ -36,19 +37,3 @@ class ConfigData:
     def get_item_by_key(self, key_name):
         return str(self.get_value(key_name))
 
-    """got moved to common.py library
-    def file_exists(self, fn):
-        try:
-            with open(fn, "r"):
-                return 1
-        except IOError:
-            return 0
-    """
-    """
-    def is_iterable(maybe_iterable)
-        try:
-            iter(maybe_iterable)
-            return 1
-        except TypeError:
-            return 0
-    """

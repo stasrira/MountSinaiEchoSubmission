@@ -8,6 +8,7 @@ import traceback
 import jsonschema
 from jsonschema import validate
 
+
 class SubmissionForm():
     def __init__(self, form_name, request, sub_aliquot, aliquot, sample):
         self.form_name = form_name
@@ -18,16 +19,24 @@ class SubmissionForm():
         self.error = self.req_obj.error
         self.logger = self.req_obj.logger
         self.conf_assay = request.conf_assay
+
+        self.fl_json = None
+        self.fl_json_schema = None
+        self.fl_cfg_common = None
+        self.fl_cfg_assay = None
+        self.fl_cfg_dict = None
+
         self.prepare_form(form_name)
 
     def prepare_form(self, form_name):
         # identify paths for json and config (yaml) files
         fl_path_json_common = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '.json')
-        fl_path_json_assay = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_' + str(self.req_obj.assay).lower() + '.json')
+        fl_path_json_assay = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_' + str(
+            self.req_obj.assay).lower() + '.json')
         fl_path_json_schema = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_schema.json')
         fl_path_cfg_common = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '.yaml')
-        fl_path_cfg_assay = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_' + str(self.req_obj.assay).lower() + '.yaml')
-
+        fl_path_cfg_assay = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_' + str(
+            self.req_obj.assay).lower() + '.yaml')
 
         # check if assay specific json exists; if yes - use it, if not - use common one
         if cm.file_exists(fl_path_json_assay):
@@ -48,8 +57,7 @@ class SubmissionForm():
         print(self.fl_json.json_data)
 
         # validate final json file against json schema (if present)
-        self.validate_json (self.fl_json, self.fl_json_schema)
-
+        self.validate_json(self.fl_json, self.fl_json_schema)
 
     def get_json_keys(self, json_node, parent_keys=''):
         for key, val in json_node.items():
@@ -98,22 +106,23 @@ class SubmissionForm():
         else:
             cfg_val = common_cfg_val
 
-        #TODO: move values for the following 2 constants to Global Config file
+        # TODO: move values for the following 2 constants to Global Config file
         eval_flag = 'eval!'
         # yaml_path_flag = '!yaml_path!'
         # check if some configuration instruction/value was retrieved for the given "key"
         if cfg_val:
             if eval_flag in cfg_val:
-                cfg_val = cfg_val.replace(eval_flag, '') # replace 'eval!' flag value
+                cfg_val = cfg_val.replace(eval_flag, '')  # replace 'eval!' flag value
                 # cfg_val = cfg_val.replace(yaml_path_flag, "'" + key + "'", 1)  # replace 'eval!' flag value
-                #if not cfg_val[0:5] == 'self.':
+                # if not cfg_val[0:5] == 'self.':
                 #    cfg_val = 'self.'+ cfg_val
                 try:
                     out_val = eval(cfg_val)
                 except Exception as ex:
                     _str = 'Error "{}" occurred during preparing submission form "{}" for sub-aliquot "{}" ' \
-                           'while attempting to interpret configuration value "{}" provided for the form\'s key "{}". \n{} ' \
-                            .format(ex, self.form_name, self.sub_aliquot, cfg_val, key, traceback.format_exc())
+                           'while attempting to interpret configuration value "{}" provided for the form\'s key ' \
+                           '"{}". \n{} ' \
+                        .format(ex, self.form_name, self.sub_aliquot, cfg_val, key, traceback.format_exc())
                     self.logger.error(_str)
                     self.error.add_error(_str)
                     out_val = ''
@@ -137,33 +146,35 @@ class SubmissionForm():
             value = tar_obj['md5']
         return value
 
-
     # it will retrieve any existing property from the request object
-    def get_request_value(self, property_name, check_dict = False):
-        return self.get_property_value_from_object (self.req_obj, property_name, check_dict)
+    def get_request_value(self, property_name, check_dict=False):
+        return self.get_property_value_from_object(self.req_obj, property_name, check_dict)
 
     # it will retrieve any existing property from the submission_form object
-    def get_submission_form_value(self, property_name, check_dict = False):
+    def get_submission_form_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self, property_name, check_dict)
 
     # it will retrieve any existing property from rawdata object
-    def get_rawdata_value(self, property_name, check_dict = False):
+    def get_rawdata_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self.req_obj.raw_data.aliquots_data_dict[self.sub_aliquot],
                                                    property_name, check_dict, 'dict')
 
     # it will retrieve a value of a property named in "property_name" parameter
     # from the object passed as a reference in "obj" parameter
-    def get_property_value_from_object(self, obj, property_name, check_dict = False, obj_type = 'class'):
+    # noinspection PyUnusedLocal
+    def get_property_value_from_object(self, obj, property_name, check_dict=False, obj_type='class'):
         if obj_type == 'class':
             get_item = 'obj.' + property_name
         elif obj_type == 'dict':
-            get_item = 'obj["' + property_name +'"]'
+            get_item = 'obj["' + property_name + '"]'
+        else:
+            get_item = None
 
         try:
             out = eval(get_item)
 
             if check_dict:
-                out = self.get_dict_value (out, property_name)
+                out = self.get_dict_value(out, property_name)
 
         except Exception as ex:
             _str = 'Error "{}" occurred during preparing submission form "{}" for sub-aliquot "{}" ' \
@@ -177,17 +188,17 @@ class SubmissionForm():
     def get_dict_value(self, value, section):
         try:
             return self.fl_cfg_dict.get_item_by_key(section + "/" + value)
-        except Exception as ex:
+        except Exception:
             return value
 
     # converts an array of values (i.e. list of aliquots) in to list of dictionaries with a given key name
     # For example: [1, 2, 3] => [{name: 1}, {name: 2}, {name: 3}]
-    def convert_simple_list_to_list_of_dict(self, sm_arr, key_name):
+    @staticmethod
+    def convert_simple_list_to_list_of_dict(sm_arr, key_name):
         out = []
         for a in sm_arr:
-            dict = {}
-            dict[key_name] = a
-            out.append(dict)
+            dict_ob = {key_name: a}
+            out.append(dict_ob)
         return out
 
     def validate_json(self, json_file, schema_file):
