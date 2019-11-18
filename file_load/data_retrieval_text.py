@@ -1,7 +1,7 @@
 from file_load import File
 
 
-class Processed_Data_Text(File):
+class Data_Retrieval_Text(File):
 
     def __init__(self, filepath, req_error, req_logger, file_type=1):
 

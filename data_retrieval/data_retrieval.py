@@ -1,11 +1,11 @@
 from pathlib import Path
 import os
 import glob
-from rawdata import ProcessedDataAliquot
-from file_load import Processed_Data_Excel
+from data_retrieval import DataRetrievalAliquot
+from file_load import Data_Rertrieval_Excel
 
 
-class RawDataRequest():
+class DataRetrieval():
 
     def __init__(self, request):
         self.aliquots_data_dict = {}
@@ -31,7 +31,7 @@ class RawDataRequest():
         elif search_by == 'file_content':
             self.get_data_by_file_content()
 
-        # check if some rawdata was assigned to an aliquot and warn if none were assigned
+        # check if some data_retrieval was assigned to an aliquot and warn if none were assigned
         for sa in self.req_obj.sub_aliquots:
             if sa not in self.aliquots_data_dict:
                 # no attachments were assigned to an aliquot
@@ -63,7 +63,7 @@ class RawDataRequest():
         file_index = self.index_rawdata_files(files, file_struct)
         for sa in file_index:
             if sa in self.req_obj.sub_aliquots:
-                rda = ProcessedDataAliquot(sa, self)
+                rda = DataRetrievalAliquot(sa, self)
                 rda.get_processed_data_by_rownum(file_index[sa][1], file_index[sa][0])
                 if rda.loaded:
                     _str = 'Summary Raw Data for aliquot "{}" was successfully loaded from file "{}".' \
@@ -92,7 +92,7 @@ class RawDataRequest():
 
         index_dict = {}
         for file in files:
-            f = Processed_Data_Excel(file, self.error, self.logger, worksheet)
+            f = Data_Rertrieval_Excel(file, self.error, self.logger, worksheet)
             col_vals = f.get_column_values(col_num, header_row_num, exlude_header)
             if col_vals:
                 # if list of values returned, loop to create a dictionary with key = aliquot_id and
@@ -125,7 +125,7 @@ class RawDataRequest():
     def get_data_for_aliquot(self, sa, d):
         # this retrieves data related to the purpose of the current class - raw data or attachment info.
         # should be overwritten in classes that inherit this one
-        rda = ProcessedDataAliquot(sa, self.req_obj)
+        rda = DataRetrievalAliquot(sa, self.req_obj)
         rda.get_processed_data_predefined_file_text(d)
         if rda.loaded:
             _str = 'Summary Raw Data for aliquot "{}" was successfully loaded from sub-aliquot ' \

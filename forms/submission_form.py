@@ -154,7 +154,7 @@ class SubmissionForm():
     def get_submission_form_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self, property_name, check_dict)
 
-    # it will retrieve any existing property from rawdata object
+    # it will retrieve any existing property from data_retrieval object
     def get_rawdata_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self.req_obj.raw_data.aliquots_data_dict[self.sub_aliquot],
                                                    property_name, check_dict, 'dict')

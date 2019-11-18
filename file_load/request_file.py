@@ -8,8 +8,8 @@ from utils import setup_logger_common
 from utils import ConfigData
 from file_load import File  # , MetaFileExcel
 from file_load.file_error import RequestError
-from rawdata import RawDataRequest
-from rawdata import RawDataAttachment
+from data_retrieval import DataRetrieval
+from data_retrieval import Attachment
 from forms import SubmissionPackage
 
 
@@ -53,9 +53,11 @@ class Request(File):
         # print (self.sheet_name)
         self.logger.info('Data will be loaded from worksheet: "{}"'.format(self.sheet_name))
 
+        self.conf_assay = self.load_assay_conf(self.assay)
+        self.conf_main = ConfigData(gc.CONFIG_FILE_MAIN)
+
         self.get_file_content()
 
-        self.conf_assay = None
 
     def get_file_content(self):
         if not self.columnlist:
@@ -215,7 +217,7 @@ class Request(File):
 
     def setup_logger(self, wrkdir, filename):
 
-        m_cfg = ConfigData(gc.CONFIG_FILE_MAIN)
+        # m_cfg = ConfigData(gc.CONFIG_FILE_MAIN)
 
         log_folder_name = gc.LOG_FOLDER_NAME
 
@@ -223,7 +225,7 @@ class Request(File):
         # m_logger = logging.getLogger(m_logger_name)
 
         logger_name = gc.REQUEST_LOG_NAME
-        logging_level = m_cfg.get_value('Logging/request_log_level')
+        logging_level = self.conf_main.get_value('Logging/request_log_level')
 
         lg = setup_logger_common(logger_name, logging_level,
                                  Path(wrkdir) / log_folder_name,
@@ -233,9 +235,9 @@ class Request(File):
         return lg['logger']
 
     def process_request(self):
-        self.conf_assay = self.load_assay_conf(self.assay)
-        self.raw_data = RawDataRequest(self)
-        self.attachments = RawDataAttachment(self)
+        # self.conf_assay = self.load_assay_conf(self.assay)
+        self.raw_data = DataRetrieval(self)
+        self.attachments = Attachment(self)
         self.submission_forms = None  # submission forms will defined later inside of the SubmissionPackage class
         # self.submission_forms = SubmissionForms(self)
         self.submission_package = SubmissionPackage(self)

@@ -1,9 +1,9 @@
-from file_load import Processed_Data_Text
-from file_load import Processed_Data_Excel
+from file_load import Data_Retrieval_Text
+from file_load import Data_Rertrieval_Excel
 from pathlib import Path
 
 
-class ProcessedDataAliquot():
+class DataRetrievalAliquot():
     def __init__(self, sub_aliquot, request_obl):  # sub_aliquot, rawdata_folder, request_obl, rawdata_row_num =''
         self.sub_aliquot = sub_aliquot
         self.req_obj = request_obl
@@ -14,12 +14,12 @@ class ProcessedDataAliquot():
         self.rawdata_summary_file = None
         self.rawdata_folder = None
         self.loaded = False  # default value
-        self.rawdata_summary = {}  # dictionary to hold final rawdata summary data
+        self.rawdata_summary = {}  # dictionary to hold final data_retrieval summary data
 
     def get_processed_data_by_rownum(self, filepath, rawdata_row_num, isexcel=True):
         # TODO: validate usage of isexcel variable
         self.rawdata_summary_path = filepath
-        self.rawdata_summary_file = Processed_Data_Excel(self.rawdata_summary_path, self.error, self.logger)
+        self.rawdata_summary_file = Data_Rertrieval_Excel(self.rawdata_summary_path, self.error, self.logger)
         self.rawdata_summary_file.get_file_content()
         if not self.rawdata_summary_file.loaded:
             # summary file was not loaded property; return with loaded = False
@@ -27,7 +27,7 @@ class ProcessedDataAliquot():
         self.rawdata_summary = self.rawdata_summary_file.get_row_by_number_with_headers(rawdata_row_num)
         self.loaded = True
 
-    # this function is used by csRNAseq and scATACseq assays that have rawdata summary file located in
+    # this function is used by csRNAseq and scATACseq assays that have data_retrieval summary file located in
     # a predefined location and the predefined file name. This info is picked up from a config file
     # All summary files are csv files
     def get_processed_data_predefined_file_text(self, rawdata_folder, rawdata_row_num=''):
@@ -52,7 +52,7 @@ class ProcessedDataAliquot():
             self.error.add_error(_str)
             return
 
-        self.rawdata_summary_file = Processed_Data_Text(self.rawdata_summary_path, self.error, self.logger)
+        self.rawdata_summary_file = Data_Retrieval_Text(self.rawdata_summary_path, self.error, self.logger)
         self.rawdata_summary_file.get_file_content()
         if not self.rawdata_summary_file.loaded:
             # summary file was not loaded property; return with loaded = False

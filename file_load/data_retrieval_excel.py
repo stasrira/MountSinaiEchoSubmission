@@ -3,7 +3,7 @@ import xlrd
 from utils import common as cm
 
 
-class Processed_Data_Excel(File):
+class Data_Rertrieval_Excel(File):
 
     def __init__(self, filepath, req_error, req_logger, sheet_name='', file_type=2):
 
@@ -101,28 +101,6 @@ class Processed_Data_Excel(File):
                         self.lineList = None
                         self.loaded = False
                         return self.lineList
-                    """
-                    if not self.sheet_name or len(self.sheet_name) == 0:
-                        # by default retrieve the first sheet in the excel file
-                        sheet = wb.sheet_by_index(0)
-                    else:
-                        # if sheet name was provided
-                        sheets = wb.sheet_names()  # get list of all sheets
-                        if self.sheet_name in sheets:
-                            # if given sheet name in the list of available sheets, load the sheet
-                            sheet = wb.sheet_by_name(self.sheet_name)
-                        else:
-                            # report an error if given sheet name not in the list of available sheets
-                            _str = ('Given sheet name "{}" was not found in the file "{}". '
-                                    'Verify that the sheet name exists in the file.').format(
-                                self.sheet_name, self.filepath)
-                            self.error.add_error(_str)
-                            self.logger.error(_str)
-                    
-                            self.lineList = None
-                            self.loaded = False
-                            return self.lineList
-                    """
 
                 sheet.cell_value(0, 0)
 
@@ -133,21 +111,6 @@ class Processed_Data_Excel(File):
                         # ln.append('"' + sheet.cell_value(i,j) + '"')
                         cell = sheet.cell(i, j)
                         cell_value = self.validate_cell_value(cell, wb)
-                        """
-                        cell_value = cell.value
-                        # take care of number and dates received from Excel and converted to float by default
-                        if cell.ctype == 2 and int(cell_value) == cell_value:
-                            # the value is integer
-                            cell_value = str(int(cell_value))
-                        elif cell.ctype == 2:
-                            # the value is float
-                            cell_value = str(cell_value)
-                        # convert date back to human readable date format
-                        # print ('cell_value = {}'.format(cell_value))
-                        if cell.ctype == 3:
-                            cell_value_date = xlrd.xldate_as_datetime(cell_value, wb.datemode)
-                            cell_value = cell_value_date.strftime("%Y-%m-%d")
-                        """
                         ln.append('"' + cell_value + '"')  # TODO: consider adding double quotes around values
 
                     self.lineList.append(','.join(ln))

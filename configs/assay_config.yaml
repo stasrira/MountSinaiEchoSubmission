@@ -1,5 +1,210 @@
-CYTOFF:
-    assay_name: CyTOFF
+ASSAY_TEMPLATE:
+    assay_name: # CyTOF
+    mssm_id: # 6
+    mssm_postfix: # _6
+
+    data_sources:
+        - rawdata
+
+    rawdata:
+        #path to the location where data_retrieval for all projects are stored; this path will be combined with a path for a particular experiment
+        location: # rawdata_location: # E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # /mnt/researchsan02a/Projects
+        #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+        sub_folder: # rawdata_folder: # CyTOF
+
+        search_method: # search_rawdata_summary
+            search_by: file_content #possible options: file_content, folder_name
+            search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.
+            exclude_folders:
+            file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
+                - .xlsx
+                - .xls
+
+        file_content_details:
+            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+            # 'row_num' - retrieve data from a particular row of the file
+            get_by_row_num: # 'row_num' - retrieve data from a particular row of the file
+                row_num: 2
+            get_by_primary_key:
+                header_row_number: # 1-based numbering
+                pk_column_number: # 1-based numbering
+            excel:
+                sheet_name:
+
+    attachment:
+        location: # E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
+        attachement_folder:
+            -
+                folder: /scrna-seq/FASTQs
+                tar_dir: fastq
+            -
+                folder: /scrna-seq
+                tar_dir: processed
+        attachment_search_by: file_name #possible options: file_name and folder_name
+        search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+        attach_object: folder #possible options: folder and file
+        attachment_file_ext: #must include dot (.) in-front of an extension
+            - .fcs
+
+SCRNASEQ:
+    assay_name: csRNAseq
+    mssm_id: 1
+    mssm_postfix: _1
+
+    data_sources:
+        - rawdata
+
+    rawdata:
+        #path to the location where data_retrieval for all projects are stored; this path
+        #will be combined with a path for a particular experiment
+        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+        sub_folder: /scrna-seq
+
+        search_method: # search_rawdata_summary
+            search_by: folder_name #possible options: file_content, folder_name
+            search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+            exclude_folders:
+                - FASTQs
+                - fastqs
+            file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
+            single_file_path: /outs/metrics_summary.csv
+
+        file_content_details:
+            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+                                     # 'row_num' - retrieve data from a particular row of the file
+            get_by_row_num: # 'row_num' - retrieve data from a particular row of the file
+                row_num: 2
+            get_by_primary_key:
+                header_row_number: # 1-based numbering
+                pk_column_number: # 1-based numbering
+            excel:
+                sheet_name:
+
+
+    attachment:
+        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
+        attachement_folder:
+            -
+                folder: /scrna-seq/FASTQs
+                tar_dir: fastq
+            -
+                folder: /scrna-seq
+                tar_dir: processed
+        attachment_search_by: folder_name #possible options: file_name and folder_name
+        search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+        attach_object: folder #possible options: folder and file
+            attachment_file_ext: #must include dot (.) in-front of an extension
+
+SCATACSEQ:
+    assay_name: csATACseq
+    mssm_id: 2
+    mssm_postfix: _2
+
+    data_sources:
+        - rawdata
+
+    rawdata:
+        #path to the location where data_retrieval for all projects are stored; this path
+        #will be combined with a path for a particular experiment
+        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+        sub_folder: /scatac-seq
+
+        search_method: # search_rawdata_summary
+            search_by: folder_name #possible options: file_content, folder_name
+            search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+            exclude_folders:
+                - FASTQs
+                - fastqs
+            file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
+            single_file_path: /outs/summary.csv
+
+        file_content_details:
+            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+                                     # 'row_num' - retrieve data from a particular row of the file
+            get_by_row_num: # 'row_num' - retrieve data from a particular row of the file
+                row_num: 2
+            get_by_primary_key:
+                header_row_number: # 1-based numbering
+                pk_column_number: # 1-based numbering
+            excel:
+                sheet_name:
+
+    attachment:
+        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
+        attachement_folder:
+            -
+                folder: /scatac-seq/fastqs
+                tar_dir: fastq
+            -
+                folder: /scatac-seq
+                tar_dir: processed
+        attachment_search_by: folder_name #possible options: file_name and folder_name
+        search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+        attach_object: folder #possible options: folder and file
+            attachment_file_ext: #must include dot (.) in-front of an extension
+
+CYTOF:
+    assay_name: CyTOF
+    mssm_id: 6
+    mssm_postfix: _6
+
+    data_sources:
+        - rawdata
+
+    rawdata:
+        #path to the location where data_retrieval for all projects are stored; this path
+        #will be combined with a path for a particular experiment
+        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+        sub_folder: /CyTOF
+
+        search_method: # search_rawdata_summary
+            search_by: file_content #possible options: file_content, folder_name
+            search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.
+            exclude_folders:
+
+            file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
+                - .xlsx
+                - .xls
+            single_file_path:
+
+        file_content_details:
+            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+                                     # 'row_num' - retrieve data from a particular row of the file
+            get_by_row_num:
+                # 'row_num' - retrieve data from a particular row of the file
+                row_num:
+            get_by_primary_key:
+                header_row_number: 1 # 1-based numbering
+                pk_column_number: 6 # 1-based numbering
+            excel:
+                sheet_name: Sample Log
+
+    attachment:
+        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
+        attachement_folder:
+            -
+                folder: /cytof
+                tar_dir: fcs
+
+        attachment_search_by: file_name #possible options: file_name and folder_name
+        search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+        attach_object: file #possible options: folder and file
+            attachment_file_ext: #must include dot (.) in-front of an extension
+                - .fcs
+
+CyTOF_original:
+    assay_name: CyTOF
     mssm_id: 6
     mssm_postfix: _6
     #path to the location where manifests for all projects are stored; this path will be combined with a path for a particular experiment
@@ -7,11 +212,11 @@ CYTOFF:
     #path to the actual folder with manifests, should be concatenated to manifest location and project path
     manifest_folder: SampleManifests
 
-    #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
+    #path to the location where data_retrieval for all projects are stored; this path will be combined with a path for a particular experiment
     rawdata_location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # /mnt/researchsan02a/Projects
     #path to the actual folder with assay data files, should be concatenated to manifest location and project path
-    rawdata_folder: cytoff
-    #rawdata file to be found inside of the folder with raw data for the current sample
+    rawdata_folder: CyTOF
+    #data_retrieval file to be found inside of the folder with raw data for the current sample
     rawdata_summary_file:
         file_path:
         get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
@@ -58,7 +263,7 @@ CYTOFF:
         - .fcs
     attach_object: file
 
-SCRNASEQ:
+SCRNASEQ_orig:
     assay_name: csRNAseq
     mssm_id: 1
     mssm_postfix: _1
@@ -67,11 +272,11 @@ SCRNASEQ:
     #path to the actual folder with manifests, should be concatenated to manifest location and project path
     manifest_folder: /SampleManifests
 
-    #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
+    #path to the location where data_retrieval for all projects are stored; this path will be combined with a path for a particular experiment
     rawdata_location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive #/ext_data/shared
     #path to the actual folder with assay data files, should be concatenated to manifest location and project path
     rawdata_folder: /scrna-seq
-    #rawdata file to be found inside of the folder with raw data for the current sample
+    #data_retrieval file to be found inside of the folder with raw data for the current sample
     rawdata_summary_file:
         file_path: /outs/metrics_summary.csv
         get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
@@ -83,6 +288,7 @@ SCRNASEQ:
 
     #search type for each type of info
     search_manifest: file_content
+
     search_rawdata_summary:
         search_by: folder_name
         search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
@@ -107,6 +313,7 @@ SCRNASEQ:
     attachment_file_ext:
     attach_object: folder
 
+    '''
     submission_forms:
         -
             name: experiment_metadata
@@ -117,9 +324,9 @@ SCRNASEQ:
         -
             name: sequence_item_metadata
             assignment: aliquot
+    '''
 
-
-SCATACSEQ:
+SCATACSEQ_orig:
     assay_name: csATACseq
     mssm_id: 2
     mssm_postfix: _2
@@ -128,11 +335,11 @@ SCATACSEQ:
     #path to the actual folder with manifests, should be concatenated to manifest location and project path
     manifest_folder: /SampleManifests
 
-    #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
+    #path to the location where data_retrieval for all projects are stored; this path will be combined with a path for a particular experiment
     rawdata_location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive #/ext_data/shared
     #path to the actual folder with assay data files, should be concatenated to manifest location and project path
     rawdata_folder: /scatac-seq
-    #rawdata file to be found inside of the folder with raw data for the current sample
+    #data_retrieval file to be found inside of the folder with raw data for the current sample
     rawdata_summary_file:
         file_path: /outs/summary.csv
         get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
@@ -183,11 +390,11 @@ RNASEQ:
         # 'row_num' - retrieve data from a particular row of the file
         row_num:
 
-    #path to the location where rawdata for all projects are stored; this path will be combined with a path for a particular experiment
+    #path to the location where data_retrieval for all projects are stored; this path will be combined with a path for a particular experiment
     rawdata_location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive #/ext_data/shared
     #path to the actual folder with assay data files, should be concatenated to manifest location and project path
     rawdata_folder: /scrna-seq
-    #rawdata file to be found inside of the folder with raw data for the current sample
+    #data_retrieval file to be found inside of the folder with raw data for the current sample
     rawdata_summary_file:
         file_path: /outs/metrics_summary.csv
         get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
@@ -237,6 +444,7 @@ RNASEQ:
     attachment_file_ext:
     attach_object: folder
 
+    '''
     submission_forms:
         -
             name: experiment_metadata
@@ -247,6 +455,6 @@ RNASEQ:
         -
             name: sequence_item_metadata
             assignment: aliquot
-
+    '''
 
 

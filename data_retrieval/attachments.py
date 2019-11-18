@@ -1,18 +1,18 @@
-from rawdata import RawDataRequest
+from data_retrieval import DataRetrieval
 from pathlib import Path
 import os
 import tarfile
 import hashlib
 
 
-class RawDataAttachment(RawDataRequest):
+class Attachment(DataRetrieval):
 
     def __init__(self, request):
         # self.rawdata_attachments = {}
         self.tar_folder = ''
         self.aliquots_tarball_dict = {}
         self.data_loc = None
-        RawDataRequest.__init__(self, request)
+        DataRetrieval.__init__(self, request)
 
     def init_specific_settings(self):
         last_part_path_list = self.conf_assay['attachement_folder']
