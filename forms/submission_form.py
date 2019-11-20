@@ -96,7 +96,7 @@ class SubmissionForm():
                     # if value is blank and did not qualify for any previous conditions, assign Null (None)
                     json_node[key] = None
                 '''
-                print(key, '==>', json_node[key])
+                # print(key, '==>', json_node[key])
                 pass
 
     def eval_cfg_value(self, key, assay_cfg_val, common_cfg_val):

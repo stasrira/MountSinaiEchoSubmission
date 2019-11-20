@@ -5,6 +5,7 @@ ASSAY_TEMPLATE:
 
     data_sources:
         - rawdata
+        - attachment
 
     rawdata:
         #path to the location where data_retrieval for all projects are stored; this path will be combined with a path for a particular experiment
@@ -55,6 +56,7 @@ SCRNASEQ:
 
     data_sources:
         - rawdata
+        - attachment
 
     rawdata:
         #path to the location where data_retrieval for all projects are stored; this path
@@ -106,6 +108,7 @@ SCATACSEQ:
 
     data_sources:
         - rawdata
+        - attachment
 
     rawdata:
         #path to the location where data_retrieval for all projects are stored; this path
@@ -157,6 +160,7 @@ CYTOF:
 
     data_sources:
         - rawdata
+        - attachment
 
     rawdata:
         #path to the location where data_retrieval for all projects are stored; this path

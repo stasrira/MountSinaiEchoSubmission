@@ -41,6 +41,15 @@ Email:
     sent_to_emails: stasrirak.ms@gmail.com, stasrira@yahoo.com
     send_emails: True # expected values: True, False
 
+#output_profile:
+#    full:
+#        submission_forms:
+#            - experiment_metadata
+#            - sequence_item_metadata
+#    initial:
+#        submission_forms:
+#            - experiment_metadata
+
 submission_forms:
         -
             name: experiment_metadata

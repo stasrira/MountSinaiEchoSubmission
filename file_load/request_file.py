@@ -47,6 +47,7 @@ class Request(File):
         self.attachments = None
         self.submission_forms = None
         self.submission_package = None
+        self.data_sources = None
 
         # self.sheet_name = ''
         self.sheet_name = sheet_name.strip()
@@ -238,10 +239,13 @@ class Request(File):
 
     def process_request(self):
         self.conf_assay = self.load_assay_conf(self.assay)
-        self.raw_data = RawData(self) # self.raw_data = DataRetrieval(self)
-        self.attachments = Attachment(self)
-        self.submission_forms = None  # submission forms will defined later inside of the SubmissionPackage class
-        # self.submission_forms = SubmissionForms(self)
+        self.data_sources = self.conf_assay['data_sources']
+
+        if self.data_sources and 'rawdata' in self.data_sources:
+            self.raw_data = RawData(self) # self.raw_data = DataRetrieval(self)
+        if self.data_sources and 'attachments' in self.data_sources:
+            self.attachments = Attachment(self)
+
         self.submission_package = SubmissionPackage(self)
 
         # check for errors and put final log entry for the request.

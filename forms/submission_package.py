@@ -61,7 +61,8 @@ class SubmissionPackage():
     # create tarball files for each aliquot (grouping all attachments)
     # save name of the tarbal and its MD5sum to the attachment's object property
     def prepare_submission_package_attachments(self):
-        attachments = self.req_obj.attachments.aliquots_data_dict
-        for attch in attachments:
-            tar_path = self.submission_dir + "/" + attch + ".tar.gz"
-            self.req_obj.attachments.add_tarball(attch, tar_path)
+        if self.req_obj.attachments:
+            attachments = self.req_obj.attachments.aliquots_data_dict
+            for attch in attachments:
+                tar_path = self.submission_dir + "/" + attch + ".tar.gz"
+                self.req_obj.attachments.add_tarball(attch, tar_path)
