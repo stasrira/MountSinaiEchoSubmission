@@ -171,10 +171,8 @@ def validate_schema ():
         print('Validation failed with this error: {}'.format(ve))
         pass
 
-process_json()
+# process_json()
 
 # process_tar()
 
 # validate_schema()
-
-

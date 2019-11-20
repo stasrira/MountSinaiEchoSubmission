@@ -6,7 +6,7 @@ scatac_seq_metadata:
     nuclei_extr_count:
     nuclei_tagmentation:
     tagmentation_date:
-    tagmentation_kit_id: Chromium Single Cell ATAC Reagent Kits User Guide (v1 Chemistry)
+    tagmentation_kit_id: 10x Chromium Single Cell ATAC (v1 Chemistry)
     pcr_cycle_nr:
     lib_dna_conc:
     lib_frag_size:

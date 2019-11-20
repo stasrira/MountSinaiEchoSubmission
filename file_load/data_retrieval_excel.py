@@ -3,7 +3,7 @@ import xlrd
 from utils import common as cm
 
 
-class Data_Rertrieval_Excel(File):
+class Data_Retrieval_Excel(File):
 
     def __init__(self, filepath, req_error, req_logger, sheet_name='', file_type=2):
 
@@ -87,7 +87,7 @@ class Data_Rertrieval_Excel(File):
         # print ('cell_value = {}'.format(cell_value))
         if cell.ctype == 3:
             cell_value_date = xlrd.xldate_as_datetime(cell_value, wb.datemode)
-            cell_value = cell_value_date.strftime("%Y-%m-%d")
+            cell_value = cell_value_date.strftime("%Y-%m-%directory")
         return cell_value
 
     def get_file_content(self):

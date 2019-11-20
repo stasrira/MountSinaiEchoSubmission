@@ -8,7 +8,7 @@ from utils import setup_logger_common
 from utils import ConfigData
 from file_load import File  # , MetaFileExcel
 from file_load.file_error import RequestError
-from data_retrieval import DataRetrieval
+from data_retrieval import RawData # DataRetrieval
 from data_retrieval import Attachment
 from forms import SubmissionPackage
 
@@ -20,6 +20,9 @@ class Request(File):
         # load_configuration (main_cfg_obj) # load global and local configureations
 
         File.__init__(self, filepath, file_type)
+
+        self.conf_main = ConfigData(gc.CONFIG_FILE_MAIN)
+
         self.error = RequestError(self)
 
         self.logger = self.setup_logger(self.wrkdir, self.filename)
@@ -53,8 +56,7 @@ class Request(File):
         # print (self.sheet_name)
         self.logger.info('Data will be loaded from worksheet: "{}"'.format(self.sheet_name))
 
-        self.conf_assay = self.load_assay_conf(self.assay)
-        self.conf_main = ConfigData(gc.CONFIG_FILE_MAIN)
+        self.conf_assay = None
 
         self.get_file_content()
 
@@ -106,7 +108,7 @@ class Request(File):
                         # print ('cell_value = {}'.format(cell_value))
                         if cell.ctype == 3:
                             cell_value_date = xlrd.xldate_as_datetime(cell_value, wb.datemode)
-                            cell_value = cell_value_date.strftime("%Y-%m-%d")
+                            cell_value = cell_value_date.strftime("%Y-%m-%directory")
                         column.append(cell_value)
 
                     self.columnlist.append(','.join(column))
@@ -115,7 +117,7 @@ class Request(File):
 
                 # load passed request parameters (by columns)
                 self.get_request_parameters()
-                # to support decision of not supplying Project Name from Request file, it will retrieved from gc module
+                # to support decision of not supplying Project Name from Request file, it will be retrieved from gc module
                 self.project = gc.PROJECT_NAME
                 # calculate Experiment_id out of request paramaters
                 self.experiment_id = "_".join([self.exposure, self.center, self.source_spec_type, self.assay])
@@ -235,8 +237,8 @@ class Request(File):
         return lg['logger']
 
     def process_request(self):
-        # self.conf_assay = self.load_assay_conf(self.assay)
-        self.raw_data = DataRetrieval(self)
+        self.conf_assay = self.load_assay_conf(self.assay)
+        self.raw_data = RawData(self) # self.raw_data = DataRetrieval(self)
         self.attachments = Attachment(self)
         self.submission_forms = None  # submission forms will defined later inside of the SubmissionPackage class
         # self.submission_forms = SubmissionForms(self)
