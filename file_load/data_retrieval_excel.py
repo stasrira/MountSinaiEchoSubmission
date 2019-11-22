@@ -90,7 +90,7 @@ class Data_Retrieval_Excel(File):
         # print ('cell_value = {}'.format(cell_value))
         if cell.ctype == 3:
             cell_value_date = xlrd.xldate_as_datetime(cell_value, wb.datemode)
-            cell_value = cell_value_date.strftime("%Y-%m-%directory")
+            cell_value = cell_value_date.strftime("%Y-%m-%d")
         return cell_value
 
     def get_file_content(self):

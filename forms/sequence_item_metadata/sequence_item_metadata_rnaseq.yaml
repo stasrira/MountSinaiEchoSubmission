@@ -1,21 +1,21 @@
 format: fastq + txt
 rna_seq_metadata:
-    rna_extr_date: eval!get_assaydata_value_by_col_number(2, True) #1st parameter stands for column number, 2nd if the key is required (True) or can be left blank (False)
+    rna_extr_date: eval!self.get_assaydata_value_by_col_number(2) #1st parameter stands for column number, 2nd if the key is required (True) or can be left blank (False)
     rna_extr_method: Direct-zol RNA MiniPrep #constant key
     total_cell_num: 200000  #constant key
     cell_type:  PBMC #constant key
-    total_rna_conc: eval!get_assaydata_value_by_col_number(11, True)
+    total_rna_conc: eval!self.get_assaydata_value_by_col_number(11)
     total_rna_qc_method: Bioanalyzer #constant key
-    rin: eval!get_assaydata_value_by_col_number(10, True)
-    r_260_280: eval!get_assaydata_value_by_col_number(5, True)
-    r_260_230: eval!get_assaydata_value_by_col_number(6, True)
+    rin: eval!self.get_assaydata_value_by_col_number(10)
+    r_260_280: eval!self.get_assaydata_value_by_col_number(5)
+    r_260_230: eval!self.get_assaydata_value_by_col_number(6)
     lib_vendor: NuGEN #constant key
     lib_type: mRNA library #constant key
-    lib_prep_method: eval!get_assaydata_value_by_col_number(14, True)
+    lib_prep_method: eval!self.get_assaydata_value_by_col_number(14)
     lib_qc_method: Bioanalyzer #constant key
-    lib_adaptor_1: eval!get_assaydata_value_by_col_number(16, True)
-    lib_adaptor_2: eval!get_assaydata_value_by_col_number(17, True)
+    lib_adaptor_1: eval!self.get_assaydata_value_by_col_number(16)
+    lib_adaptor_2: eval!self.get_assaydata_value_by_col_number(17)
     lib_umi_cycle_num: 8 #constant key
-    lib_adaptor_size: 143 #constant key
-    lib_frag_size: eval!get_assaydata_value_by_col_number(19, True)
-    lib_dna_conc: eval!get_assaydata_value_by_col_number(20, True)
+    lib_adaptor_size: "143" #constant key
+    lib_frag_size: eval!self.get_assaydata_value_by_col_number(19)
+    lib_dna_conc: eval!self.get_assaydata_value_by_col_number(20)

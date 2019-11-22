@@ -111,7 +111,7 @@ class SubmissionForm():
 
         # check if some configuration instruction/key was retrieved for the given "key"
         if cfg_val:
-            if eval_flag in cfg_val:
+            if eval_flag in str(cfg_val):
                 cfg_val = cfg_val.replace(eval_flag, '')  # replace 'eval!' flag key
                 try:
                     out_val = eval(cfg_val)
@@ -136,11 +136,13 @@ class SubmissionForm():
     def get_tarball_property(self, sa, val_type):
 
         value = ''
-        tar_obj = self.req_obj.attachments.aliquots_tarball_dict[sa]
-        if val_type == 'name':
-            value = os.path.basename(tar_obj['path'])
-        elif val_type == 'md5':
-            value = tar_obj['md5']
+        if self.req_obj.attachments:
+            tar_obj = self.req_obj.attachments.aliquots_tarball_dict[sa]
+            if tar_obj:
+                if val_type == 'name':
+                    value = os.path.basename(tar_obj['path'])
+                elif val_type == 'md5':
+                    value = tar_obj['md5']
         return value
 
     # it will retrieve any existing property from the request object
@@ -151,27 +153,53 @@ class SubmissionForm():
     def get_submission_form_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self, property_name, check_dict)
 
-    # it will retrieve any existing property from data_retrieval object
+    # it will retrieve any existing property from rawdata object
     def get_rawdata_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self.req_obj.raw_data.aliquots_data_dict[self.sub_aliquot],
                                                    property_name, check_dict, 'dict')
 
-    # it will retrieve a key of a property named in "property_name" parameter
-    # from the object passed as a reference in "obj" parameter
-    # noinspection PyUnusedLocal
-    def get_property_value_from_object(self, obj, property_name, check_dict=False, obj_type='class'):
-        if obj_type == 'class':
-            get_item = 'obj.' + property_name
-        elif obj_type == 'dict':
-            get_item = 'obj["' + property_name + '"]'
+    # it will retrieve any existing property from assay data object
+    def get_assaydata_value_by_col_number(self, col_num, check_dict=False):
+        # t = list(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot].items())
+        # print(t)
+        # print (t[4][1])
+        obj = list(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot].items())
+        val = self.get_property_value_from_object(obj, col_num - 1, check_dict, 'dict', 'number')
+        if isinstance(val, tuple):
+            return val[1]
         else:
-            get_item = None
+            return val
+
+    # it will retrieve any existing property from assay data object
+    def get_assaydata_value(self, property_name, check_dict=False):
+        return self.get_property_value_from_object(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot],
+                                                   property_name, check_dict, 'dict')
+
+    # it will retrieve a key of a property named in "property" parameter
+    # from the object passed as a reference in "obj" parameter
+    # obj_type possible values: "class" (type of "obj" is class),
+    #                           "dict" (type of "obj" is dictionary)
+    # property_type possible values: "name" ("property" is name of property),
+    #                                "number" ("property" is number of items in dictionary)
+    def get_property_value_from_object(self, obj, property, check_dict=False, obj_type='class', property_type='name'):
+        property = str(property)
+        if property_type == 'name':
+            # if property name is given, proceed here
+            if obj_type == 'class':
+                get_item = 'obj.' + property
+            elif obj_type == 'dict':
+                get_item = 'obj["' + property + '"]'
+            else:
+                get_item = None
+        else:
+            # if column number is given, proceed here
+            get_item = 'obj[' + property + ']'
 
         try:
             out = eval(get_item)
 
             if check_dict:
-                out = cm2.get_dict_value(out, property_name)
+                out = cm2.get_dict_value(out, property)
 
         except Exception as ex:
             _str = 'Error "{}" occurred during preparing submission form "{}" for sub-aliquot "{}" ' \
