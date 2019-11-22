@@ -2,7 +2,8 @@ from data_retrieval import DataRetrieval
 from pathlib import Path
 from data_retrieval import DataRetrievalAliquot
 
-class DataSource (DataRetrieval):
+
+class DataSource(DataRetrieval):
     def __init__(self, request_obj, data_source_id, data_source_name):
         self.data_source_id = data_source_id
         self.data_source_name = data_source_name
@@ -28,11 +29,12 @@ class DataSource (DataRetrieval):
             # search_deep_level = cnf_data_source['search_method']['search_deep_level_max']
             # exclude_dirs = cnf_data_source['search_method']['exclude_folders']
             file_ext = cnf_data_source['search_method']['file_ext']  # self.conf_assay['rawdata_summary_file_ext']
-            data_file_struct = {'worksheet': cnf_data_source['file_content_details']['excel']['sheet_name'],
-                       'header_row_num': cnf_data_source['file_content_details']['get_by_primary_key']['header_row_number'],
-                       'col_num': cnf_data_source['file_content_details']['get_by_primary_key']['pk_column_number'],
-                       'exlude_header': True
-                       }
+            data_file_struct = {
+                'worksheet': cnf_data_source['file_content_details']['excel']['sheet_name'],
+                'header_row_num': cnf_data_source['file_content_details']['get_by_primary_key']['header_row_number'],
+                'col_num': cnf_data_source['file_content_details']['get_by_primary_key']['pk_column_number'],
+                'exlude_header': True
+                }
             self.get_data_by_file_content(search_deep_level, exclude_dirs, file_ext, data_file_struct)
 
         # check if some data_retrieval was assigned to an aliquot and warn if none were assigned

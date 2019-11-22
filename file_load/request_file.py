@@ -63,7 +63,6 @@ class Request(File):
 
         self.get_file_content()
 
-
     def get_file_content(self):
         if not self.columnlist:
             if cm.file_exists(self.filepath):
@@ -120,7 +119,8 @@ class Request(File):
 
                 # load passed request parameters (by columns)
                 self.get_request_parameters()
-                # to support decision of not supplying Project Name from Request file, it will be retrieved from gc module
+                # to support decision of not supplying Project Name from Request file,
+                # it will be retrieved from gc module
                 self.project = gc.PROJECT_NAME
                 # calculate Experiment_id out of request paramaters
                 self.experiment_id = "_".join([self.exposure, self.center, self.source_spec_type, self.assay])
@@ -179,7 +179,7 @@ class Request(File):
         _str_err = ''
         _str_warn = ''
         if len(self.sub_aliquots) == 0:
-            _str_err = '\n'.join([_str_err, 'List of provided sub-samples is empty. ' 
+            _str_err = '\n'.join([_str_err, 'List of provided sub-samples is empty. '
                                             'Aborting processing of the submission request.'])
         # Check if empty sub-samples were provided
         if '' in self.sub_aliquots:
@@ -249,9 +249,9 @@ class Request(File):
         self.data_sources = self.conf_assay['data_sources']
 
         if self.data_sources and 'rawdata' in self.data_sources:
-            self.raw_data =  DataSource(self, 'rawdata', 'Raw Data') # RawData(self)
+            self.raw_data = DataSource(self, 'rawdata', 'Raw Data')  # RawData(self)
         if self.data_sources and 'assaydata' in self.data_sources:
-            self.assay_data =  DataSource(self, 'assaydata', 'Assay Data') # RawData(self)
+            self.assay_data = DataSource(self, 'assaydata', 'Assay Data')  # RawData(self)
         if self.data_sources and 'attachment' in self.data_sources:
             self.attachments = Attachment(self)
 

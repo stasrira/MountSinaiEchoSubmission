@@ -31,14 +31,12 @@ class Attachment(DataRetrieval):
 
             self.data_loc = Path(self.convert_aliquot_properties_to_path(data_source_loc, last_part_path))
             # print (self.data_loc)
-            search_by = self.cnf_data_source['attachment_search_by']  # self.conf_assay['search_attachment']['search_by']
+            search_by = self.cnf_data_source['attachment_search_by']
             search_deep_level = self.cnf_data_source['search_deep_level_max']
             exclude_dirs = self.cnf_data_source['exclude_folders']
             ext_match = self.cnf_data_source['attachment_file_ext']
 
             if search_by == 'folder_name':
-                # search_deep_level = self.cnf_data_source['search_deep_level_max']  # self.conf_assay['search_attachment']['search_deep_level_max']
-                # exclude_dirs = self.cnf_data_source['exclude_folders']  # self.conf_assay['search_attachment']['exclude_folders']
                 self.get_data_by_folder_name(search_deep_level, exclude_dirs)
             elif search_by == 'file_name':
                 self.get_data_by_file_name(search_deep_level, exclude_dirs, ext_match)
@@ -93,9 +91,6 @@ class Attachment(DataRetrieval):
     def get_data_by_file_name(self, search_deep_level, exclude_dirs, ext_match):
         # it retrieves all files potentially qualifying to be an attachment and searches through each to match
         # the sub-aliquot name in the name of the file
-        # search_deep_level = self.cnf_data_source['search_deep_level_max']  # self.conf_assay['search_attachment']['search_deep_level_max']
-        # exclude_dirs = self.cnf_data_source['exclude_folders']  # self.conf_assay['search_attachment']['exclude_folders']
-        # ext_match = self.cnf_data_source['attachment_file_ext']  # self.conf_assay['attachment_file_ext']
         files = self.get_file_system_items(self.data_loc, search_deep_level, exclude_dirs, 'file', ext_match)
         for fl in files:
             fn = os.path.basename(fl)

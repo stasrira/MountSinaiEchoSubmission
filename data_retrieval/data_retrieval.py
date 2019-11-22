@@ -49,6 +49,7 @@ class DataRetrieval():
                          self.req_obj.center,
                          self.req_obj.source_spec_type,
                          last_part_path])  # self.conf_assay['data_folder']])
+
     """
     # get_data_by_file_content function expects the following parameters:
     search_deep_level, 
@@ -60,6 +61,7 @@ class DataRetrieval():
                     'exlude_header':
                     }
     """
+
     def get_data_by_file_content(self, search_deep_level, exclude_dirs, file_ext_match, file_struct):
         # retrieves raw data summary info for each sub-aliquot (from the request file) based on
         # presence of aliquot id in the particular column of predefined files
@@ -114,7 +116,7 @@ class DataRetrieval():
                         index_dict[col_vals[i]] = (rn + 1, file)
         return index_dict
 
-    def get_data_by_folder_name(self, search_deep_level, exclude_dirs, data_loc = None):
+    def get_data_by_folder_name(self, search_deep_level, exclude_dirs, data_loc=None):
         # retrieves data for each sub-aliquot listed in the request file based on presence
         # of aliquot id key in the name of the folder
         if not data_loc:

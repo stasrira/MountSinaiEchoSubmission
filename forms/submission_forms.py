@@ -44,7 +44,7 @@ class SubmissionForms():
                 self.error.add_error(_str)
 
     def add_submission_form(self, assingment_id, assignment_name, submission_form):
-        if  assingment_id not in self.forms_dict:
+        if assingment_id not in self.forms_dict:
             self.forms_dict[assingment_id] = []
         # attach_details = submission_form
         self.forms_dict[assingment_id].append(submission_form)

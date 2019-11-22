@@ -36,7 +36,7 @@ class ConfigData:
 
     def get_item_by_key(self, key_name):
         v = self.get_value(key_name)
-        if v != None:
+        if v is not None:
             return str(self.get_value(key_name))
         else:
             return v

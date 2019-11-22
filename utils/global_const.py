@@ -56,7 +56,7 @@ SUBMISSION_YAML_EVAL_FLAG = 'eval!'
 # CFG_DB_STUDY_ID = 'mdb_study_id'  # name of the config parameter storing key of the MDB study id
 # CFG_DICT_PATH = 'dict_tmpl_fields_node'  # name of config parameter storing key of dictionary path to list of fields
 # CFG_DB_ALLOW_DICT_UPDATE = 'mdb_allow_dict_update'  # name of config parameter storing values for "allow dict updates"
-# CFG_DB_ALLOW_SAMPLE_UPDATE = 'mdb_allow_sample_update'  # name of config param storing values for "allow sample updates"
+# CFG_DB_ALLOW_SAMPLE_UPDATE = 'mdb_allow_sample_update'# name of config param storing values for "allow sample updates"
 
 # Excel processing related
 # STUDY_EXCEL_WK_SHEET_NAME = 'wk_sheet_name'  # name of the worksheet name to be used for loading data from

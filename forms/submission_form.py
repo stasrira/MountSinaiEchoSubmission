@@ -145,20 +145,20 @@ class SubmissionForm():
                     value = tar_obj['md5']
         return value
 
-    # it will retrieve any existing property from the request object
+    # it will retrieve any existing property_val from the request object
     def get_request_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self.req_obj, property_name, check_dict)
 
-    # it will retrieve any existing property from the submission_form object
+    # it will retrieve any existing property_val from the submission_form object
     def get_submission_form_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self, property_name, check_dict)
 
-    # it will retrieve any existing property from rawdata object
+    # it will retrieve any existing property_val from rawdata object
     def get_rawdata_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self.req_obj.raw_data.aliquots_data_dict[self.sub_aliquot],
                                                    property_name, check_dict, 'dict')
 
-    # it will retrieve any existing property from assay data object
+    # it will retrieve any existing property_val from assay data object
     def get_assaydata_value_by_col_number(self, col_num, check_dict=False):
         # t = list(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot].items())
         # print(t)
@@ -170,40 +170,41 @@ class SubmissionForm():
         else:
             return val
 
-    # it will retrieve any existing property from assay data object
+    # it will retrieve any existing property_val from assay data object
     def get_assaydata_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot],
                                                    property_name, check_dict, 'dict')
 
-    # it will retrieve a key of a property named in "property" parameter
+    # it will retrieve a key of a property_val named in "property_val" parameter
     # from the object passed as a reference in "obj" parameter
     # obj_type possible values: "class" (type of "obj" is class),
     #                           "dict" (type of "obj" is dictionary)
-    # property_type possible values: "name" ("property" is name of property),
-    #                                "number" ("property" is number of items in dictionary)
-    def get_property_value_from_object(self, obj, property, check_dict=False, obj_type='class', property_type='name'):
-        property = str(property)
+    # property_type possible values: "name" ("property_val" is name of property_val),
+    #                                "number" ("property_val" is number of items in dictionary)
+    def get_property_value_from_object(self, obj, property_val, check_dict=False,
+                                       obj_type='class', property_type='name'):
+        property_val = str(property_val)
         if property_type == 'name':
-            # if property name is given, proceed here
+            # if property_val name is given, proceed here
             if obj_type == 'class':
-                get_item = 'obj.' + property
+                get_item = 'obj.' + property_val
             elif obj_type == 'dict':
-                get_item = 'obj["' + property + '"]'
+                get_item = 'obj["' + property_val + '"]'
             else:
                 get_item = None
         else:
             # if column number is given, proceed here
-            get_item = 'obj[' + property + ']'
+            get_item = 'obj[' + property_val + ']'
 
         try:
             out = eval(get_item)
 
             if check_dict:
-                out = cm2.get_dict_value(out, property)
+                out = cm2.get_dict_value(out, property_val)
 
         except Exception as ex:
             _str = 'Error "{}" occurred during preparing submission form "{}" for sub-aliquot "{}" ' \
-                   'while attempting to evaluate property: "{}". \n{} ' \
+                   'while attempting to evaluate property_val: "{}". \n{} ' \
                 .format(ex, self.form_name, self.sub_aliquot, get_item, traceback.format_exc())
             self.logger.error(_str)
             self.error.add_error(_str)

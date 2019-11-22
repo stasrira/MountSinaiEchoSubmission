@@ -16,7 +16,7 @@ class DataRetrievalAliquot():
         self.loaded = False  # default key
         self.data_retrieved = {}  # dictionary to hold final data_retrieval summary data
 
-    def get_data_by_rownum(self, filepath, data_row_num, header_row_num = 1, isexcel=True):
+    def get_data_by_rownum(self, filepath, data_row_num, header_row_num=1, isexcel=True):
         self.data_loc_path = filepath
         if isexcel:
             self.data_file = Data_Retrieval_Excel(self.data_loc_path, self.error, self.logger)
@@ -24,11 +24,11 @@ class DataRetrievalAliquot():
             self.data_file = Data_Retrieval_Text(self.data_loc_path, self.error, self.logger)
         self.data_file.header_row_num = header_row_num
         final_row_num = data_row_num + header_row_num - 1  # add given row number to the header row num to get actual
-                                                              # row number needed in the file
-                                                              # (deduct 1 to accomodate header row)
+        # row number needed in the file
+        # (deduct 1 to accommodate header row)
         self.data_file.get_file_content()
         if not self.data_file.loaded:
-            # summary file was not loaded property; return with loaded = False
+            # summary file was not loaded property_val; return with loaded = False
             self.loaded = False
         else:
             self.data_retrieved = self.data_file.get_row_by_number_with_headers(final_row_num)  # data_row_num
@@ -60,7 +60,7 @@ class DataRetrievalAliquot():
         self.data_file = Data_Retrieval_Text(self.data_loc_path, self.error, self.logger)
         self.data_file.get_file_content()
         if not self.data_file.loaded:
-            # summary file was not loaded property; return with loaded = False
+            # summary file was not loaded property_val; return with loaded = False
             return
 
         if get_data_by == 'row_num':
@@ -69,7 +69,7 @@ class DataRetrievalAliquot():
         else:
             _str = "Unexpected key of 'file_content_details/get_data_by' ({}) was provided. " \
                    "No data retrieval was completed.".format(get_data_by)
-            self.logger.warning (_str)
+            self.logger.warning(_str)
             self.loaded = False
 
     '''
@@ -101,7 +101,7 @@ class DataRetrievalAliquot():
         self.data_file = Data_Retrieval_Text(self.data_loc_path, self.error, self.logger)
         self.data_file.get_file_content()
         if not self.data_file.loaded:
-            # summary file was not loaded property; return with loaded = False
+            # summary file was not loaded property_val; return with loaded = False
             return
 
         if get_data_by == 'row_num':
