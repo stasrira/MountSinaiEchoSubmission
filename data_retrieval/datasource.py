@@ -2,14 +2,16 @@ from data_retrieval import DataRetrieval
 from pathlib import Path
 from data_retrieval import DataRetrievalAliquot
 
-class RawData (DataRetrieval):
-    def __init__(self, request_obl):
-        DataRetrieval.__init__(self, request_obl)
+class DataSource (DataRetrieval):
+    def __init__(self, request_obj, data_source_id, data_source_name):
+        self.data_source_id = data_source_id
+        self.data_source_name = data_source_name
+        DataRetrieval.__init__(self, request_obj)
         self.cnf_data_source = None
 
     def init_specific_settings(self):
         # this function is called by the base class to perform actions specific to the current class' needs
-        self.cnf_data_source = self.conf_assay['rawdata']
+        self.cnf_data_source = self.conf_assay[self.data_source_id]
         cnf_data_source = self.cnf_data_source
         last_part_path = cnf_data_source['sub_folder']
         data_source_loc = cnf_data_source['location']
@@ -37,7 +39,7 @@ class RawData (DataRetrieval):
         for sa in self.req_obj.sub_aliquots:
             if sa not in self.aliquots_data_dict:
                 # no data was assigned to aliquot
-                _str = 'Aliquot "{}" was not assigned with any Raw Data.'.format(sa)
+                _str = 'Aliquot "{}" was not assigned with any {}.'.format(sa, self.data_source_name)
                 self.logger.error(_str)
                 self.error.add_error(_str)
 
@@ -46,13 +48,13 @@ class RawData (DataRetrieval):
         rda = DataRetrievalAliquot(sa, self.req_obj)
         rda.get_data_from_predefined_file_text(self.cnf_data_source, directory)
         if rda.loaded:
-            _str = 'Summary Raw Data for aliquot "{}" was successfully loaded from sub-aliquot ' \
+            _str = 'Summary {} for aliquot "{}" was successfully loaded from sub-aliquot ' \
                    'raw data location "{}".' \
-                .format(sa, directory)
+                .format(self.data_source_name, sa, directory)
             self.aliquots_data_dict[sa] = rda.data_retrieved
             self.logger.info(_str)
         else:
-            _str = 'Summary Raw Data for aliquot "{}" failed to load from sub-aliquot ' \
+            _str = 'Summary {}a for aliquot "{}" failed to load from sub-aliquot ' \
                    'raw data location "{}"; see earlier error(s) in this log.' \
-                .format(sa, directory)
+                .format(self.data_source_name, sa, directory)
             self.logger.warning(_str)

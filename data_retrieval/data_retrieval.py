@@ -43,7 +43,7 @@ class DataRetrieval():
         '''
 
     def convert_aliquot_properties_to_path(self, data_location, last_part_path):
-        return '/'.join([data_location,  # self.conf_assay['rawdata_location']
+        return '/'.join([data_location,
                          self.req_obj.project,
                          self.req_obj.exposure,
                          self.req_obj.center,
@@ -66,11 +66,11 @@ class DataRetrieval():
 
         files = self.get_file_system_items(self.data_loc, search_deep_level, exclude_dirs, 'file', file_ext_match)
 
-        file_index = self.index_rawdata_files(files, file_struct)
+        file_index = self.index_data_files(files, file_struct)
         for sa in file_index:
             if sa in self.req_obj.sub_aliquots:
                 rda = DataRetrievalAliquot(sa, self)
-                rda.get_data_by_rownum(file_index[sa][1], file_index[sa][0])
+                rda.get_data_by_rownum(file_index[sa][1], file_index[sa][0], file_struct['header_row_num'])
                 if rda.loaded:
                     _str = 'Summary Raw Data for aliquot "{}" was successfully loaded from file "{}".' \
                         .format(sa, file_index[sa][1])
@@ -81,7 +81,7 @@ class DataRetrieval():
                            'see earlier error(s) in this log.'.format(sa, file_index[sa][1])
                     self.logger.warning(_str)
 
-    def index_rawdata_files(self, files, file_struct):
+    def index_data_files(self, files, file_struct):
         # combine content of selected files and create dictionary pr_key/file path
         worksheet = file_struct['worksheet']  # self.conf_assay['data_retrieved']['sheet_name']
         header_row_num = file_struct['header_row_num']  # self.conf_assay['data_retrieved']['header_row_number'] # 1
@@ -102,7 +102,7 @@ class DataRetrieval():
             col_vals = f.get_column_values(col_num, header_row_num, exlude_header)
             if col_vals:
                 # if list of values returned, loop to create a dictionary with key = aliquot_id and
-                # value a tuple containing row_number (using 0-base array) adjusted to accommodate excluded header
+                # key a tuple containing row_number (using 0-base array) adjusted to accommodate excluded header
                 # and path to the file containing it
                 for i in range(len(col_vals)):
                     if len(str(col_vals[i]).strip()) > 0:
@@ -112,12 +112,11 @@ class DataRetrieval():
                             rn = 1
                         # row number (rn) is increased by 1 to convert to 1-base numbering
                         index_dict[col_vals[i]] = (rn + 1, file)
-            # f = None  # TODO: Confirm that this line can be commented
         return index_dict
 
     def get_data_by_folder_name(self, search_deep_level, exclude_dirs, data_loc = None):
         # retrieves data for each sub-aliquot listed in the request file based on presence
-        # of aliquot id value in the name of the folder
+        # of aliquot id key in the name of the folder
         if not data_loc:
             data_loc = self.data_loc
         dirs = self.find_locations_by_folder(data_loc, search_deep_level, exclude_dirs)

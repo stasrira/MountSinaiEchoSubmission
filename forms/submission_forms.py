@@ -21,20 +21,19 @@ class SubmissionForms():
         for form in forms:
             self.logger.info('Processing submission form "{}".'.format(form))
             try:
-                submission_form = None  # reset the submission form reference TODO: Verify removing of this line
-                if form['assignment'] == 'aliquot':  # TODO store strings "aliquot" and "assignments" in global const module
+                submission_form = None  # reset the submission form reference
+                if form['assignment'] == 'aliquot':
                     # prepare an instance of the current form for each aliquot
                     for sa, a, smpl in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots, self.req_obj.samples):
                         self.logger.info('Prepare submission form "{}" for sub_aliquot "{}".'.format(form['name'], sa))
-                        submission_form = SubmissionForm(form['name'], self.req_obj, sa, a, smpl)  # TODO: store "name" in global const
+                        submission_form = SubmissionForm(form['name'], self.req_obj, sa, a, smpl)
                         self.add_submission_form(sa, form['assignment'], submission_form)  # .json_form.json_data
-                elif form['assignment'] == 'request':  # TODO: store "request" in global const
+                elif form['assignment'] == 'request':
                     self.logger.info('Prepare submission form "{}" of the request level.'.format(form['name']))
-                    submission_form = SubmissionForm(form['name'], self.req_obj, None, None,
-                                                     None)  # TODO: store "name" and "assignments" in global const
+                    submission_form = SubmissionForm(form['name'], self.req_obj, None, None, None)
                     self.add_submission_form(form['assignment'], form['assignment'], submission_form)
                 else:
-                    _str = 'Submission form "{}" had an unexpected configuration "assignment" value "{}" ' \
+                    _str = 'Submission form "{}" had an unexpected configuration "assignment" key "{}" ' \
                            'and was not created.'.format(form['name'], form['assignment'])
                     self.logger.error(_str)
                     self.error.add_error(_str)

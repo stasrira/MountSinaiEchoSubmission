@@ -1,11 +1,11 @@
 format: multiple
 scrna_seq_metadata:
-    viability: # constant blank value ; used for testing: eval!self.get_rawdata_value('Mean_Reads_per_Cell')
-    number_cells: eval!None # constant blank value ; used for testing: eval!self.get_rawdata_value('Estimated_Number_of_Cells')
-    lib_reagents: # constant blank value
+    viability: # constant blank key ; used for testing: eval!self.get_rawdata_value('Mean_Reads_per_Cell')
+    number_cells: eval!None # constant blank key ; used for testing: eval!self.get_rawdata_value('Estimated_Number_of_Cells')
+    lib_reagents: # constant blank key
     kit_name: 10x Chromium Single Cell 3ʹ Gene Expression assay (v3 Chemistry)
-    lib_frag_size: # constant blank value
-    lib_dna_conc: # constant blank value
-    lib_molarity: # constant blank value
+    lib_frag_size: # constant blank key
+    lib_dna_conc: # constant blank key
+    lib_molarity: # constant blank key
     lib_adaptor_1: # AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC[8bp]ATCTCGTATGCCGTCTTCTGCTTG # TOBE FINALIZED
     lib_adaptor_2: # AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT

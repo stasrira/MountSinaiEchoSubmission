@@ -8,7 +8,6 @@ import hashlib
 class Attachment(DataRetrieval):
 
     def __init__(self, request):
-        # self.rawdata_attachments = {}
         self.tar_folder = ''
         self.aliquots_tarball_dict = {}
         self.data_loc = None
@@ -21,7 +20,7 @@ class Attachment(DataRetrieval):
         last_part_path_list = cnf_data_source['attachment_folder']
         data_source_loc = cnf_data_source['location']
         for last_part_path_item in last_part_path_list:
-            # check if value received from config file is a dictionary
+            # check if key received from config file is a dictionary
             if isinstance(last_part_path_item, dict):
                 # if it is a dictionary, get values from it to a local variables
                 last_part_path = last_part_path_item['folder']

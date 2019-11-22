@@ -39,7 +39,7 @@ class SubmissionPackage():
         self.prepare_submission_package_jsons()
 
     # this function will create all required json files
-    # depends on a form group value assigned to a form,
+    # depends on a form group key assigned to a form,
     # one json file per request or one json file per sub_aliquot entry will be created
     def prepare_submission_package_jsons(self):
         # save json files to package dir

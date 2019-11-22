@@ -6,24 +6,24 @@ md5sum: eval!self.get_tarball_property(eval!self.get_submission_form_value('sub_
 format:
 paired_file:
 assay: eval!self.get_request_value('assay', True)
-seq_length: eval!None # constant blank value
-seq_depth: # constant blank value
-seq_end_type: # constant blank value
-strand_specificity: # constant blank value
+seq_length: eval!None # constant blank key
+seq_depth: # constant blank key
+seq_end_type: # constant blank key
+strand_specificity: # constant blank key
 seq_platform: Illumina # Illumina except cytof--> Fluidigm
 seq_instrument: NovaSeq # except Cytof-->; methylation-->
-seq_date:  # constant blank value
-sequenced_by:  # constant blank value
-seq_run_number: eval!None # constant blank value
-seq_machine_id:  # constant blank value
-seq_flowcell_id:  # constant blank value
-seq_flowcell_run:  # constant blank value
-seq_flowcell_lane:  # constant blank value
-seq_flowcell_type:  # constant blank value
-pcr_cycle_nr: eval!None # constant blank value
-sample_barcode:  # constant blank value
-pcr_barcode:  # constant blank value
-comments: # constant blank value
-spike_ins_present: F  # constant F value
-spike_ins: eval![] # constant blank array value
-reagents:  eval![] # constant blank array value
+seq_date:  # constant blank key
+sequenced_by:  # constant blank key
+seq_run_number: eval!None # constant blank key
+seq_machine_id:  # constant blank key
+seq_flowcell_id:  # constant blank key
+seq_flowcell_run:  # constant blank key
+seq_flowcell_lane:  # constant blank key
+seq_flowcell_type:  # constant blank key
+pcr_cycle_nr: eval!None # constant blank key
+sample_barcode:  # constant blank key
+pcr_barcode:  # constant blank key
+comments: # constant blank key
+spike_ins_present: F  # constant F key
+spike_ins: eval![] # constant blank array key
+reagents:  eval![] # constant blank array key

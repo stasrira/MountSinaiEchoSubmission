@@ -51,13 +51,13 @@ Email:
 #            - experiment_metadata
 
 submission_forms:
-        -
-            name: experiment_metadata
-            assignment: request
-        #-
-        #    name: aliquot_metadata
-        #    assignment: aliquot
-        -
-            name: sequence_item_metadata
-            assignment: aliquot
+    -
+        name: experiment_metadata
+        assignment: request # expected values are: "request" and "aliquot"
+    #-
+    #    name: aliquot_metadata
+    #    assignment: aliquot
+    -
+        name: sequence_item_metadata
+        assignment: aliquot # expected values are: "request" and "aliquot"
 

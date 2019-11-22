@@ -8,6 +8,7 @@ from utils import global_const as gc
 from utils import common as cm
 from file_load import StudyConfig
 from csv import reader
+from collections import OrderedDict
 
 
 #  Text file class (used as a base)
@@ -101,7 +102,7 @@ class File:
 
     def get_row_by_number_with_headers(self, rownum):
         row = self.get_row_by_number_to_list(rownum)
-        row_with_header = {}  # output dictionary
+        row_with_header = OrderedDict()  # output dictionary
         header = self.get_headers()
         for field, title in zip(row, header):
             row_with_header[title] = field

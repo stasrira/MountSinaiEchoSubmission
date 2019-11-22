@@ -19,7 +19,7 @@ class ConfigData:
     def get_value(self, yaml_path, delim='/'):
         path_elems = yaml_path.split(delim)
 
-        # loop through the path to get the required value
+        # loop through the path to get the required key
         val = self.cfg
         for el in path_elems:
             # make sure "val" is not None and continue checking if "el" is part of "val"
@@ -35,5 +35,9 @@ class ConfigData:
         return val
 
     def get_item_by_key(self, key_name):
-        return str(self.get_value(key_name))
+        v = self.get_value(key_name)
+        if v != None:
+            return str(self.get_value(key_name))
+        else:
+            return v
 

@@ -31,7 +31,10 @@ class Data_Retrieval_Excel(File):
                     sheet.cell_value(0, 0)
                     if sheet.ncols >= col_number >= 0:
                         for i in range(sheet.nrows):
-                            if i == header_row_number and exclude_header:
+                            if i < header_row_number:
+                                # skip all rows before the header
+                                pass
+                            elif i == header_row_number and exclude_header:
                                 pass
                             else:
                                 cell = sheet.cell(i, col_number)
@@ -78,10 +81,10 @@ class Data_Retrieval_Excel(File):
         cell_value = cell.value
         # take care of number and dates received from Excel and converted to float by default
         if cell.ctype == 2 and int(cell_value) == cell_value:
-            # the value is integer
+            # the key is integer
             cell_value = str(int(cell_value))
         elif cell.ctype == 2:
-            # the value is float
+            # the key is float
             cell_value = str(cell_value)
         # convert date back to human readable date format
         # print ('cell_value = {}'.format(cell_value))
@@ -111,7 +114,7 @@ class Data_Retrieval_Excel(File):
                         # ln.append('"' + sheet.cell_value(i,j) + '"')
                         cell = sheet.cell(i, j)
                         cell_value = self.validate_cell_value(cell, wb)
-                        ln.append('"' + cell_value + '"')  # TODO: consider adding double quotes around values
+                        ln.append('"' + cell_value + '"')
 
                     self.lineList.append(','.join(ln))
 

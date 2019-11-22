@@ -1,6 +1,6 @@
 CENTERS:
     DEFAULT:
-        #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
+        #comma delimited list identifying names or column numbers based on the key of "sample_id_method"
         sample_id_fields: Barcode
         #expected values: "name" or "number"
         sample_id_method: name
@@ -16,7 +16,7 @@ CENTERS:
         manifest_sheet_name: Sheet1
 
     HI:
-        #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
+        #comma delimited list identifying names or column numbers based on the key of "sample_id_method"
         sample_id_fields: Barcode
         #expected values: "name" or "number"
         sample_id_method: name

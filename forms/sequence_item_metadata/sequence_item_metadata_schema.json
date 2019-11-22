@@ -645,7 +645,7 @@
               },
               "seq_end_type": {
                 "type": "string",
-                "enum": [ "single-ended", "pair-ended"]
+                "enum": [ "single-ended", "pair-ended", ""]
               },
               "seq_platform": {
                 "type": "string"

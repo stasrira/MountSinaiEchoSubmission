@@ -16,7 +16,7 @@ class FieldIdMethod:
     name = field_id_methods[0]
     number = field_id_methods[1]
 
-
+'''
 def load_configuration(fl_class, loc_cfg_path):
     # load global configuration
     # TODO: verify utilization of Main Config file (m_cfg)
@@ -42,3 +42,4 @@ def load_configuration(fl_class, loc_cfg_path):
     StudyConfig.study_logging_level = StudyConfig.config_glb.get_value(gc.STUDY_LOGGING_LEVEL_CFG_PATH)
 
     return True
+'''

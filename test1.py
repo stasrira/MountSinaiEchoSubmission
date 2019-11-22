@@ -31,7 +31,7 @@ def get_json_keys(json_node, parent_keys = ''):
                     full_key_name = cur_parents
 
                     # eval_val = eval('update_function("{}", "{}", "{}")'.format(full_key_name, cur_assay, os.path.basename(filepath)))
-                    eval_val = 'Evaled value for key = {}'.format(full_key_name)
+                    eval_val = 'Evaled key for key = {}'.format(full_key_name)
                     json_node[key] = eval_val
                     print('Key = {}, Value: {}'.format(full_key_name, json_node[key])) # val
 
@@ -129,7 +129,7 @@ def process_json():
     fl = File_Json(filepath, err, log)
 
     # for key, item in fl.json_data.items():
-    #    print ('key="{}"; value={}'.format(key, item))
+    #    print ('key="{}"; key={}'.format(key, item))
     if fl.json_data:
         # get_json_keys(fl.json_data)
         get_json_schema_keys_names_printed(fl.json_data)

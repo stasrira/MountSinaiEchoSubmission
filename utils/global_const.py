@@ -8,7 +8,7 @@ CONFIG_FILE_DICTIONARY = 'configs/dict_config.yaml'
 SUBMISSION_FORMS_DIR = 'forms'
 SUBMISSION_PACKAGES_DIR = "submission_packages"
 
-PROJECT_NAME = 'ECHO'  # this value is stored in here instead of being passed from a request.
+PROJECT_NAME = 'ECHO'  # this key is stored in here instead of being passed from a request.
 
 # study level default name for the config file
 # DEFAULT_STUDY_CONFIG_FILE = 'study.cfg.yaml'
@@ -31,8 +31,9 @@ STUDY_LOGGING_LEVEL_CFG_PATH = 'Logging/file_log_level'
 
 # default values for Study config file properties
 DEFAULT_CONFIG_VALUE_LIST_SEPARATOR = ','
-
 DEFAULT_REQUEST_SAMPLE_TYPE_SEPARATOR = '/'
+
+SUBMISSION_YAML_EVAL_FLAG = 'eval!'
 
 # default study config file extension
 # DEFAULT_STUDY_CONFIG_FILE_EXT = '.cfg.yaml'
@@ -52,8 +53,8 @@ DEFAULT_REQUEST_SAMPLE_TYPE_SEPARATOR = '/'
 # CFG_FLD_TMPL_SAMPLE_UPD = 'DB/fld_tmpl_samlpe_update'
 
 # predefined paths in the study config file for database related parameters
-# CFG_DB_STUDY_ID = 'mdb_study_id'  # name of the config parameter storing value of the MDB study id
-# CFG_DICT_PATH = 'dict_tmpl_fields_node'  # name of config parameter storing value of dictionary path to list of fields
+# CFG_DB_STUDY_ID = 'mdb_study_id'  # name of the config parameter storing key of the MDB study id
+# CFG_DICT_PATH = 'dict_tmpl_fields_node'  # name of config parameter storing key of dictionary path to list of fields
 # CFG_DB_ALLOW_DICT_UPDATE = 'mdb_allow_dict_update'  # name of config parameter storing values for "allow dict updates"
 # CFG_DB_ALLOW_SAMPLE_UPDATE = 'mdb_allow_sample_update'  # name of config param storing values for "allow sample updates"
 

@@ -12,7 +12,7 @@ class Row:
     _row_dict = None  # OrderedDict() of a headers
     header = None  # [] #list of values from a file for the first row (headers)
     __error = None  # RowErrors class reference holding all errors associated with the current row
-    __sample_id = None  # it stores a sample Id value for the row.
+    __sample_id = None  # it stores a sample Id key for the row.
 
     def __init__(self, file, row_num, row_content, header):
         self.file = file
@@ -60,7 +60,7 @@ class Row:
         return row
 
     def assign_sample_id(self):
-        self.file.logger.debug('Row #{}. Assigning sample id value.'.format(self.row_number))
+        self.file.logger.debug('Row #{}. Assigning sample id key.'.format(self.row_number))
 
         cfg = self.file.get_config_info()
         delim = self.file.config_value_list_separator()
@@ -100,7 +100,7 @@ class Row:
                             # ignore errors raised during evaluation of the cnt, this can be a case for strings
                             pass
 
-                    # insert cnt value into sid expression
+                    # insert cnt key into sid expression
                     sid = sid.replace('{{{}}}'.format(str(smp_val)), cnt)
                     # sid = sid.replace('{{{}}}'.format(str(smp_val)), str(cnt).strip())
 

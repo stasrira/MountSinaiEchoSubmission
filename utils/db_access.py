@@ -8,8 +8,8 @@ class MetadataDB:
 
     # CFG_DB_CONN = 'DB/mdb_conn_str'  # name of the config parameter storing DB connection string
     # CFG_DB_SQL_PROC = 'DB/mdb_sql_proc_load_sample'  # name of the config parameter storing DB name of the stored proc
-    # CFG_DB_STUDY_ID = 'DB/mdb_study_id'  # name of the config parameter storing value of the MDB study id
-    # CFG_DICT_PATH = 'DB/dict_tmpl_fields_node' # name of the config parameter storing value of dictionary path
+    # CFG_DB_STUDY_ID = 'DB/mdb_study_id'  # name of the config parameter storing key of the MDB study id
+    # CFG_DICT_PATH = 'DB/dict_tmpl_fields_node' # name of the config parameter storing key of dictionary path
     # to list of fields
     # CFG_DB_ALLOW_DICT_UPDATE = 'DB/mdb_allow_dict_update'  # name of the config parameter storing values
     # for "allow dict updates"

@@ -206,6 +206,59 @@ CYTOF:
         attachment_file_ext: #must include dot (.) in-front of an extension
             - .fcs
 
+RNASEQ:
+    assay_name: RNASEQ
+    mssm_id: 3
+    mssm_postfix: _3
+
+    data_sources:
+        - assaydata
+        #- attachment
+
+    assaydata:
+        #path to the location where data_retrieval for all projects are stored; this path
+        #will be combined with a path for a particular experiment
+        location: E:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive
+        #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+        sub_folder: /AssayData/RNAseq/DataQC
+
+        search_method: # search_rawdata_summary
+            search_by: file_content #possible options: file_content, folder_name
+            search_deep_level_max: 1 # 0: root folder, 1:first sub-folder, etc.
+            exclude_folders:
+
+            file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
+                - .xlsx
+                - .xls
+            single_file_path:
+
+        file_content_details:
+            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+                                     # 'row_num' - retrieve data from a particular row of the file
+            get_by_row_num:
+                # 'row_num' - retrieve data from a particular row of the file
+                row_num:
+            get_by_primary_key:
+                header_row_number: 4 # 1-based numbering
+                pk_column_number: 3 # 1-based numbering
+            excel:
+                sheet_name:
+
+    attachment:
+        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
+        attachment_folder:
+            -
+                folder: /cytof
+                tar_dir: fcs
+
+        attachment_search_by: file_name #possible options: file_name and folder_name
+        search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+        attach_object: file #possible options: folder and file
+        attachment_file_ext: #must include dot (.) in-front of an extension
+            - .fcs
+
 CyTOF_original:
     assay_name: CyTOF
     mssm_id: 6
@@ -244,7 +297,7 @@ CyTOF_original:
         pk_column_number: 6 # 1-based numbering
 
         #start ========= the following currently not in use ===========================
-        #comma delimited list identifying names or column numbers based on the value of "sample_id_method"
+        #comma delimited list identifying names or column numbers based on the key of "sample_id_method"
         pk_fields: 6
         #expected values: "name" or "number"
         pk_method: number
