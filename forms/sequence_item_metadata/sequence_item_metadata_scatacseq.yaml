@@ -1,0 +1,23 @@
+format: multiple
+scatac_seq_metadata:
+    lib_adaptor_1:
+    lib_adaptor_2:
+    nuclei_extr_date:
+    nuclei_extr_count:
+    nuclei_tagmentation:
+    tagmentation_date:
+    tagmentation_kit_id: 10x Chromium Single Cell ATAC (v1 Chemistry)
+    pcr_cycle_nr:
+    lib_dna_conc:
+    lib_frag_size:
+    lib_ba_quality:
+    seq_dna_conc:
+    seq_length:
+    seq_end_type:
+    seq_platform:
+    seq_date:
+    seq_machine_id:
+    seq_flowcell_id:
+    seq_flowcell_run:
+    seq_flowcell_lane:
+    seq_flowcell_type:

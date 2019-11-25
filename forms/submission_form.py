@@ -3,6 +3,7 @@ from pathlib import Path
 import os
 from utils import global_const as gc
 from utils import common as cm
+from utils import common2 as cm2
 from utils import ConfigData
 import traceback
 import jsonschema
@@ -24,7 +25,7 @@ class SubmissionForm():
         self.fl_json_schema = None
         self.fl_cfg_common = None
         self.fl_cfg_assay = None
-        self.fl_cfg_dict = None
+        # self.fl_cfg_dict = None
 
         self.prepare_form(form_name)
 
@@ -49,19 +50,19 @@ class SubmissionForm():
         self.fl_json_schema = File_Json(fl_path_json_schema, self.req_obj.error, self.req_obj.logger)
         self.fl_cfg_common = ConfigData(fl_path_cfg_common)
         self.fl_cfg_assay = ConfigData(fl_path_cfg_assay)
-        self.fl_cfg_dict = ConfigData(gc.CONFIG_FILE_DICTIONARY)
+        # self.fl_cfg_dict = ConfigData(gc.CONFIG_FILE_DICTIONARY)
 
-        print(self.fl_json.json_data)
+        # print(self.fl_json.json_data)
         # loop through all json keys and fill those with associated data
         self.get_json_keys(self.fl_json.json_data)
-        print(self.fl_json.json_data)
+        # print(self.fl_json.json_data)
 
         # validate final json file against json schema (if present)
         self.validate_json(self.fl_json, self.fl_json_schema)
 
     def get_json_keys(self, json_node, parent_keys=''):
         for key, val in json_node.items():
-            # TODO: add functionality to handle JSON arrays
+            # TODO: add functionality to handle JSON arrays (if those are needed)
             if isinstance(val, dict):
                 if parent_keys:
                     cur_parents = '/'.join([parent_keys, key])
@@ -83,44 +84,40 @@ class SubmissionForm():
                 val = self.eval_cfg_value(full_key_name,
                                           self.fl_cfg_assay.get_value(full_key_name),
                                           self.fl_cfg_common.get_value(full_key_name))
-                # assign retrieved value back to associated json key
+                # assign retrieved key back to associated json key
                 json_node[key] = val
                 '''
                 if not str(val).strip() == '':
-                    # if value is not empty, assing it as is
+                    # if key is not empty, assing it as is
                     json_node[key] = val
                 elif isinstance(val, list):
-                    # if value is empty and a type of list, assign it as is
+                    # if key is empty and a type of list, assign it as is
                     json_node[key] = val
                 else:
-                    # if value is blank and did not qualify for any previous conditions, assign Null (None)
+                    # if key is blank and did not qualify for any previous conditions, assign Null (None)
                     json_node[key] = None
                 '''
-                print(key, '==>', json_node[key])
+                # print(key, '==>', json_node[key])
                 pass
 
     def eval_cfg_value(self, key, assay_cfg_val, common_cfg_val):
-        # if assay config value is not provided, use common assay val
+        # if assay config key is not provided, use common assay val
         if assay_cfg_val:
             cfg_val = assay_cfg_val
         else:
             cfg_val = common_cfg_val
 
-        # TODO: move values for the following 2 constants to Global Config file
-        eval_flag = 'eval!'
-        # yaml_path_flag = '!yaml_path!'
-        # check if some configuration instruction/value was retrieved for the given "key"
+        eval_flag = gc.SUBMISSION_YAML_EVAL_FLAG  # 'eval!'
+
+        # check if some configuration instruction/key was retrieved for the given "key"
         if cfg_val:
-            if eval_flag in cfg_val:
-                cfg_val = cfg_val.replace(eval_flag, '')  # replace 'eval!' flag value
-                # cfg_val = cfg_val.replace(yaml_path_flag, "'" + key + "'", 1)  # replace 'eval!' flag value
-                # if not cfg_val[0:5] == 'self.':
-                #    cfg_val = 'self.'+ cfg_val
+            if eval_flag in str(cfg_val):
+                cfg_val = cfg_val.replace(eval_flag, '')  # replace 'eval!' flag key
                 try:
                     out_val = eval(cfg_val)
                 except Exception as ex:
                     _str = 'Error "{}" occurred during preparing submission form "{}" for sub-aliquot "{}" ' \
-                           'while attempting to interpret configuration value "{}" provided for the form\'s key ' \
+                           'while attempting to interpret configuration key "{}" provided for the form\'s key ' \
                            '"{}". \n{} ' \
                         .format(ex, self.form_name, self.sub_aliquot, cfg_val, key, traceback.format_exc())
                     self.logger.error(_str)
@@ -130,7 +127,7 @@ class SubmissionForm():
                 out_val = cfg_val
         else:
             # requested "key" does not exist neither in assay or common config files
-            _str = 'No value was assigned to "{}" key during preparing submission form "{}" for sub-aliquot "{}".' \
+            _str = 'No key was assigned to "{}" key during preparing submission form "{}" for sub-aliquot "{}".' \
                 .format(key, self.form_name, self.sub_aliquot)
             self.logger.warning(_str)
             out_val = ''
@@ -139,57 +136,80 @@ class SubmissionForm():
     def get_tarball_property(self, sa, val_type):
 
         value = ''
-        tar_obj = self.req_obj.attachments.aliquots_tarball_dict[sa]
-        if val_type == 'name':
-            value = os.path.basename(tar_obj['path'])
-        elif val_type == 'md5':
-            value = tar_obj['md5']
+        if self.req_obj.attachments:
+            tar_obj = self.req_obj.attachments.aliquots_tarball_dict[sa]
+            if tar_obj:
+                if val_type == 'name':
+                    value = os.path.basename(tar_obj['path'])
+                elif val_type == 'md5':
+                    value = tar_obj['md5']
         return value
 
-    # it will retrieve any existing property from the request object
+    # it will retrieve any existing property_val from the request object
     def get_request_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self.req_obj, property_name, check_dict)
 
-    # it will retrieve any existing property from the submission_form object
+    # it will retrieve any existing property_val from the submission_form object
     def get_submission_form_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self, property_name, check_dict)
 
-    # it will retrieve any existing property from rawdata object
+    # it will retrieve any existing property_val from rawdata object
     def get_rawdata_value(self, property_name, check_dict=False):
         return self.get_property_value_from_object(self.req_obj.raw_data.aliquots_data_dict[self.sub_aliquot],
                                                    property_name, check_dict, 'dict')
 
-    # it will retrieve a value of a property named in "property_name" parameter
-    # from the object passed as a reference in "obj" parameter
-    # noinspection PyUnusedLocal
-    def get_property_value_from_object(self, obj, property_name, check_dict=False, obj_type='class'):
-        if obj_type == 'class':
-            get_item = 'obj.' + property_name
-        elif obj_type == 'dict':
-            get_item = 'obj["' + property_name + '"]'
+    # it will retrieve any existing property_val from assay data object
+    def get_assaydata_value_by_col_number(self, col_num, check_dict=False):
+        # t = list(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot].items())
+        # print(t)
+        # print (t[4][1])
+        obj = list(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot].items())
+        val = self.get_property_value_from_object(obj, col_num - 1, check_dict, 'dict', 'number')
+        if isinstance(val, tuple):
+            return val[1]
         else:
-            get_item = None
+            return val
+
+    # it will retrieve any existing property_val from assay data object
+    def get_assaydata_value(self, property_name, check_dict=False):
+        return self.get_property_value_from_object(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot],
+                                                   property_name, check_dict, 'dict')
+
+    # it will retrieve a key of a property_val named in "property_val" parameter
+    # from the object passed as a reference in "obj" parameter
+    # obj_type possible values: "class" (type of "obj" is class),
+    #                           "dict" (type of "obj" is dictionary)
+    # property_type possible values: "name" ("property_val" is name of property_val),
+    #                                "number" ("property_val" is number of items in dictionary)
+    def get_property_value_from_object(self, obj, property_val, check_dict=False,
+                                       obj_type='class', property_type='name'):
+        property_val = str(property_val)
+        if property_type == 'name':
+            # if property_val name is given, proceed here
+            if obj_type == 'class':
+                get_item = 'obj.' + property_val
+            elif obj_type == 'dict':
+                get_item = 'obj["' + property_val + '"]'
+            else:
+                get_item = None
+        else:
+            # if column number is given, proceed here
+            get_item = 'obj[' + property_val + ']'
 
         try:
             out = eval(get_item)
 
             if check_dict:
-                out = self.get_dict_value(out, property_name)
+                out = cm2.get_dict_value(out, property_val)
 
         except Exception as ex:
             _str = 'Error "{}" occurred during preparing submission form "{}" for sub-aliquot "{}" ' \
-                   'while attempting to evaluate property: "{}". \n{} ' \
+                   'while attempting to evaluate property_val: "{}". \n{} ' \
                 .format(ex, self.form_name, self.sub_aliquot, get_item, traceback.format_exc())
             self.logger.error(_str)
             self.error.add_error(_str)
             out = ''
         return out
-
-    def get_dict_value(self, value, section):
-        try:
-            return self.fl_cfg_dict.get_item_by_key(section + "/" + value)
-        except Exception:
-            return value
 
     # converts an array of values (i.e. list of aliquots) in to list of dictionaries with a given key name
     # For example: [1, 2, 3] => [{name: 1}, {name: 2}, {name: 3}]

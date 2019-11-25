@@ -49,15 +49,27 @@
 		}
 	],
 
-	"snatac_seq_metadata": {
-		"sub_cellular_faction": "Sub-cellular fraction (i.e. Antibodies)",
-		"starting_cell_num": "Starting number of cells",
-		"live_cells_perc": "% of live cells",
-		"antibody_staining_date": "Antibody staining date",
-		"facs_sorting_date": "Facs sorting date",
-		"assay_version": "10X ATAC-seq assay version",
-		"loading_density": "Loading density",
-		"pre_incubation_time": "Pre-incubation time",
-		"lysis_method": "Lysis method"
+	"scatac_seq_metadata": {
+		"lib_adaptor_1":"",
+		"lib_adaptor_2":"",
+		"nuclei_extr_date":"",
+		"nuclei_extr_count":"",
+		"nuclei_tagmentation":"",
+		"tagmentation_date":"",
+		"tagmentation_kit_id":"",
+		"pcr_cycle_nr":"",
+		"lib_dna_conc":"",
+		"lib_frag_size":"",
+		"lib_ba_quality":"",
+		"seq_dna_conc":"",
+		"seq_length":"",
+		"seq_end_type":"",
+		"seq_platform":"",
+		"seq_date":"",
+		"seq_machine_id":"",
+		"seq_flowcell_id":"",
+		"seq_flowcell_run":"",
+		"seq_flowcell_lane":"",
+		"seq_flowcell_type":""
 	}
 }

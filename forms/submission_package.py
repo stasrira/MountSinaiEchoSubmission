@@ -14,8 +14,7 @@ class SubmissionPackage():
         self.conf_assay = request.conf_assay
         self.attachments = request.attachments
         self.submission_forms = None
-        self.submission_dir = gc.SUBMISSION_PACKAGES_DIR + "/" \
-                              + time.strftime("%Y%m%d_%H%M%S", time.localtime()) \
+        self.submission_dir = gc.SUBMISSION_PACKAGES_DIR + "/" + time.strftime("%Y%m%d_%H%M%S", time.localtime()) \
                               + "_" + self.req_obj.experiment_id
 
         self.prepare_submission_package()
@@ -39,7 +38,7 @@ class SubmissionPackage():
         self.prepare_submission_package_jsons()
 
     # this function will create all required json files
-    # depends on a form group value assigned to a form,
+    # depends on a form group key assigned to a form,
     # one json file per request or one json file per sub_aliquot entry will be created
     def prepare_submission_package_jsons(self):
         # save json files to package dir
@@ -59,9 +58,10 @@ class SubmissionPackage():
 
     # this function will loop through all attachments,
     # create tarball files for each aliquot (grouping all attachments)
-    # save name of the tarbal and its MD5sum to the attachment's object property
+    # save name of the tarbal and its MD5sum to the attachment's object property_val
     def prepare_submission_package_attachments(self):
-        attachments = self.req_obj.attachments.aliquots_data_dict
-        for attch in attachments:
-            tar_path = self.submission_dir + "/" + attch + ".tar.gz"
-            self.req_obj.attachments.add_tarball(attch, tar_path)
+        if self.req_obj.attachments:
+            attachments = self.req_obj.attachments.aliquots_data_dict
+            for attch in attachments:
+                tar_path = self.submission_dir + "/" + attch + ".tar.gz"
+                self.req_obj.attachments.add_tarball(attch, tar_path)

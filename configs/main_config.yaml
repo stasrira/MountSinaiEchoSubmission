@@ -41,5 +41,23 @@ Email:
     sent_to_emails: stasrirak.ms@gmail.com, stasrira@yahoo.com
     send_emails: True # expected values: True, False
 
+#output_profile:
+#    full:
+#        submission_forms:
+#            - experiment_metadata
+#            - sequence_item_metadata
+#    initial:
+#        submission_forms:
+#            - experiment_metadata
 
+submission_forms:
+    -
+        name: experiment_metadata
+        assignment: request # expected values are: "request" and "aliquot"
+    #-
+    #    name: aliquot_metadata
+    #    assignment: aliquot
+    -
+        name: sequence_item_metadata
+        assignment: aliquot # expected values are: "request" and "aliquot"
 

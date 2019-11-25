@@ -8,8 +8,9 @@ from utils import setup_logger_common
 from utils import ConfigData
 from file_load import File  # , MetaFileExcel
 from file_load.file_error import RequestError
-from rawdata import RawDataRequest
-from rawdata import RawDataAttachment
+# from data_retrieval import RawData # DataRetrieval
+from data_retrieval import DataSource
+from data_retrieval import Attachment
 from forms import SubmissionPackage
 
 
@@ -20,8 +21,12 @@ class Request(File):
         # load_configuration (main_cfg_obj) # load global and local configureations
 
         File.__init__(self, filepath, file_type)
+
+        self.conf_main = ConfigData(gc.CONFIG_FILE_MAIN)
+
         self.error = RequestError(self)
 
+        self.log_handler = None
         self.logger = self.setup_logger(self.wrkdir, self.filename)
         self.logger.info('Start working with Submission request file {}'.format(filepath))
 
@@ -39,11 +44,12 @@ class Request(File):
         self.experiment_id = ''
 
         self.aliquots = None
-        self.log_handler = None
         self.raw_data = None
+        self.assay_data = None
         self.attachments = None
         self.submission_forms = None
         self.submission_package = None
+        self.data_sources = None
 
         # self.sheet_name = ''
         self.sheet_name = sheet_name.strip()
@@ -53,9 +59,9 @@ class Request(File):
         # print (self.sheet_name)
         self.logger.info('Data will be loaded from worksheet: "{}"'.format(self.sheet_name))
 
-        self.get_file_content()
-
         self.conf_assay = None
+
+        self.get_file_content()
 
     def get_file_content(self):
         if not self.columnlist:
@@ -95,16 +101,16 @@ class Request(File):
                         cell_value = cell.value
                         # take care of number and dates received from Excel and converted to float by default
                         if cell.ctype == 2 and int(cell_value) == cell_value:
-                            # the value is integer
+                            # the key is integer
                             cell_value = str(int(cell_value))
                         elif cell.ctype == 2:
-                            # the value is float
+                            # the key is float
                             cell_value = str(cell_value)
                         # convert date back to human readable date format
                         # print ('cell_value = {}'.format(cell_value))
                         if cell.ctype == 3:
                             cell_value_date = xlrd.xldate_as_datetime(cell_value, wb.datemode)
-                            cell_value = cell_value_date.strftime("%Y-%m-%d")
+                            cell_value = cell_value_date.strftime("%Y-%m-%directory")
                         column.append(cell_value)
 
                     self.columnlist.append(','.join(column))
@@ -113,7 +119,8 @@ class Request(File):
 
                 # load passed request parameters (by columns)
                 self.get_request_parameters()
-                # to support decision of not supplying Project Name from Request file, it will retrieved from gc module
+                # to support decision of not supplying Project Name from Request file,
+                # it will be retrieved from gc module
                 self.project = gc.PROJECT_NAME
                 # calculate Experiment_id out of request paramaters
                 self.experiment_id = "_".join([self.exposure, self.center, self.source_spec_type, self.assay])
@@ -168,11 +175,11 @@ class Request(File):
 
     # validates provided parameters (loaded from the submission request file)
     def validate_request_params(self):
-        # TODO: Add validation of provided values against a dictionary (located on another tab) from the request file
+        # TODO: Optionally add validation for all request parameters (in addition to assay)
         _str_err = ''
         _str_warn = ''
         if len(self.sub_aliquots) == 0:
-            _str_err = '\n'.join([_str_err, 'List of provided sub-samples is empty. ' 
+            _str_err = '\n'.join([_str_err, 'List of provided sub-samples is empty. '
                                             'Aborting processing of the submission request.'])
         # Check if empty sub-samples were provided
         if '' in self.sub_aliquots:
@@ -202,6 +209,11 @@ class Request(File):
                 [_str_err, 'No Specimen type was provided. Aborting processing of the submission request.'])
         if len(self.assay) == 0:
             _str_err = '\n'.join([_str_err, 'No Assay was provided. Aborting processing of the submission request.'])
+        if not cm2.key_exists_in_dict(self.assay, 'assay'):
+            _str_err = '\n'.join([_str_err, 'Provided Assay name "{}" is not matching a list of expected assay names '
+                                            '(as stored in "{}" dictionary file). '
+                                            'Aborting processing of the submission request.'
+                                 .format(self.assay, gc.CONFIG_FILE_DICTIONARY)])
 
         # report any collected errors
         if len(_str_err) > 0:
@@ -215,7 +227,7 @@ class Request(File):
 
     def setup_logger(self, wrkdir, filename):
 
-        m_cfg = ConfigData(gc.CONFIG_FILE_MAIN)
+        # m_cfg = ConfigData(gc.CONFIG_FILE_MAIN)
 
         log_folder_name = gc.LOG_FOLDER_NAME
 
@@ -223,7 +235,7 @@ class Request(File):
         # m_logger = logging.getLogger(m_logger_name)
 
         logger_name = gc.REQUEST_LOG_NAME
-        logging_level = m_cfg.get_value('Logging/request_log_level')
+        logging_level = self.conf_main.get_value('Logging/request_log_level')
 
         lg = setup_logger_common(logger_name, logging_level,
                                  Path(wrkdir) / log_folder_name,
@@ -234,10 +246,15 @@ class Request(File):
 
     def process_request(self):
         self.conf_assay = self.load_assay_conf(self.assay)
-        self.raw_data = RawDataRequest(self)
-        self.attachments = RawDataAttachment(self)
-        self.submission_forms = None  # submission forms will defined later inside of the SubmissionPackage class
-        # self.submission_forms = SubmissionForms(self)
+        self.data_sources = self.conf_assay['data_sources']
+
+        if self.data_sources and 'rawdata' in self.data_sources:
+            self.raw_data = DataSource(self, 'rawdata', 'Raw Data')  # RawData(self)
+        if self.data_sources and 'assaydata' in self.data_sources:
+            self.assay_data = DataSource(self, 'assaydata', 'Assay Data')  # RawData(self)
+        if self.data_sources and 'attachment' in self.data_sources:
+            self.attachments = Attachment(self)
+
         self.submission_package = SubmissionPackage(self)
 
         # check for errors and put final log entry for the request.

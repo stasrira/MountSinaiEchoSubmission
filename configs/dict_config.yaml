@@ -9,6 +9,7 @@ assay:
     atac-seq: atac_seq
     scatacseq: scatac_seq
     scatac-seq: scatac_seq
+    cytof: cytof
 
 assay_sub_aliquot_postfix:
     scrnaseq: _1

@@ -7,7 +7,7 @@ import traceback
 from utils import setup_logger_common, deactivate_logger_common
 from utils import ConfigData
 from utils import global_const as gc
-# from utils import send_email as email
+from utils import send_email as email
 from file_load import Request
 
 # if executed by itself, do the following
@@ -25,6 +25,9 @@ if __name__ == '__main__':
     processed_folder_name = gc.PROCESSED_FOLDER_NAME
 
     prj_wrkdir = os.path.dirname(os.path.abspath(__file__))
+
+    email_msgs = []
+    email_attchms = []
 
     # requests_loc = 'E:/MounSinai/MoTrPac_API/ProgrammaticConnectivity/MountSinai_metadata_file_loader/DataFiles'
     requests_path = Path(requests_loc)
@@ -51,8 +54,8 @@ if __name__ == '__main__':
             if req_file.endswith(('xlsx', 'xls')):
                 req_path = Path(requests_path) / req_file
 
-                # email_msgs_study = []
-                # email_attchms_study = []
+                # email_msgs = []
+                # email_attchms = []
 
                 try:
                     # print('--------->Process file {}'.format(req_path))
@@ -102,29 +105,23 @@ if __name__ == '__main__':
                     mlog.info('Processed Submission request "{}" was moved and renamed as: "{}"'
                               .format(req_path, processed_dir / req_processed_name))
 
-                    """
                     # preps for email notification
-                    email_msgs_study.append(
-                                ('File <br/>"{}" <br/> was processed and moved/renamed to <br/> "{}".'
+                    email_msgs.append(
+                                ('Request file <br/>"{}" <br/> was processed and moved/renamed to <br/> "{}".'
                                  '<br/> <b>Errors summary:</b> '
-                                 '<br/> File level errors: {}'
-                                 '<br/> Row level errors: {}'
+                                 '<br/> {}'
                                  '<br/> <i>Log file location: <br/>"{}"</i>'
                                  ''.format(req_path,
                                            processed_dir / req_processed_name,
                                            '<font color="red">Check Errors in the log file (attached)</font>'
-                                                if fl_ob.error.exist()
+                                                if req_obj.error.exist()
                                                 else '<font color="green">No Errors</font> (the log file is attached)',
-                                           '<font color="red">Check Errors in the log file (attached)</font>'
-                                                if fl_ob.error.row_errors_count()
-                                                else '<font color="green">No Errors</font> (the log file is attached)',
-                                           fl_ob.log_handler.baseFilename)
+                                           req_obj.log_handler.baseFilename)
                                  )
                     )
-                    email_attchms_study.append(fl_ob.log_handler.baseFilename)
+                    email_attchms.append(req_obj.log_handler.baseFilename)
     
-                    # print ('email_msgs_study = {}'.format(email_msgs_study))
-                    """
+                    # print ('email_msgs = {}'.format(email_msgs))
 
                     req_obj = None
 
@@ -135,17 +132,17 @@ if __name__ == '__main__':
                     raise
 
         mlog.info('Number of successfully processed Submission requests = {}'.format(req_proc_cnt))
-        """
+
         if req_proc_cnt > 0:
             # collect final details and send email about this study results
-            email_subject = 'Metadata files loading for study "{}"'.format(st_dir)
-            email_body = ('Number of files processed for study "{}": {}.'.format(st_dir, req_proc_cnt)
+            email_subject = 'Processing Submission Requests for "{}"'.format(gc.PROJECT_NAME)
+            email_body = ('Number of requests processed for "{}": {}.'.format(gc.PROJECT_NAME, req_proc_cnt)
                             + '<br/><br/>'
-                            + '<br/><br/>'.join(email_msgs_study)
+                            + '<br/><br/>'.join(email_msgs)
                             )
 
-            # print ('email_subject = {}'.format(email_subject))
-            # print('email_body = {}'.format(email_body))
+            print ('email_subject = {}'.format(email_subject))
+            print('email_body = {}'.format(email_body))
 
             try:
                 if m_cfg.get_value('Email/send_emails'):
@@ -153,15 +150,15 @@ if __name__ == '__main__':
                         emails_to = m_cfg.get_value('Email/sent_to_emails'),
                         subject = email_subject,
                         message = email_body,
-                        attachment_path = email_attchms_study
+                        attachment_path = email_attchms
                     )
             except Exception as ex:
                 # report unexpected error during sending emails to a log file and continue
                 _str = 'Unexpected Error "{}" occurred during an attempt to send email upon ' \
                        'finishing processing "{}" study: {}\n{} '\
-                    .format(ex, st_dir, os.path.abspath(__file__), traceback.format_exc())
+                    .format(ex, req_path, os.path.abspath(__file__), traceback.format_exc())
                 mlog.critical(_str)
-        """
+
 
     except Exception as ex:
         # report unexpected error to log file

@@ -2,12 +2,12 @@ format: fastq + txt
 atac_seq_metadata:
     lib_adaptor_1: TO BE PROVIDED
     lib_adaptor_2: TO BE RPOVIDED
-    nuclei_extr_date: # constant blank value
-    nuclei_extr_count: # constant blank value
-    nuclei_tagmentation: # constant blank value
-    tagmentation_date: # constant blank value
+    nuclei_extr_date: # constant blank key
+    nuclei_extr_count: # constant blank key
+    nuclei_tagmentation: # constant blank key
+    tagmentation_date: # constant blank key
     tagmentation_kit_id: TO BE PROVIDED
-    lib_dna_conc: # constant blank value
-    lib_frag_size: # constant blank value
-    lib_ba_quality: # constant blank value
-    seq_dna_conc: # constant blank value
+    lib_dna_conc: # constant blank key
+    lib_frag_size: # constant blank key
+    lib_ba_quality: # constant blank key
+    seq_dna_conc: # constant blank key
