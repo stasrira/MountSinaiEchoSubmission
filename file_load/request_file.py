@@ -26,6 +26,7 @@ class Request(File):
 
         self.error = RequestError(self)
 
+        self.log_handler = None
         self.logger = self.setup_logger(self.wrkdir, self.filename)
         self.logger.info('Start working with Submission request file {}'.format(filepath))
 
@@ -43,7 +44,6 @@ class Request(File):
         self.experiment_id = ''
 
         self.aliquots = None
-        self.log_handler = None
         self.raw_data = None
         self.assay_data = None
         self.attachments = None

@@ -52,10 +52,10 @@ class SubmissionForm():
         self.fl_cfg_assay = ConfigData(fl_path_cfg_assay)
         # self.fl_cfg_dict = ConfigData(gc.CONFIG_FILE_DICTIONARY)
 
-        print(self.fl_json.json_data)
+        # print(self.fl_json.json_data)
         # loop through all json keys and fill those with associated data
         self.get_json_keys(self.fl_json.json_data)
-        print(self.fl_json.json_data)
+        # print(self.fl_json.json_data)
 
         # validate final json file against json schema (if present)
         self.validate_json(self.fl_json, self.fl_json_schema)
