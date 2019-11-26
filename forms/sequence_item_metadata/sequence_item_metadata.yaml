@@ -1,6 +1,6 @@
 biosample_id: eval!self.get_submission_form_value('sample')
 aliquot_id: eval!self.get_submission_form_value('aliquot')
-experiment_id: eval!self.get_request_value('experiment_id')
+assay_collection_id: eval!self.get_request_value('experiment_id')
 filename: eval!self.get_tarball_property(eval!self.get_submission_form_value('sub_aliquot'), 'name')
 md5sum: eval!self.get_tarball_property(eval!self.get_submission_form_value('sub_aliquot'), 'md5')
 format:

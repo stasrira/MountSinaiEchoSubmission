@@ -107,20 +107,20 @@ if __name__ == '__main__':
 
                     # preps for email notification
                     email_msgs.append(
-                                ('Request file <br/>"{}" <br/> was processed and moved/renamed to <br/> "{}".'
-                                 '<br/> <b>Errors summary:</b> '
-                                 '<br/> {}'
-                                 '<br/> <i>Log file location: <br/>"{}"</i>'
-                                 ''.format(req_path,
-                                           processed_dir / req_processed_name,
-                                           '<font color="red">Check Errors in the log file (attached)</font>'
-                                                if req_obj.error.exist()
-                                                else '<font color="green">No Errors</font> (the log file is attached)',
-                                           req_obj.log_handler.baseFilename)
-                                 )
+                        ('Request file <br/>"{}" <br/> was processed and moved/renamed to <br/> "{}".'
+                         '<br/> <b>Errors summary:</b> '
+                         '<br/> {}'
+                         '<br/> <i>Log file location: <br/>"{}"</i>'
+                         ''.format(req_path,
+                                   processed_dir / req_processed_name,
+                                   '<font color="red">Check Errors in the log file (attached)</font>'
+                                   if req_obj.error.exist()
+                                   else '<font color="green">No Errors</font> (the log file is attached)',
+                                   req_obj.log_handler.baseFilename)
+                         )
                     )
                     email_attchms.append(req_obj.log_handler.baseFilename)
-    
+
                     # print ('email_msgs = {}'.format(email_msgs))
 
                     req_obj = None
@@ -137,25 +137,25 @@ if __name__ == '__main__':
             # collect final details and send email about this study results
             email_subject = 'Processing Submission Requests for "{}"'.format(gc.PROJECT_NAME)
             email_body = ('Number of requests processed for "{}": {}.'.format(gc.PROJECT_NAME, req_proc_cnt)
-                            + '<br/><br/>'
-                            + '<br/><br/>'.join(email_msgs)
-                            )
+                          + '<br/><br/>'
+                          + '<br/><br/>'.join(email_msgs)
+                          )
 
-            print ('email_subject = {}'.format(email_subject))
-            print('email_body = {}'.format(email_body))
+            # print ('email_subject = {}'.format(email_subject))
+            # print('email_body = {}'.format(email_body))
 
             try:
                 if m_cfg.get_value('Email/send_emails'):
                     email.send_yagmail(
-                        emails_to = m_cfg.get_value('Email/sent_to_emails'),
-                        subject = email_subject,
-                        message = email_body,
-                        attachment_path = email_attchms
+                        emails_to=m_cfg.get_value('Email/sent_to_emails'),
+                        subject=email_subject,
+                        message=email_body,
+                        attachment_path=email_attchms
                     )
             except Exception as ex:
                 # report unexpected error during sending emails to a log file and continue
                 _str = 'Unexpected Error "{}" occurred during an attempt to send email upon ' \
-                       'finishing processing "{}" study: {}\n{} '\
+                       'finishing processing "{}" study: {}\n{} ' \
                     .format(ex, req_path, os.path.abspath(__file__), traceback.format_exc())
                 mlog.critical(_str)
 

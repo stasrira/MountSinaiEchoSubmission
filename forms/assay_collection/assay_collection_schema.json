@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "examples": ["DU-E19-02"],
+      "comment": "Assay Collection Name"
+    },
+    "assay": {
+      "type": "string",
+      "enum": ["rna_seq", "scrna_seq", "atac_seq", "chip_seq", "scatac_seq", "medip_seq", "mint_chip", "wgbs", "snatac_seq", "snmc_seq", "cytof", "epic"],
+      "examples": ["chip_seq"],
+      "comment": "RNA-seq|scRNA-seq|ATAC-seq|etc..."
+    },
+    "site": {
+      "type": "string",
+      "enum": [ "WR", "WRAIR", "DU", "Duke", "BA", "Battelle", "AS", "ASU", "IS", "ISMMS",
+      "SA", "Salk", "CU", "Columbia", "NA", "Northern Arizona University", "GA", "Gryphon Scientific"],
+      "examples": ["Columbia"],
+      "comment": "Performer site that ran the assay"
+    },
+    "aliquot_manifest": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "assay",
+    "site",
+    "aliquot_manifest"
+  ]
+}

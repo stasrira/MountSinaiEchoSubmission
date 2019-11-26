@@ -1,9 +1,9 @@
-from file_load import Data_Retrieval_Text
-from file_load import Data_Retrieval_Excel
+from file_load import DataRetrievalText
+from file_load import DataRetrievalExcel
 from pathlib import Path
 
 
-class DataRetrievalAliquot():
+class DataRetrievalAliquot:
     def __init__(self, sub_aliquot, request_obl):  # sub_aliquot, data_folder, request_obj, file_row_num =''
         self.sub_aliquot = sub_aliquot
         self.req_obj = request_obl
@@ -19,9 +19,9 @@ class DataRetrievalAliquot():
     def get_data_by_rownum(self, filepath, data_row_num, header_row_num=1, isexcel=True):
         self.data_loc_path = filepath
         if isexcel:
-            self.data_file = Data_Retrieval_Excel(self.data_loc_path, self.error, self.logger)
+            self.data_file = DataRetrievalExcel(self.data_loc_path, self.error, self.logger)
         else:
-            self.data_file = Data_Retrieval_Text(self.data_loc_path, self.error, self.logger)
+            self.data_file = DataRetrievalText(self.data_loc_path, self.error, self.logger)
         self.data_file.header_row_num = header_row_num
         final_row_num = data_row_num + header_row_num - 1  # add given row number to the header row num to get actual
         # row number needed in the file
@@ -57,7 +57,7 @@ class DataRetrievalAliquot():
             self.error.add_error(_str)
             return
 
-        self.data_file = Data_Retrieval_Text(self.data_loc_path, self.error, self.logger)
+        self.data_file = DataRetrievalText(self.data_loc_path, self.error, self.logger)
         self.data_file.get_file_content()
         if not self.data_file.loaded:
             # summary file was not loaded property_val; return with loaded = False

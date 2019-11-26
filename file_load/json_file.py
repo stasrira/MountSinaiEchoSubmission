@@ -3,7 +3,7 @@ import json
 from utils import common as cm
 
 
-class File_Json(File):
+class FileJson(File):
 
     def __init__(self, filepath, req_error, req_logger, file_type=1):
 

@@ -3,109 +3,159 @@
   "type": "object",
   "properties": {
     "biosample_id": {
-      "type": "string"
+      "type": "string",
+      "examples": ["DU.19-02.S12.1234567"],
+      "comment": "ECHO_BIOSAMPLE_ID of the biosample used to generate this sequencing dataset"
     },
     "aliquot_id": {
-      "type": "string"
+      "type": "string",
+      "examples": ["DU.19-02.S12.1234567.898"],
+      "comment": "ECHO_ALIQUOT_ID of the aliquot used"
     },
-    "experiment_id": {
-      "type": "string"
+    "assay_collection_id": {
+      "type": "string",
+      "examples": ["DU-AC19-02"],
+      "comment": "ECHO_ASSAY_COLLECTION_ID of the study that this sequencing dataset belongs to"
     },
     "filename": {
-      "type": "string"
+      "type": "string",
+      "examples": ["DU.19-02.S12.1234567.898.fastq"],
+      "comment": "The name of the file that contains data from this sequencing dataset"
     },
     "md5sum": {
-      "type": "string"
+      "type": "string",
+      "examples": ["66855518b2f18f2"],
+      "comment": "The md5 sum of this file"
     },
     "format": {
-      "type": "string"
+      "type": "string",
+      "examples": ["fastq"],
+      "comment": "The format of this file (Raw data must be provided in Fast)"
     },
     "paired_file": {
-      "type": "string"
+      "type": "string",
+      "examples": [""],
+      "comment": "Name of paired file, or empty if seq_end_type==single-ended"
     },
     "assay": {
       "type": "string",
-      "enum": ["rna_seq", "scrna_seq", "atac_seq", "chip_seq", "scatac_seq", "medip_seq", "mint_chip", "wgbs", "snatac_seq", "snmc_seq", "cytof", "epic"]
+      "enum": ["rna_seq", "scrna_seq", "atac_seq", "chip_seq", "scatac_seq", "medip_seq", "mint_chip", "wgbs", "snatac_seq", "snmc_seq", "cytof", "epic"],
+      "examples": ["rna_seq"],
+      "comment": "rna_seq|atac_seq|scrna_seq|etc..."
     },
     "seq_length": {
-      "anyOf": [
-          {"type": "number"},
-          {"type": "null"}
-		  ]
+      "type": ["number", "null"],
+      "examples": ["232323"],
+      "comment": "Read sequencing length"
     },
     "seq_depth": {
-      "type": "string"
+      "type": "string",
+      "examples": [""],
+      "comment": "Sequencing (read) depth"
     },
     "seq_end_type": {
       "type": "string",
-      "enum": ["single-ended", "pair-ended", ""]
+      "enum": ["single-ended", "pair-ended", ""],
+      "examples": ["single-ended", "pair-ended"],
+      "comment": "single-ended|pair-ended"
     },
     "strand_specificity": {
       "type": "string",
-      "enum": ["forward", "reverse", "unstranded", ""]
+      "enum": ["forward", "reverse", "unstranded", ""],
+      "examples": ["forward", "reverse", "unstranded"],
+      "comment": "forward|reverse|unstranded"
     },
     "seq_platform": {
-      "type": "string"
+      "type": "string",
+      "examples": [""],
+      "comment": "Sequencing platform"
     },
     "seq_instrument": {
-      "type": "string"
+      "type": "string",
+      "examples": ["HiSeq 2500"],
+      "comment": "Sequencing instrument (ex.HiSeq 2500)"
     },
     "seq_date": {
-      "type": "string"
+      "type": "string",
+      "examples": ["12/31/2019"],
+      "comment": "Sequencing date"
     },
     "sequenced_by": {
-      "type": "string"
+      "type": "string",
+      "examples": ["John Doe@duke"],
+      "comment": "Who performed this sequencing dataset's sequencing run"
     },
     "seq_run_number": {
-      "anyOf": [
-          {"type": "number"},
-          {"type": "null"}
-		  ]
+      "type": ["number", "null"],
+      "examples": ["1234"],
+      "comment": "The run number for the sequencing run that produced this sequencing dataset"
     },
     "seq_machine_id": {
-      "type": "string"
+      "type": "string",
+      "examples": ["67888885"],
+      "comment": "The serial number of the sequencing machine"
     },
     "seq_flowcell_id": {
-      "type": "string"
+      "type": "string",
+      "examples": [""],
+      "comment": "Flow cell ID"
     },
     "seq_flowcell_run": {
-      "type": "string"
+      "type": "string",
+      "examples": [""],
+      "comment": "Flow cell run"
     },
     "seq_flowcell_lane": {
-      "type": "string"
+      "type": "string",
+      "examples": [""],
+      "comment": "...."
     },
     "seq_flowcell_type": {
-      "type": "string"
+      "type": "string",
+      "examples": [""],
+      "comment": "Flow cell type"
     },
     "pcr_cycle_nr": {
-      "anyOf": [
-          {"type": "number"},
-          {"type": "null"}
-		  ]
+      "type": ["number", "null"],
+      "examples": ["123"],
+      "comment": "Number of PCR cycles"
     },
     "sample_barcode": {
-      "type": "string"
+      "type": "string",
+      "examples": [""],
+      "comment": "Sample barcode (adapter)"
     },
     "pcr_barcode": {
-      "type": "string"
+      "type": "string",
+      "examples": [""],
+      "comment": "PCR barcode"
     },
     "comments": {
-      "type": "string"
+      "type": "string",
+      "examples": ["Additional comments ..."],
+      "comment": "Optional text field for additional comments"
     },
     "spike_ins_present": {
       "type": "string",
-      "enum": ["T", "F", ""]
+      "enum": ["T", "F", ""],
+      "examples": ["T", "F"],
+      "comment": "Are there any spike ins? (T|F)"
     },
     "spike_ins" : {
       "type": "array",
+      "minItems": 0,
       "items": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "examples": [""],
+            "comment": "Spike in name"
           },
           "sequence": {
-            "type": "string"
+            "type": "string",
+            "examples": [""],
+            "comment": "Spike in sequence"
           }
         },
         "required": [
@@ -116,35 +166,54 @@
     },
     "reagents" : {
       "type": "array",
+      "minItems": 0,
       "items": {
         "type": "object",
         "properties": {
           "reagent": {
-            "type": "string"
+            "type": "string",
+            "examples": [""],
+            "comment": "Name of this reagent"
           },
           "source": {
-            "type": "string"
+            "type": "string",
+            "examples": [""],
+            "comment": "Source of this reagent"
           },
           "product_id": {
-            "type": "string"
+            "type": "string",
+            "examples": [""],
+            "comment": "Product ID of this reagent"
           },
           "lot_number": {
-            "type": "number"
+            "type": ["number", "null"],
+            "examples": ["1234"],
+            "comment": "Lot number of this reagent"
           },
           "antigen_sequence": {
-            "type": "string"
+            "type": "string",
+            "examples": [""],
+            "comment": "Antigen sequence, if applicable"
           },
           "clonality": {
-            "type": "string"
+            "type": "string",
+            "examples": [""],
+            "comment": "Clonality, if applicable"
           },
           "host_organism": {
-            "type": "string"
+            "type": "string",
+            "examples": [""],
+            "comment": "Host organism, if applicable"
           },
           "isotype": {
-            "type": "string"
+            "type": "string",
+            "examples": [""],
+            "comment": "Isotype, if applicable"
           },
           "comments": {
-            "type": "string"
+            "type": "string",
+            "examples": ["Optional comments"],
+            "comment": "Optional comments"
           }
         },
         "required": [
@@ -160,6 +229,12 @@
       }
     }
   },
+  "if": {
+    "properties": {
+        "spike_ins_present": { "const": "T" }
+      },
+      "required": ["spike_ins"]
+  },
   "allOf": [
     {
       "if": {
@@ -170,68 +245,100 @@
           "rna_seq_metadata": {
             "type": "object",
             "properties": {
-              "rna_extr_data": {
-                "type": "string"
+              "rna_extr_date": {
+                "type": "string",
+                "examples": ["12/31/2019"],
+                "comment": "RNA extraction date"
               },
               "rna_extr_method": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "RNA extraction method"
               },
               "total_cell_num": {
-                "anyOf": [
-                    {"type": "number"},
-                    {"type": "null"}
-                    ]
+                "type": ["number", "null"],
+                "examples": ["12345"],
+                "comment": "Total number of cells"
               },
               "cell_type": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Cell type, if known"
               },
               "total_rna_conc": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Total RNA concentration"
               },
               "total_rna_qc_method": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Total RNA QC Method"
               },
               "rin": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "RNA Integrity Number"
               },
               "r_260_280": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "260/280 ratio"
               },
               "r_260_230": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "260/230 ratio"
               },
               "lib_vendor": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Library prep vendor"
               },
               "lib_type": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Library prep type"
               },
               "lib_prep_method": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Library prep method"
               },
               "lib_qc_method": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Library QC method"
               },
               "lib_adaptor_1": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Truseq I7 index with 16bp index"
               },
               "lib_adaptor_2": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Truseq I5 index with 8bp index"
               },
               "lib_umi_cycle_num": {
-                "anyOf": [
-                    {"type": "number"},
-                    {"type": "null"}
-                    ]
+                "type": ["number", "null"],
+                "examples": [""],
+                "comment": "Number of UMI cycles (bases)"
               },
               "lib_adaptor_size": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "The total size of the two adaptors"
               },
               "lib_frag_size": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Average library fragment size"
               },
               "lib_dna_conc": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "DNA concentration for the library (stock)"
               }
             },
             "required": [
@@ -251,34 +358,49 @@
             "type": "object",
             "properties": {
               "viability": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Assessment of cells' viability"
               },
               "number_cells": {
-                "anyOf": [
-                  {"type": "number"},
-                  {"type": "null"}
-                  ]
+                "type": ["number", "null"],
+                "examples": ["1234"],
+                "comment": "Number of cells loaded into the chip"
               },
               "lib_reagents": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "kit_name": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "lib_frag_size": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Average library fragment size"
               },
               "lib_dna_conc": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "DNA concentration for the library (stock)"
               },
               "lib_molarity": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Library molarity"
               },
               "lib_adaptor_1": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Truseq i7 index with 8bp index"
               },
               "lib_adaptor_2": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Truseq universal index"
               }
             },
             "required": [
@@ -297,37 +419,59 @@
             "type": "object",
             "properties": {
               "lib_adaptor_1": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Nextera i7 DNA index with 8bp index"
               },
               "lib_adaptor_2": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Nextera i5 DNA index with 8bp index"
               },
               "nuclei_extr_date": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "The date of nuclei extraction"
               },
               "nuclei_extr_count": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "The nuclei concentration"
               },
               "nuclei_tagmentation": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Number of nuclei used in each tagmentation reaction"
               },
               "tagmentation_date": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Date of tagmentation"
               },
               "tagmentation_kit_id": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Illumina Nextera kit"
               },
               "lib_dna_conc": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "DNA concentration for the library"
               },
               "lib_frag_size": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Average library fragment size"
               },
               "lib_ba_quality": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Visual assessment of the library quality with the bioanalyzer track (Good|Bad)"
               },
               "seq_dna_conc": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "DNA concentration for sequencing"
               }
             },
             "required": [
@@ -346,10 +490,14 @@
             "type": "object",
             "properties": {
               "starting_cell_num": {
-                "type": "number"
+                "type": ["number", "null"],
+                "examples": ["1234"],
+                "comment": "Starting number of cells"
               },
               "live_cells_perc": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "% of live cells"
               }
             },
             "required": [
@@ -368,34 +516,49 @@
             "type": "object",
             "properties": {
               "sub_cellular_faction": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Sub-cellular fraction (i.e. Antibodies)"
               },
               "starting_cell_num": {
-                "anyOf": [
-                  {"type": "number"},
-                  {"type": "null"}
-                  ]
+                "type": ["number", "null"],
+                "examples": ["1"],
+                "comment": "Starting number of cells"
               },
               "live_cells_perc": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "% of live cells"
               },
               "antibody_staining_date": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Antibody staining date"
               },
               "facs_sorting_date": {
-                "type": "string"
+                "type": "string",
+                "examples": ["12/31/2019"],
+                "comment": "Facs sorting date"
               },
               "assay_version": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "10X ATAC-seq assay version"
               },
               "loading_density": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Loading density"
               },
               "pre_incubation_time": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Pre-incubation time"
               },
               "lysis_method": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Lysis method"
               }
             },
             "required": [
@@ -414,19 +577,29 @@
             "type": "object",
             "properties": {
               "target": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "starting_cell_count": {
-                "type": "number"
+                "type": ["number", "null"],
+                "examples": ["1"],
+                "comment": "Starting number of cells"
               },
               "antibody_barcode": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Antibody Barcode (PCR)"
               },
               "antibody": {
-                "type": "string"
+                "type": "string",
+                "examples": ["H3K27ac"],
+                "comment": "H3|H3K27ac|H3K4me1|H3K4me3|H3K27Kme3|H3K9me3|H3K36me3"
               },
               "pooled_from_assays": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Pooled from assays"
               }
             },
             "required": [
@@ -447,25 +620,39 @@
             "type": "object",
             "properties": {
               "target": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Target (i.e. Whole Genome)"
               },
               "sub_cellular_fraction": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Sub-cellular fraction (i.e. Antibodies)"
               },
               "assay_protocol": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Assay protocol (i.e. snmC-seq2)"
               },
               "starting_cell_num": {
-                "type": "number"
+                "type": ["number", "null"],
+                "examples": ["1"],
+                "comment": "Starting number of cells"
               },
               "live_cells_perc": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "% of live cells"
               },
               "antibody_staining_date": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Antibody staining date"
               },
               "facs_sorting_date": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "Facs sorting date"
               }
             },
             "required": [
@@ -484,28 +671,44 @@
             "type": "object",
             "properties": {
               "target": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "population": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "sub_cellular_fraction": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "strand": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "protocol": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "starting_cell_count": {
-                "type": "number"
+                "type": ["number", "null"],
+                "examples": [""],
+                "comment": "..."
               },
               "live_cell_pct": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "date_sequence": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               }
             },
             "required": [
@@ -556,37 +759,59 @@
             "type": "object",
             "properties": {
               "target": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "population": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "sub_cellular_fraction": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "strand": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "protocol": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "starting_cell_count": {
-                "type": "number"
+                "type": ["number", "null"],
+                "examples": ["1"],
+                "comment": "..."
               },
               "live_cell_pct": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "antibody_staining_date": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "facs_sorting_date": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "replicates": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "date_sequence": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               }
             },
             "required": [
@@ -605,68 +830,110 @@
             "type": "object",
             "properties": {
               "lib_adaptor_1": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "lib_adaptor_2": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "nuclei_extr_date": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "nuclei_extr_count": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "nuclei_tagmentation": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "tagmentation_date": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "tagmentation_kit_id": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "pcr_cycle_nr": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "lib_dna_conc": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "lib_frag_size": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "lib_ba_quality": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "seq_dna_conc": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "seq_length": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "seq_end_type": {
                 "type": "string",
-                "enum": [ "single-ended", "pair-ended", ""]
+                "enum": [ "single-ended", "pair-ended", ""],
+                "examples": ["single-ended", "pair-ended"],
+                "comment": "..."
               },
               "seq_platform": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "seq_date": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "seq_machine_id": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "seq_flowcell_id": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "seq_flowcell_run": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "seq_flowcell_lane": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "seq_flowcell_type": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               }
             },
             "required": [
@@ -677,23 +944,128 @@
     },
     {
       "if": {
-        "properties": { "assay": { "const": "CyTOF" }}
+        "properties": { "assay": { "const": "cytof" }}
       },
       "then": {
         "properties": {
           "cytof_seq_metadata": {
             "type": "object",
             "properties": {
+              "seq_dna_conc": {
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
+              },
+              "r_260_280": {
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
+              },
+              "r_260_230": {
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
+              },
+              "volume": {
+                "type": ["number", "null"],
+                "examples": [""],
+                "comment": "..."
+              },
+              "total": {
+                "type": ["number", "null"],
+                "examples": [""],
+                "comment": "..."
+              },
+              "staining_panel" : {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "examples": [""],
+                    "comment": "..."
+                  },
+                  "isotopes": {
+                    "type": "array",
+                    "minItems": 0,
+                    "items": {
+                      "type": "string",
+                      "examples": [""],
+                      "comment": "..."
+                    }
+                  },
+                  "target_proteins": {
+                    "type": "array",
+                    "minItems": 0,
+                    "items": {
+                      "type": "string",
+                      "examples": [""],
+                      "comment": "..."
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "isotopes",
+                  "target_proteins"
+                ]
+              },
+              "barcode_index":{
+                 "type": "array",
+                 "minItems": 0,
+                 "items": {
+                    "type": "object",
+                    "properties": {
+                       "barcode": {
+                         "type": "string",
+                         "examples": ["WT-1"],
+                         "comment": "Barcode name"
+                       },
+                       "masses": {
+                           "type": "array",
+                           "minItems": 1,
+                           "items": {
+                             "type": "object",
+                             "properties": {
+                               "mass": {
+                                 "type": ["number", "null"],
+                                 "examples": ["104"],
+                                 "comment": "mass number for given barcode"
+                               },
+                               "status": {
+                                  "type": "string",
+                                  "enum": ["T", "F"],
+                                  "examples": ["T"],
+                                  "comment": "boolean True or False"
+                               }
+                             }
+                           }
+                         }
+                    },
+                    "required": [
+                      "barcode",
+                      "masses"
+                    ]
+                  }
+              }
             },
             "required": [
+              "seq_dna_conc",
+              "r_260_280",
+              "r_260_230",
+              "volume",
+              "total",
+              "staining_panel",
+              "barcode_index"
             ]
           }
-        }
+        },
+        "required": [
+        ]
       }
     },
     {
       "if": {
-        "properties": { "assay": { "const": "EPIC" }}
+        "properties": { "assay": { "const": "epic" }}
       },
       "then": {
         "properties": {
@@ -701,34 +1073,44 @@
             "type": "object",
             "properties": {
               "source": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "seq_dna_conc": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "r_260_280": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "r_260_230": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "volume": {
-                "type": "number"
+                "type": ["number", "null"],
+                "examples": [""],
+                "comment": "..."
               },
               "total": {
-                "type": "number"
+                "type": ["number", "null"],
+                "examples": [""],
+                "comment": "..."
               },
               "sentrix_id": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               },
               "sentrix_position": {
-                "type": "string"
-              },
-              "filename_grn": {
-                "type": "string"
-              },
-              "filename_red": {
-                "type": "string"
+                "type": "string",
+                "examples": [""],
+                "comment": "..."
               }
             },
             "required": [
@@ -741,7 +1123,7 @@
   "required": [
     "biosample_id",
 	"aliquot_id",
-	"experiment_id",
+	"assay_collection_id",
 	"filename",
 	"assay"
   ]

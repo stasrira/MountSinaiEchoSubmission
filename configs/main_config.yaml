@@ -44,15 +44,15 @@ Email:
 #output_profile:
 #    full:
 #        submission_forms:
-#            - experiment_metadata
+#            - assay_collection
 #            - sequence_item_metadata
 #    initial:
 #        submission_forms:
-#            - experiment_metadata
+#            - assay_collection
 
 submission_forms:
     -
-        name: experiment_metadata
+        name: assay_collection
         assignment: request # expected values are: "request" and "aliquot"
     #-
     #    name: aliquot_metadata

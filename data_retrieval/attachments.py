@@ -72,7 +72,7 @@ class Attachment(DataRetrieval):
                     _str = '{}'.format(os.path.basename(item['path']))
                 tar.add(str(Path(item['path'])), arcname=_str)
             tar.close()
-        md5 = self.get_file_MD5(tarball_path)
+        md5 = self.get_file_md5(tarball_path)
         tar_details = {'path': tarball_path, 'md5': md5}
         self.aliquots_tarball_dict[sa] = tar_details
 
@@ -81,7 +81,7 @@ class Attachment(DataRetrieval):
         self.logger.info(_str)
 
     @staticmethod
-    def get_file_MD5(file_path):
+    def get_file_md5(file_path):
         with open(file_path, 'rb') as file:
             # read contents of the file
             data = file.read()

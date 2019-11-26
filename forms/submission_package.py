@@ -6,7 +6,7 @@ from utils import global_const as gc
 from forms import SubmissionForms
 
 
-class SubmissionPackage():
+class SubmissionPackage:
     def __init__(self, request):
         self.req_obj = request  # reference to the current request object
         self.error = self.req_obj.error

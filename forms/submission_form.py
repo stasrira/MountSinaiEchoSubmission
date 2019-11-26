@@ -1,4 +1,4 @@
-from file_load import File_Json
+from file_load import FileJson
 from pathlib import Path
 import os
 from utils import global_const as gc
@@ -10,7 +10,7 @@ import jsonschema
 from jsonschema import validate
 
 
-class SubmissionForm():
+class SubmissionForm:
     def __init__(self, form_name, request, sub_aliquot, aliquot, sample):
         self.form_name = form_name
         self.req_obj = request  # reference to the current request object
@@ -46,8 +46,8 @@ class SubmissionForm():
             fl_path_json = fl_path_json_common
 
         # load json and config files
-        self.fl_json = File_Json(fl_path_json, self.req_obj.error, self.req_obj.logger)
-        self.fl_json_schema = File_Json(fl_path_json_schema, self.req_obj.error, self.req_obj.logger)
+        self.fl_json = FileJson(fl_path_json, self.req_obj.error, self.req_obj.logger)
+        self.fl_json_schema = FileJson(fl_path_json_schema, self.req_obj.error, self.req_obj.logger)
         self.fl_cfg_common = ConfigData(fl_path_cfg_common)
         self.fl_cfg_assay = ConfigData(fl_path_cfg_assay)
         # self.fl_cfg_dict = ConfigData(gc.CONFIG_FILE_DICTIONARY)
@@ -181,6 +181,7 @@ class SubmissionForm():
     #                           "dict" (type of "obj" is dictionary)
     # property_type possible values: "name" ("property_val" is name of property_val),
     #                                "number" ("property_val" is number of items in dictionary)
+    # noinspection PyUnusedLocal
     def get_property_value_from_object(self, obj, property_val, check_dict=False,
                                        obj_type='class', property_type='name'):
         property_val = str(property_val)

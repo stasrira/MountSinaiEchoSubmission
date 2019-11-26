@@ -3,7 +3,7 @@ import xlrd
 from utils import common as cm
 
 
-class Data_Retrieval_Excel(File):
+class DataRetrievalExcel(File):
 
     def __init__(self, filepath, req_error, req_logger, sheet_name='', file_type=2):
 

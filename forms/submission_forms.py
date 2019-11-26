@@ -2,7 +2,7 @@ from forms import SubmissionForm
 import traceback
 
 
-class SubmissionForms():
+class SubmissionForms:
     def __init__(self, request):
         self.req_obj = request  # reference to the current request object
         self.error = self.req_obj.error
@@ -21,7 +21,7 @@ class SubmissionForms():
         for form in forms:
             self.logger.info('Processing submission form "{}".'.format(form))
             try:
-                submission_form = None  # reset the submission form reference
+                # submission_form = None  # reset the submission form reference
                 if form['assignment'] == 'aliquot':
                     # prepare an instance of the current form for each aliquot
                     for sa, a, smpl in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots, self.req_obj.samples):

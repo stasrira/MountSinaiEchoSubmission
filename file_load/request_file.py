@@ -22,7 +22,10 @@ class Request(File):
 
         File.__init__(self, filepath, file_type)
 
-        self.conf_main = ConfigData(gc.CONFIG_FILE_MAIN)
+        if cfg_path=='':
+            self.conf_main = ConfigData(gc.CONFIG_FILE_MAIN)
+        else:
+            self.conf_main = ConfigData(cfg_path)
 
         self.error = RequestError(self)
 

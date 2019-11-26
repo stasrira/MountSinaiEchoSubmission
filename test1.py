@@ -1,12 +1,12 @@
-from file_load import File_Json
+from file_load import FileJson
 import os
 import tarfile
 from pathlib import Path
 import jsonschema
 from jsonschema import validate
 
-# filepath = 'forms/experiment_metadata.forms'
-# filepath = 'forms\experiment_metadata\experiment_metadata.json'
+# filepath = 'forms/assay_collection.forms'
+# filepath = 'forms\assay_collection\assay_collection.json'
 filepath = 'E:\MounSinai\Darpa\Programming\submission\Temp\sequence_item_v3.json'
 # filepath = 'forms/aliquot_metadata.forms'
 cur_assay = 'scrnaseq'
@@ -126,7 +126,7 @@ def process_json():
     err = None
     log = None
 
-    fl = File_Json(filepath, err, log)
+    fl = FileJson(filepath, err, log)
 
     # for key, item in fl.json_data.items():
     #    print ('key="{}"; key={}'.format(key, item))
@@ -157,12 +157,12 @@ def process_tar():
         tar.close()
 
 def validate_schema ():
-    # schema_path = 'E:\MounSinai\Darpa\Programming\submission\\forms\experiment_metadata\experiment_metadata_schema.json'
+    # schema_path = 'E:\MounSinai\Darpa\Programming\submission\\forms\assay_collection\assay_collection_schema.json'
     schema_path = 'E:\MounSinai\Darpa\Programming\submission\submission_packages\sequence_item_metadata_schema.json'
-    schema = File_Json(schema_path, None, None)
+    schema = FileJson(schema_path, None, None)
     # json_path = 'E:\MounSinai\Darpa\Programming\submission\submission_packages\experiment_metadata_v1.json'
     json_path = 'E:\MounSinai\Darpa\Programming\submission\submission_packages\\test_sequence_item_metadata.json'
-    json = File_Json(json_path, None, None)
+    json = FileJson(json_path, None, None)
     try:
         validate(json.json_data, schema.json_data)
         print('Validation was successful')

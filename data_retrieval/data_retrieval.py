@@ -2,10 +2,10 @@ from pathlib import Path
 import os
 import glob
 from data_retrieval import DataRetrievalAliquot
-from file_load import Data_Retrieval_Excel
+from file_load import DataRetrievalExcel
 
 
-class DataRetrieval():
+class DataRetrieval:
 
     def __init__(self, request):
         self.aliquots_data_dict = {}
@@ -100,7 +100,7 @@ class DataRetrieval():
 
         index_dict = {}
         for file in files:
-            f = Data_Retrieval_Excel(file, self.error, self.logger, worksheet)
+            f = DataRetrievalExcel(file, self.error, self.logger, worksheet)
             col_vals = f.get_column_values(col_num, header_row_num, exlude_header)
             if col_vals:
                 # if list of values returned, loop to create a dictionary with key = aliquot_id and
