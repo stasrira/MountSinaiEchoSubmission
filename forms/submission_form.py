@@ -127,7 +127,7 @@ class SubmissionForm:
                 out_val = cfg_val
         else:
             # requested "key" does not exist neither in assay or common config files
-            _str = 'No key was assigned to "{}" key during preparing submission form "{}" for sub-aliquot "{}".' \
+            _str = 'No value was assigned to "{}" key during preparing submission form "{}" for sub-aliquot "{}".' \
                 .format(key, self.form_name, self.sub_aliquot)
             self.logger.warning(_str)
             out_val = ''

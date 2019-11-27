@@ -23,7 +23,7 @@ REQUEST_LOG_NAME = 'request_processing_log'
 LOG_FOLDER_NAME = 'logs'
 PROCESSED_FOLDER_NAME = 'processed'
 
-REQUEST_EXCEL_WK_SHEET_NAME = 'Submission_Request'
+REQUEST_EXCEL_WK_SHEET_NAME = '' # 'Submission_Request'
 
 # predefined paths in the main config file for various variables
 STUDY_LOGGER_NAME_CFG_PATH = 'Logging/file_log_name'

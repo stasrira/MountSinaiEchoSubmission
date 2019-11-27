@@ -164,7 +164,7 @@ class Request(File):
         self.exposure = self.columnlist[0].split(',')[1]
         self.center = self.columnlist[1].split(',')[1]
         self.source_spec_type = self.columnlist[2].split(',')[1]
-        self.assay = self.columnlist[3].split(',')[1]
+        self.assay = self.columnlist[3].split(',')[1].lower()
         self.sub_aliquots = self.columnlist[4].split(',')
         if self.sub_aliquots and len(self.sub_aliquots) > 0:
             self.sub_aliquots.pop(0)
