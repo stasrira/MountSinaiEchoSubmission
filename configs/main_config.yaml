@@ -19,10 +19,10 @@ DB: # this section currently not in use
 
 Location:
     # path to the folder where all data files are located
-    requests: E:\MounSinai\Darpa\Programming\submission\requests
+    requests: ./input_output/requests
 
     #name of the folder where all logs files will be stored
-    #log_folder_name: logs
+    #log_folder_name: ./input_output/process_logs
     #processed_folder_name: processed
 
 Logging:

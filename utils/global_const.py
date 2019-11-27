@@ -6,7 +6,7 @@ CONFIG_FILE_CENTER = 'configs/center_config.yaml'
 CONFIG_FILE_DICTIONARY = 'configs/dict_config.yaml'
 
 SUBMISSION_FORMS_DIR = 'forms'
-SUBMISSION_PACKAGES_DIR = "submission_packages"
+SUBMISSION_PACKAGES_DIR = "input_output/submission_packages"
 
 PROJECT_NAME = 'ECHO'  # this key is stored in here instead of being passed from a request.
 
@@ -23,11 +23,12 @@ REQUEST_LOG_NAME = 'request_processing_log'
 LOG_FOLDER_NAME = 'logs'
 PROCESSED_FOLDER_NAME = 'processed'
 
-REQUEST_EXCEL_WK_SHEET_NAME = 'Submission_Request'
+# if not provided the first sheet in the excel file will be used 
+REQUEST_EXCEL_WK_SHEET_NAME = ''  # 'Submission_Request'
 
 # predefined paths in the main config file for various variables
-STUDY_LOGGER_NAME_CFG_PATH = 'Logging/file_log_name'
-STUDY_LOGGING_LEVEL_CFG_PATH = 'Logging/file_log_level'
+# STUDY_LOGGER_NAME_CFG_PATH = 'Logging/file_log_name'
+# STUDY_LOGGING_LEVEL_CFG_PATH = 'Logging/file_log_level'
 
 # default values for Study config file properties
 DEFAULT_CONFIG_VALUE_LIST_SEPARATOR = ','
