@@ -22,7 +22,7 @@ ASSAY_TEMPLATE:
                 - .xls
 
         file_content_details:
-            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
             # 'row_num' - retrieve data from a particular row of the file
             get_by_row_num: # 'row_num' - retrieve data from a particular row of the file
                 row_num: 2
@@ -75,7 +75,7 @@ SCRNASEQ:
             single_file_path: /outs/metrics_summary.csv
 
         file_content_details:
-            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
                                      # 'row_num' - retrieve data from a particular row of the file
             get_by_row_num: # 'row_num' - retrieve data from a particular row of the file
                 row_num: 2
@@ -127,7 +127,7 @@ SCATACSEQ:
             single_file_path: /outs/summary.csv
 
         file_content_details:
-            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
                                      # 'row_num' - retrieve data from a particular row of the file
             get_by_row_num: # 'row_num' - retrieve data from a particular row of the file
                 row_num: 2
@@ -180,7 +180,7 @@ CYTOF:
             single_file_path:
 
         file_content_details:
-            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
                                      # 'row_num' - retrieve data from a particular row of the file
             get_by_row_num:
                 # 'row_num' - retrieve data from a particular row of the file
@@ -233,7 +233,7 @@ RNASEQ:
             single_file_path:
 
         file_content_details:
-            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
                                      # 'row_num' - retrieve data from a particular row of the file
             get_by_row_num:
                 # 'row_num' - retrieve data from a particular row of the file
@@ -275,7 +275,7 @@ CyTOF_original:
     #data_retrieval file to be found inside of the folder with raw data for the current sample
     rawdata_summary_file:
         file_path:
-        get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+        get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
         # 'row_num' - retrieve data from a particular row of the file
         row_num:
 
@@ -335,7 +335,7 @@ SCRNASEQ_orig:
     #data_retrieval file to be found inside of the folder with raw data for the current sample
     rawdata_summary_file:
         file_path: /outs/metrics_summary.csv
-        get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+        get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
                                         # 'row_num' - retrieve data from a particular row of the file
         row_num: 2
 
@@ -385,7 +385,7 @@ SCATACSEQ_orig:
     #data_retrieval file to be found inside of the folder with raw data for the current sample
     rawdata_summary_file:
         file_path: /outs/summary.csv
-        get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+        get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
                              # 'row_num' - retrieve data from a particular row of the file
         row_num: 2
 

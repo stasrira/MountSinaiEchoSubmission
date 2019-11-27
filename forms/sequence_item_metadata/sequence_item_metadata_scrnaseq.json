@@ -5,59 +5,10 @@
 	"filename": "The name of the file that contains data from this sequencing dataset",
 	"md5sum": "The md5 sum of this file",
 	"format": "The format of this file (Raw data must be provided in Fast) ",
-	"paired_file": "Name of paired file, or empty if seq_end_type==single-ended",
 	"assay": "rna_seq|atac_seq|scrna_seq|etc...",
-	"seq_length": "Read sequencing length",
-	"seq_depth": "Sequencing (read) depth",
-	"seq_end_type": "single-ended|pair-ended",
-	"strand_specificity": "forward|reverse|unstranded",
 	"seq_platform": "Sequencing platform",
 	"seq_instrument": "Sequencing instrument (ex.HiSeq 2500)",
-	"seq_date": "Sequencing date",
-	"sequenced_by": "Who performed this sequencing dataset's sequencing run",
-	"seq_run_number": "The run number for the sequencing run that produced this sequencing dataset",
-	"seq_machine_id": "The serial number of the sequencing machine",
-	"seq_flowcell_id": "Flow cell ID",
-	"seq_flowcell_run": "Flow cell run",
-	"seq_flowcell_lane": "Flow cell lane",
-	"seq_flowcell_type": "Flow cell type",
-	"pcr_cycle_nr": "Number of PCR cycles",
-	"sample_barcode": "Sample barcode (adapter)",
-	"pcr_barcode": "PCR barcode",
-	
-	"comments": "Optional text field for additional comments",
-
-	"spike_ins_present": "Are there any spike ins? (T|F)",
-	"spike_ins": [
-		{
-			"name": "spike in name",
-			"sequence": "spike in sequence"
-		}
-	],
-
-	"reagents": [
-		{
-			"reagent": "Name of this reagent",
-			"source": "Source of this reagent",
-			"product_id": "Product ID of this reagent",
-			"lot_number": "Lot number of this reagent",
-			"antigen_sequence": "Antigen sequence, if applicable",
-			"clonality": "Clonality, if applicable",
-			"host_organism": "Host organism, if applicable",
-			"isotype": "Isotype, if applicable",
-			"comments": "Optional comments"
-		}
-	],
-
 	"scrna_seq_metadata": {
-		"viability": "Assessment of cells' viability",
-		"number_cells": "Number of cells loaded into the chip",
-		"lib_reagents": "-",
-		"kit_name": "-",
-		"lib_frag_size": "Average library fragment size",
-		"lib_dna_conc": "DNA concentration for the library (stock)",
-		"lib_molarity": "Library molarity",
-		"lib_adaptor_1": "Truseq i7 index with 8bp index",
-		"lib_adaptor_2": "Truseq universal index"
+		"kit_name": "-"
 	}
 }

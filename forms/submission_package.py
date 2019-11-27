@@ -14,7 +14,7 @@ class SubmissionPackage:
         self.conf_assay = request.conf_assay
         self.attachments = request.attachments
         self.submission_forms = None
-        self.submission_dir = gc.SUBMISSION_PACKAGES_DIR + "/" + time.strftime("%Y%m%d_%H%M%S", time.localtime()) \
+        self.submission_dir = gc.OUTPUT_PACKAGES_DIR + "/" + time.strftime("%Y%m%d_%H%M%S", time.localtime()) \
                               + "_" + self.req_obj.experiment_id
 
         self.prepare_submission_package()
@@ -22,14 +22,6 @@ class SubmissionPackage:
     def prepare_submission_package(self):
         # create a package dir for this submission
         os.makedirs(self.submission_dir, exist_ok=True)
-        """
-        # clean package dir
-        (_, dirs, files) = next(walk(self.submission_dir))
-        for file in files:
-            os.remove(file)
-        for dir in dirs:
-            os.remove(dir)
-        """
 
         self.prepare_submission_package_attachments()
 
@@ -39,7 +31,7 @@ class SubmissionPackage:
 
     # this function will create all required json files
     # depends on a form group key assigned to a form,
-    # one json file per request or one json file per sub_aliquot entry will be created
+    # one json file per request or one json file per aliquot entry will be created
     def prepare_submission_package_jsons(self):
         # save json files to package dir
         dict_forms = self.req_obj.submission_forms.forms_dict

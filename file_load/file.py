@@ -47,15 +47,23 @@ class File:
         return self.__headers
 
     def setup_logger(self, wrkdir, filename):
+        pass
+        '''
+        log_folder_name = gc.REQ_LOG_DIR  # gc.LOG_FOLDER_NAME
 
-        log_folder_name = gc.LOG_FOLDER_NAME
+        # if a relative path provided, convert it to the absolute address based on the application working dir
+        if not os.path.isabs(log_folder_name):
+            log_folder_path = Path(wrkdir) / log_folder_name
+        else:
+            log_folder_path = Path(log_folder_name)
 
         lg = setup_logger_common(StudyConfig.study_logger_name, StudyConfig.study_logging_level,
-                                 Path(wrkdir) / log_folder_name,
+                                 log_folder_path,  # Path(wrkdir) / log_folder_name,
                                  filename + '_' + time.strftime("%Y%m%d_%H%M%S", time.localtime()) + '.log')
 
         self.log_handler = lg['handler']
         return lg['logger']
+        '''
 
     def get_file_content(self):
         if not self.logger:
