@@ -34,10 +34,10 @@ class DataRetrieval:
             self.get_data_by_file_content()
 
         # check if some data_retrieval was assigned to an aliquot and warn if none were assigned
-        for sa in self.req_obj.sub_aliquots:
-            if sa not in self.aliquots_data_dict:
+        for aliquot in self.req_obj.sub_aliquots:
+            if aliquot not in self.aliquots_data_dict:
                 # no attachments were assigned to an aliquot
-                _str = 'Aliquot "{}" was not assigned with any Raw Data.'.format(sa)
+                _str = 'Aliquot "{}" was not assigned with any Raw Data.'.format(aliquot)
                 self.logger.error(_str)
                 self.error.add_error(_str)
         '''
@@ -74,13 +74,13 @@ class DataRetrieval:
                 rda = DataRetrievalAliquot(sa, self)
                 rda.get_data_by_rownum(file_index[sa][1], file_index[sa][0], file_struct['header_row_num'])
                 if rda.loaded:
-                    _str = 'Summary Raw Data for aliquot "{}" was successfully loaded from file "{}".' \
-                        .format(sa, file_index[sa][1])
+                    _str = '{} for aliquot "{}" was successfully loaded from file "{}".' \
+                        .format(self.data_source_name, sa, file_index[sa][1])
                     self.aliquots_data_dict[sa] = rda.data_retrieved
                     self.logger.info(_str)
                 else:
-                    _str = 'Summary Raw Data for aliquot "{}" failed to load from file "{}"; ' \
-                           'see earlier error(s) in this log.'.format(sa, file_index[sa][1])
+                    _str = '{} for aliquot "{}" failed to load from file "{}"; ' \
+                           'see earlier error(s) in this log.'.format(self.data_source_name, sa, file_index[sa][1])
                     self.logger.warning(_str)
 
     def index_data_files(self, files, file_struct):

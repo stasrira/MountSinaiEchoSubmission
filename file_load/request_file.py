@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import time
 import xlrd
 from utils import global_const as gc
@@ -164,7 +165,7 @@ class Request(File):
         self.exposure = self.columnlist[0].split(',')[1]
         self.center = self.columnlist[1].split(',')[1]
         self.source_spec_type = self.columnlist[2].split(',')[1]
-        self.assay = self.columnlist[3].split(',')[1]
+        self.assay = self.columnlist[3].split(',')[1].lower()
         self.sub_aliquots = self.columnlist[4].split(',')
         if self.sub_aliquots and len(self.sub_aliquots) > 0:
             self.sub_aliquots.pop(0)
@@ -232,7 +233,7 @@ class Request(File):
 
         # m_cfg = ConfigData(gc.CONFIG_FILE_MAIN)
 
-        log_folder_name = gc.LOG_FOLDER_NAME
+        log_folder_name = gc.REQ_LOG_DIR  # gc.LOG_FOLDER_NAME
 
         # m_logger_name = gc.MAIN_LOG_NAME
         # m_logger = logging.getLogger(m_logger_name)
@@ -240,8 +241,14 @@ class Request(File):
         logger_name = gc.REQUEST_LOG_NAME
         logging_level = self.conf_main.get_value('Logging/request_log_level')
 
+        # if a relative path provided, convert it to the absolute address based on the application working dir
+        if not os.path.isabs(log_folder_name):
+            log_folder_path = Path(wrkdir) / log_folder_name
+        else:
+            log_folder_path = Path(log_folder_name)
+
         lg = setup_logger_common(logger_name, logging_level,
-                                 Path(wrkdir) / log_folder_name,
+                                 log_folder_path,  # Path(wrkdir) / log_folder_name,
                                  str(filename) + '_' + time.strftime("%Y%m%d_%H%M%S", time.localtime()) + '.log')
 
         self.log_handler = lg['handler']

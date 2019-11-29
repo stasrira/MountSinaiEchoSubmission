@@ -5,29 +5,33 @@ CONFIG_FILE_ASSAY = 'configs/assay_config.yaml'
 CONFIG_FILE_CENTER = 'configs/center_config.yaml'
 CONFIG_FILE_DICTIONARY = 'configs/dict_config.yaml'
 
-SUBMISSION_FORMS_DIR = 'forms'
-SUBMISSION_PACKAGES_DIR = "submission_packages"
-
 PROJECT_NAME = 'ECHO'  # this key is stored in here instead of being passed from a request.
 
 # study level default name for the config file
 # DEFAULT_STUDY_CONFIG_FILE = 'study.cfg.yaml'
 
-
-# name of the folder where all logs files will be stored
 # name for the each type of log
 MAIN_LOG_NAME = 'main_log'
 REQUEST_LOG_NAME = 'request_processing_log'
 
 # default folder names for logs and processed files
-LOG_FOLDER_NAME = 'logs'
-PROCESSED_FOLDER_NAME = 'processed'
 
-REQUEST_EXCEL_WK_SHEET_NAME = 'Submission_Request'
+# following variables will be defined at the start of execution based on the config values from main_config.yaml
+APP_LOG_DIR = ''  # path to the folder where all application level log files will be stored (one file per run)
+REQ_LOG_DIR = ''  # path to the folder where all log files for processing request files will be stored
+                          # (one file per request)
+REQ_PROCESSED_DIR = ''  # path to the folder where all processed (and renamed) requests will be stored
+OUTPUT_PACKAGES_DIR = ''  # path to the folder where all processed (and renamed) requests will be stored
+SUBMISSION_FORMS_DIR = 'forms'
 
-# predefined paths in the main config file for various variables
-STUDY_LOGGER_NAME_CFG_PATH = 'Logging/file_log_name'
-STUDY_LOGGING_LEVEL_CFG_PATH = 'Logging/file_log_level'
+# the following 3 lines are to be removed
+# SUBMISSION_PACKAGES_DIR = "submission_packages"
+# LOG_FOLDER_NAME = 'logs'
+# PROCESSED_FOLDER_NAME = 'processed'
+
+# name of the sheet name in the request file (excel file) where from data should be retrieved.
+# If omitted, the first sheet in array of sheets will be used
+REQUEST_EXCEL_WK_SHEET_NAME = ''  # 'Submission_Request'
 
 # default values for Study config file properties
 DEFAULT_CONFIG_VALUE_LIST_SEPARATOR = ','

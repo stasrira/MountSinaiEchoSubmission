@@ -55,13 +55,13 @@
     },
     "seq_end_type": {
       "type": "string",
-      "enum": ["single-ended", "pair-ended", ""],
+      "enum": ["single-ended", "pair-ended"],
       "examples": ["single-ended", "pair-ended"],
       "comment": "single-ended|pair-ended"
     },
     "strand_specificity": {
       "type": "string",
-      "enum": ["forward", "reverse", "unstranded", ""],
+      "enum": ["forward", "reverse", "unstranded"],
       "examples": ["forward", "reverse", "unstranded"],
       "comment": "forward|reverse|unstranded"
     },
@@ -137,7 +137,7 @@
     },
     "spike_ins_present": {
       "type": "string",
-      "enum": ["T", "F", ""],
+      "enum": ["T", "F"],
       "examples": ["T", "F"],
       "comment": "Are there any spike ins? (T|F)"
     },
@@ -896,7 +896,7 @@
               },
               "seq_end_type": {
                 "type": "string",
-                "enum": [ "single-ended", "pair-ended", ""],
+                "enum": [ "single-ended", "pair-ended"],
                 "examples": ["single-ended", "pair-ended"],
                 "comment": "..."
               },

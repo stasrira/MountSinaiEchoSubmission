@@ -19,10 +19,25 @@ if __name__ == '__main__':
     # print ('m_cfg = {}'.format(m_cfg.cfg))
     # assign values
     common_logger_name = gc.MAIN_LOG_NAME  # m_cfg.get_value('Logging/main_log_name')
+
+    # get path configuration values
     logging_level = m_cfg.get_value('Logging/main_log_level')
+    # path to the folder where all new request files will be posted
     requests_loc = m_cfg.get_value('Location/requests')
-    log_folder_name = gc.LOG_FOLDER_NAME
-    processed_folder_name = gc.PROCESSED_FOLDER_NAME
+
+    # get path configuration values and save them to global_const module
+    # path to the folder where all application level log files will be stored (one file per run)
+    gc.APP_LOG_DIR = m_cfg.get_value('Location/app_logs')
+    # path to the folder where all log files for processing request files will be stored
+    # (one file per request)
+    gc.REQ_LOG_DIR = m_cfg.get_value('Location/request_logs')
+    # path to the folder where all processed (and renamed) requests will be stored
+    gc.REQ_PROCESSED_DIR = m_cfg.get_value('Location/requests_processed')
+    # path to the folder where created submission packages will be located. One package sub_folder per request.
+    gc.OUTPUT_PACKAGES_DIR = m_cfg.get_value('Location/output_packages')
+
+    log_folder_name = gc.APP_LOG_DIR  # gc.LOG_FOLDER_NAME
+    processed_folder_name = gc.REQ_PROCESSED_DIR  # gc.PROCESSED_FOLDER_NAME
 
     prj_wrkdir = os.path.dirname(os.path.abspath(__file__))
 
@@ -33,7 +48,12 @@ if __name__ == '__main__':
     requests_path = Path(requests_loc)
 
     # get current location of the script and create Log folder
-    logdir = Path(prj_wrkdir) / log_folder_name  # 'logs'
+    # if a relative path provided, convert it to the absolute address based on the application working dir
+    if not os.path.isabs(log_folder_name):
+        logdir = Path(prj_wrkdir) / log_folder_name
+    else:
+        logdir = Path(log_folder_name)
+    # logdir = Path(prj_wrkdir) / log_folder_name  # 'logs'
     lg_filename = time.strftime("%Y%m%d_%H%M%S", time.localtime()) + '.log'
 
     lg = setup_logger_common(common_logger_name, logging_level, logdir, lg_filename)  # logging_level
@@ -94,7 +114,7 @@ if __name__ == '__main__':
                     # deactivate the current Request logger
                     deactivate_logger_common(req_obj.logger, req_obj.log_handler)
 
-                    processed_dir = Path(requests_path) / processed_folder_name  # 'Processed'
+                    processed_dir = Path (processed_folder_name)  # Path(requests_path) / processed_folder_name  # 'Processed'
                     # if Processed folder does not exist in the Requests folder, it will be created
                     os.makedirs(processed_dir, exist_ok=True)
 

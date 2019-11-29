@@ -18,8 +18,16 @@ DB: # this section currently not in use
     fld_tmpl_samlpe_update: '{samlpe_update}'
 
 Location:
-    # path to the folder where all data files are located
+    # path to the folder where new request files are located
     requests: E:\MounSinai\Darpa\Programming\submission\requests
+    # path to the folder where processed request files are located
+    requests_processed: E:\MounSinai\Darpa\Programming\submission\requests\processed
+    # path to the folder where request level log files are located (one log file per request)
+    request_logs: E:\MounSinai\Darpa\Programming\submission\requests\logs
+    # path to the folder where application level log files are located (one per application run)
+    app_logs: E:\MounSinai\Darpa\Programming\submission\logs
+    # path to the folder where created submission packages will be located. One package sub_folder per request.
+    output_packages: E:\MounSinai\Darpa\Programming\submission\submission_packages
 
     #name of the folder where all logs files will be stored
     #log_folder_name: logs
@@ -40,15 +48,6 @@ Email:
     default_from_email: stasrirak.ms@gmail.com
     sent_to_emails: stasrirak.ms@gmail.com, stasrira@yahoo.com
     send_emails: True # expected values: True, False
-
-#output_profile:
-#    full:
-#        submission_forms:
-#            - assay_collection
-#            - sequence_item_metadata
-#    initial:
-#        submission_forms:
-#            - assay_collection
 
 submission_forms:
     -

@@ -64,29 +64,42 @@ class Attachment(DataRetrieval):
         self.logger.info(_str)
 
     def add_tarball(self, sa, tarball_path):
+        self.logger.info('Start preparing a tarball file for aliquot "{}".'.format(sa, tarball_path))
         with tarfile.open(tarball_path, "w:") as tar:
             for item in self.aliquots_data_dict[sa]:
                 if len(item['tar_dir'].strip()) > 0:
                     _str = '{}/{}'.format(item['tar_dir'], os.path.basename(item['path']))
                 else:
                     _str = '{}'.format(os.path.basename(item['path']))
+                self.logger.info('Start adding item "{}" to a tarball file "{}".'.format(item['path'], tarball_path))
                 tar.add(str(Path(item['path'])), arcname=_str)
+                self.logger.info('Item "{}" was added to a tarball file "{}".'.format(item['path'], tarball_path))
             tar.close()
+        self.logger.info('Tarball file "{}" was successfully created for aliquot "{}".'.format(tarball_path, sa))
+        self.logger.info('Start calculating MD5sum for tarball file "{}".'.format(tarball_path))
         md5 = self.get_file_md5(tarball_path)
         tar_details = {'path': tarball_path, 'md5': md5}
         self.aliquots_tarball_dict[sa] = tar_details
 
-        _str = 'Aliquot "{}" was successfully assigned with an tarball file "{}; MD5sum = {}".' \
+        _str = 'Aliquot "{}" was successfully assigned with a tarball file "{}"; MD5sum = "{}".' \
             .format(sa, tarball_path, md5)
         self.logger.info(_str)
 
     @staticmethod
-    def get_file_md5(file_path):
+    # solution used below is based on https://stackoverflow.com/questions/1131220/get-md5-hash-of-big-files-in-python
+    def get_file_md5(file_path, block_size=256*128):
         with open(file_path, 'rb') as file:
-            # read contents of the file
-            data = file.read()
-            # pipe contents of the file through
-            return hashlib.md5(data).hexdigest()
+            md5 = hashlib.md5()
+            for chunk in iter(lambda: file.read(block_size), b''):
+                md5.update(chunk)
+            '''
+            while True:
+                data = file.read(block_size)
+                if not data:
+                    break
+                md5.update(data)
+            '''
+            return md5.hexdigest()
 
     def get_data_by_file_name(self, search_deep_level, exclude_dirs, ext_match):
         # it retrieves all files potentially qualifying to be an attachment and searches through each to match

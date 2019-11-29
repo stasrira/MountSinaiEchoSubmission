@@ -127,7 +127,7 @@ class SubmissionForm:
                 out_val = cfg_val
         else:
             # requested "key" does not exist neither in assay or common config files
-            _str = 'No key was assigned to "{}" key during preparing submission form "{}" for sub-aliquot "{}".' \
+            _str = 'No value was assigned to "{}" key during preparing submission form "{}" for sub-aliquot "{}".' \
                 .format(key, self.form_name, self.sub_aliquot)
             self.logger.warning(_str)
             out_val = ''
@@ -160,9 +160,6 @@ class SubmissionForm:
 
     # it will retrieve any existing property_val from assay data object
     def get_assaydata_value_by_col_number(self, col_num, check_dict=False):
-        # t = list(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot].items())
-        # print(t)
-        # print (t[4][1])
         obj = list(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot].items())
         val = self.get_property_value_from_object(obj, col_num - 1, check_dict, 'dict', 'number')
         if isinstance(val, tuple):
