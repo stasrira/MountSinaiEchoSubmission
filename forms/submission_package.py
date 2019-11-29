@@ -36,14 +36,22 @@ class SubmissionPackage:
         # save json files to package dir
         dict_forms = self.req_obj.submission_forms.forms_dict
         # print(dict_forms)
+        sub_aliquots = self.req_obj.sub_aliquots
+        aliquots = self.req_obj.aliquots
         for form_grp in dict_forms:
             for form in dict_forms[form_grp]:
                 js_data = form.fl_json.json_data
                 # print (js_data)
+                file_part_name = form_grp
+                # convert sub-aliquot name to aliquot and use that as part of the file name (where appropriate)
+                if form_grp in sub_aliquots:
+                    idx = sub_aliquots.index(form_grp)
+                    file_part_name = aliquots[idx]
                 if form_grp == 'request':
-                    json_file_name = Path(self.submission_dir + "/" + form.form_name + ".json")
+                    json_file_name = Path(self.submission_dir + "/" + self.req_obj.experiment_id + "_" + form.form_name + ".json")
                 else:
-                    json_file_name = Path(self.submission_dir + "/" + form_grp + "_" + form.form_name + ".json")
+                    # json_file_name = Path(self.submission_dir + "/" + form_grp + "_" + form.form_name + ".json")
+                    json_file_name = Path(self.submission_dir + "/" + file_part_name + "_" + form.form_name + ".json")
 
                 with open(json_file_name, 'w') as fp:
                     json.dump(js_data, fp)
@@ -54,6 +62,13 @@ class SubmissionPackage:
     def prepare_submission_package_attachments(self):
         if self.req_obj.attachments:
             attachments = self.req_obj.attachments.aliquots_data_dict
+            sub_aliquots = self.req_obj.sub_aliquots
+            aliquots = self.req_obj.aliquots
             for attch in attachments:
-                tar_path = self.submission_dir + "/" + attch + ".tar.gz"
+                file_part_name = attch
+                # convert sub-aliquot name to aliquot and use that as part of the file name
+                if attch in sub_aliquots:
+                    idx = sub_aliquots.index(attch)
+                    file_part_name = aliquots[idx]
+                tar_path = self.submission_dir + "/" + file_part_name + ".tar.gz"  # attch
                 self.req_obj.attachments.add_tarball(attch, tar_path)
