@@ -21,9 +21,9 @@ DB: # this section currently not in use
 
 Location:
     # path to the folder where new request files are located
-    requests: /ext_data/shared/.apps/echo_submission/echo_submission_v1.1/input_output/requests
+    requests: /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/Pending # /ext_data/shared/.apps/echo_submission/echo_submission_v1.1/input_output/requests
     # path to the folder where processed request files are located
-    requests_processed: /ext_data/shared/.apps/echo_submission/echo_submission_v1.1/input_output/requests/processed_requests
+    requests_processed: /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/Processed # /ext_data/shared/.apps/echo_submission/echo_submission_v1.1/input_output/requests/processed_requests
     # path to the folder where request level log files are located (one log file per request)
     request_logs: /ext_data/shared/.apps/echo_submission/echo_submission_v1.1/input_output/request_logs
     # path to the folder where application level log files are located (one per application run)
