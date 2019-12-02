@@ -125,9 +125,9 @@ class DataRetrieval:
         # check if any of the found folders contain sub_aliquot ids and assign such folders to sub_aliqout ids
         for d in dirs:
             dbn = os.path.basename(d)
-            # print('File name = {}'.format(dbn))
+            # print('dbn = |{}|'.format(dbn))
             for sa in self.req_obj.sub_aliquots:
-                # print ('Aliquot = {}'.format(sa))
+                # print ('Aliquot = |{}|'.format(sa))
                 if sa in dbn:
                     self.get_data_for_aliquot(sa, d)
 
@@ -168,6 +168,7 @@ class DataRetrieval:
     def get_top_level_dirs(path, exclude_dirs=None):
         if exclude_dirs is None:
             exclude_dirs = []
+        # TODO: add error handling for cases if path does not exist
         itr = os.walk(path)
         _, dirs, _ = next(itr)
         if not dirs:
