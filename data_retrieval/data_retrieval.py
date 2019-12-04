@@ -164,17 +164,20 @@ class DataRetrieval:
 
         return dirs
 
-    @staticmethod
-    def get_top_level_dirs(path, exclude_dirs=None):
+    def get_top_level_dirs(self, path, exclude_dirs=None):
         if exclude_dirs is None:
             exclude_dirs = []
-        # TODO: add error handling for cases if path does not exist
-        itr = os.walk(path)
-        _, dirs, _ = next(itr)
-        if not dirs:
-            dirs = []
-        dirs = list(set(dirs) - set(exclude_dirs))  # remove folders to be excluded from the list of directories
-        dirs_path = [str(Path(path / fn)) for fn in dirs]
+        if Path(path).exists():
+            itr = os.walk(Path(path))
+            _, dirs, _ = next(itr)
+            if not dirs:
+                dirs = []
+            dirs = list(set(dirs) - set(exclude_dirs))  # remove folders to be excluded from the list of directories
+            dirs_path = [str(Path(path / fn)) for fn in dirs]
+        else:
+            self.logger.warning('Expected to exist directory "{}" is not present - reported from "DataRetrieval" '
+                                'class, "get_top_level_dirs" function'.format (path))
+            dirs_path = []
         return dirs_path
 
     @staticmethod

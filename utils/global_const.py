@@ -23,6 +23,7 @@ REQ_LOG_DIR = ''  # path to the folder where all log files for processing reques
 REQ_PROCESSED_DIR = ''  # path to the folder where all processed (and renamed) requests will be stored
 OUTPUT_PACKAGES_DIR = ''  # path to the folder where all processed (and renamed) requests will be stored
 SUBMISSION_FORMS_DIR = 'forms'
+TARBALL_APPROACH = 'tarfile'  # "tarfile" (default) and "commandline" are expected values
 
 # the following 3 lines are to be removed
 # SUBMISSION_PACKAGES_DIR = "submission_packages"
