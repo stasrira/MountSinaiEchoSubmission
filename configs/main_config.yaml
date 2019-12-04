@@ -60,3 +60,6 @@ submission_forms:
         name: sequence_item_metadata
         assignment: aliquot # expected values are: "request" and "aliquot"
 
+Tar_ball:
+    approach: commandline # possible value: 1)"tarfile" - a tarfile module will be use
+                      #                 2) commandline - system tar command will be used

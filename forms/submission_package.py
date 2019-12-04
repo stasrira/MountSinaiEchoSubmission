@@ -70,5 +70,5 @@ class SubmissionPackage:
                 if attch in sub_aliquots:
                     idx = sub_aliquots.index(attch)
                     file_part_name = aliquots[idx]
-                tar_path = self.submission_dir + "/" + file_part_name + ".tar.gz"  # attch
+                tar_path = self.submission_dir + "/" + file_part_name + ".tar"  # attch
                 self.req_obj.attachments.add_tarball(attch, tar_path)

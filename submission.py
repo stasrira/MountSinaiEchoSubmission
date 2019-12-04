@@ -35,6 +35,8 @@ if __name__ == '__main__':
     gc.REQ_PROCESSED_DIR = m_cfg.get_value('Location/requests_processed')
     # path to the folder where created submission packages will be located. One package sub_folder per request.
     gc.OUTPUT_PACKAGES_DIR = m_cfg.get_value('Location/output_packages')
+    # tarball approach to be used for the current deployment
+    gc.TARBALL_APPROACH = m_cfg.get_value('Tar_ball/approach')
 
     log_folder_name = gc.APP_LOG_DIR  # gc.LOG_FOLDER_NAME
     processed_folder_name = gc.REQ_PROCESSED_DIR  # gc.PROCESSED_FOLDER_NAME

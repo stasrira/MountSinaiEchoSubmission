@@ -3,6 +3,9 @@ from pathlib import Path
 import os
 import tarfile
 import hashlib
+import subprocess
+import shlex
+from utils import global_const as gc
 
 
 class Attachment(DataRetrieval):
@@ -64,8 +67,64 @@ class Attachment(DataRetrieval):
         self.logger.info(_str)
 
     def add_tarball(self, sa, tarball_path):
-        self.logger.info('Start preparing a tarball file for aliquot "{}".'.format(sa, tarball_path))
-        with tarfile.open(tarball_path, "w:") as tar:
+        # create a tarball based on the approach selected in the main config file
+        if gc.TARBALL_APPROACH == 'tarfile':
+            self.add_tarball_tarfile(sa, tarball_path)
+        elif gc.TARBALL_APPROACH == 'commandline':
+            self.add_tarball_commandline(sa, tarball_path)
+        else:
+            _str = 'No tarball file for aliquot "{}" was created. Provided tar ball approach parameter ' \
+                   '(from main config) "{}" was not recognized.'.format(sa, gc.TARBALL_APPROACH)
+            self.logger.error(_str)
+            self.error.add_error(_str)
+            return
+        if not self.error.exist():
+            # calculate an md5sum for the created tarball
+            self.calculate_md5sum(sa, tarball_path)
+
+    def add_tarball_commandline(self, sa, tarball_path):
+        self.logger.info('Start preparing a tarball file for aliquot "{}"; command line approach is used.'.format(sa, tarball_path))
+        cnt = 0
+        for item in self.aliquots_data_dict[sa]:
+            # add holder to the end of path
+            if Path(item['path']).is_dir():
+                item_dir_path = str(Path(item['path']).parent)  # str(Path(item['path']) / '..') # .parent
+            else:
+                item_dir_path = str(os.path.dirname(Path(item['path'])))
+            # print(item_dir_path)
+
+            in_tar_path = ''
+            if len(item['tar_dir'].strip()) > 0:
+                in_tar_path = item['tar_dir']
+            self.logger.info('Start adding item "{}" to a tarball file "{}".'.format(item['path'], tarball_path))
+            cmd_tmpl = "tar -C {} --transform s,^,/{}/, {} {} {}"
+            if cnt == 0:
+                tar_cmd = '-cvf'
+            else:
+                tar_cmd = '-rvf'
+            cmd = cmd_tmpl.format(Path(item_dir_path), Path(in_tar_path), tar_cmd, Path(tarball_path), os.path.basename(item['path']))
+             # print(cmd)
+            self.logger.info('Command to append items to a tar file: "{}".'.format(cmd))
+            arg_list = shlex.split (cmd, posix=False)
+            # print (arg_list)
+            process = subprocess.run(arg_list,
+                                     stdout=subprocess.PIPE,
+                                     stderr=subprocess.PIPE,
+                                     universal_newlines=True)
+            if process.returncode == 0:
+                self.logger.info('Item "{}" was added to a tarball file "{}".'.format(item['path'], tarball_path))
+            else:
+                _str = 'Error "{}" was reported while adding item "{}" to a tarball file "{}"'\
+                    .format(process.stderr, item['path'], tarball_path)
+                self.logger.error(_str)
+                self.error.add_error(_str)
+                return
+            cnt = cnt + 1
+        self.logger.info('Tarball file "{}" was successfully created for aliquot "{}".'.format(tarball_path, sa))
+
+    def add_tarball_tarfile(self, sa, tarball_path):
+        self.logger.info('Start preparing a tarball file for aliquot "{}"; tarfile library is used.'.format(sa, tarball_path))
+        with tarfile.open(Path(tarball_path), "w:") as tar:
             for item in self.aliquots_data_dict[sa]:
                 if len(item['tar_dir'].strip()) > 0:
                     _str = '{}/{}'.format(item['tar_dir'], os.path.basename(item['path']))
@@ -76,6 +135,8 @@ class Attachment(DataRetrieval):
                 self.logger.info('Item "{}" was added to a tarball file "{}".'.format(item['path'], tarball_path))
             tar.close()
         self.logger.info('Tarball file "{}" was successfully created for aliquot "{}".'.format(tarball_path, sa))
+
+    def calculate_md5sum(self, sa, tarball_path):
         self.logger.info('Start calculating MD5sum for tarball file "{}".'.format(tarball_path))
         md5 = self.get_file_md5(tarball_path)
         tar_details = {'path': tarball_path, 'md5': md5}

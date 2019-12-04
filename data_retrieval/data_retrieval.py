@@ -125,9 +125,9 @@ class DataRetrieval:
         # check if any of the found folders contain sub_aliquot ids and assign such folders to sub_aliqout ids
         for d in dirs:
             dbn = os.path.basename(d)
-            # print('File name = {}'.format(dbn))
+            # print('dbn = |{}|'.format(dbn))
             for sa in self.req_obj.sub_aliquots:
-                # print ('Aliquot = {}'.format(sa))
+                # print ('Aliquot = |{}|'.format(sa))
                 if sa in dbn:
                     self.get_data_for_aliquot(sa, d)
 
@@ -164,16 +164,20 @@ class DataRetrieval:
 
         return dirs
 
-    @staticmethod
-    def get_top_level_dirs(path, exclude_dirs=None):
+    def get_top_level_dirs(self, path, exclude_dirs=None):
         if exclude_dirs is None:
             exclude_dirs = []
-        itr = os.walk(path)
-        _, dirs, _ = next(itr)
-        if not dirs:
-            dirs = []
-        dirs = list(set(dirs) - set(exclude_dirs))  # remove folders to be excluded from the list of directories
-        dirs_path = [str(Path(path / fn)) for fn in dirs]
+        if Path(path).exists():
+            itr = os.walk(Path(path))
+            _, dirs, _ = next(itr)
+            if not dirs:
+                dirs = []
+            dirs = list(set(dirs) - set(exclude_dirs))  # remove folders to be excluded from the list of directories
+            dirs_path = [str(Path(path / fn)) for fn in dirs]
+        else:
+            self.logger.warning('Expected to exist directory "{}" is not present - reported from "DataRetrieval" '
+                                'class, "get_top_level_dirs" function'.format (path))
+            dirs_path = []
         return dirs_path
 
     @staticmethod
