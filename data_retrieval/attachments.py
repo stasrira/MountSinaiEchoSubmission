@@ -94,15 +94,19 @@ class Attachment(DataRetrieval):
             # print(item_dir_path)
 
             in_tar_path = ''
-            if len(item['tar_dir'].strip()) > 0:
+            if item['tar_dir'] and len(item['tar_dir'].strip()) > 0:
                 in_tar_path = item['tar_dir']
             self.logger.info('Start adding item "{}" to a tarball file "{}".'.format(item['path'], tarball_path))
-            cmd_tmpl = "tar -C {} --transform s,^,/{}/, {} {} {}"
+            cmd_tmpl = "tar -C {} --transform=s,^,/{}/, {} {} {}"
+            cmd_tmpl_1 = "tar -C {} {} {} {}"
             if cnt == 0:
                 tar_cmd = '-cvf'
             else:
                 tar_cmd = '-rvf'
-            cmd = cmd_tmpl.format(Path(item_dir_path), Path(in_tar_path), tar_cmd, Path(tarball_path), os.path.basename(item['path']))
+            if in_tar_path != '':
+                cmd = cmd_tmpl.format(Path(item_dir_path), Path(in_tar_path), tar_cmd, Path(tarball_path), os.path.basename(item['path']))
+            else:
+                cmd = cmd_tmpl_1.format(Path(item_dir_path), tar_cmd, Path(tarball_path), os.path.basename(item['path']))
              # print(cmd)
             self.logger.info('Command to append items to a tar file: "{}".'.format(cmd))
             arg_list = shlex.split (cmd, posix=False)
@@ -113,6 +117,7 @@ class Attachment(DataRetrieval):
                                      universal_newlines=True)
             if process.returncode == 0:
                 self.logger.info('Item "{}" was added to a tarball file "{}".'.format(item['path'], tarball_path))
+                self.logger.info('Here is the stdout: \n"{}".'.format(process.stdout))
             else:
                 _str = 'Error "{}" was reported while adding item "{}" to a tarball file "{}"'\
                     .format(process.stderr, item['path'], tarball_path)
