@@ -11,7 +11,8 @@ from utils import global_const as gc
 class Attachment(DataRetrieval):
 
     def __init__(self, request):
-        self.tar_folder = ''
+        self.tar_folder = None
+        self.tar_include_parent_dir = None
         self.aliquots_tarball_dict = {}
         self.data_loc = None
         self.cnf_data_source = None
@@ -22,15 +23,23 @@ class Attachment(DataRetrieval):
         cnf_data_source = self.cnf_data_source
         last_part_path_list = cnf_data_source['attachment_folder']
         data_source_loc = cnf_data_source['location']
+
         for last_part_path_item in last_part_path_list:
+            # set default values
+            self.tar_folder = None
+            self.tar_include_parent_dir = None
+
             # check if key received from config file is a dictionary
             if isinstance(last_part_path_item, dict):
                 # if it is a dictionary, get values from it to a local variables
-                last_part_path = last_part_path_item['folder']
-                self.tar_folder = last_part_path_item['tar_dir']
+                if 'folder' in last_part_path_item:
+                    last_part_path = last_part_path_item['folder']
+                if 'tar_dir' in last_part_path_item:
+                    self.tar_folder = last_part_path_item['tar_dir']
+                if 'tar_include_parent_dir' in last_part_path_item:
+                    self.tar_include_parent_dir = last_part_path_item['tar_include_parent_dir']
             else:
                 last_part_path = last_part_path_item
-                self.tar_folder = ''
 
             self.data_loc = Path(self.convert_aliquot_properties_to_path(data_source_loc, last_part_path))
             # print (self.data_loc)
@@ -60,7 +69,7 @@ class Attachment(DataRetrieval):
     def add_attachment(self, sa, attach_path):
         if sa not in self.aliquots_data_dict:
             self.aliquots_data_dict[sa] = []
-        attach_details = {'path': attach_path, 'tar_dir': self.tar_folder}
+        attach_details = {'path': attach_path, 'tar_dir': self.tar_folder, 'incl_prnt_dir': self.tar_include_parent_dir}
         self.aliquots_data_dict[sa].append(attach_details)
 
         _str = 'Aliquot "{}" was successfully assigned with an attachment object "{}".'.format(sa, attach_details)
@@ -92,6 +101,13 @@ class Attachment(DataRetrieval):
             else:
                 item_dir_path = str(os.path.dirname(Path(item['path'])))
             # print(item_dir_path)
+            item_to_tar = os.path.basename(item['path'])  # target file to tar
+
+            incl_prnt_dir = item['incl_prnt_dir']  # TODO: this parameter should come from a config file
+            if incl_prnt_dir:
+                parent = os.path.basename(item_dir_path)
+                item_dir_path = str(Path(item_dir_path).parent)
+                item_to_tar = str(Path(parent + '/' + item_to_tar))
 
             in_tar_path = ''
             if item['tar_dir'] and len(item['tar_dir'].strip()) > 0:
@@ -104,9 +120,9 @@ class Attachment(DataRetrieval):
             else:
                 tar_cmd = '-rvf'
             if in_tar_path != '':
-                cmd = cmd_tmpl.format(Path(item_dir_path), Path(in_tar_path), tar_cmd, Path(tarball_path), os.path.basename(item['path']))
+                cmd = cmd_tmpl.format(Path(item_dir_path), Path(in_tar_path), tar_cmd, Path(tarball_path), item_to_tar)
             else:
-                cmd = cmd_tmpl_1.format(Path(item_dir_path), tar_cmd, Path(tarball_path), os.path.basename(item['path']))
+                cmd = cmd_tmpl_1.format(Path(item_dir_path), tar_cmd, Path(tarball_path), item_to_tar)
              # print(cmd)
             self.logger.info('Command to append items to a tar file: "{}".'.format(cmd))
             arg_list = shlex.split (cmd, posix=False)
@@ -131,7 +147,7 @@ class Attachment(DataRetrieval):
         self.logger.info('Start preparing a tarball file for aliquot "{}"; tarfile library is used.'.format(sa, tarball_path))
         with tarfile.open(Path(tarball_path), "w:") as tar:
             for item in self.aliquots_data_dict[sa]:
-                if len(item['tar_dir'].strip()) > 0:
+                if item['tar_dir'] and len(item['tar_dir'].strip()) > 0:
                     _str = '{}/{}'.format(item['tar_dir'], os.path.basename(item['path']))
                 else:
                     _str = '{}'.format(os.path.basename(item['path']))

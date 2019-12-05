@@ -127,6 +127,8 @@ if __name__ == '__main__':
                     mlog.info('Processed Submission request "{}" was moved and renamed as: "{}"'
                               .format(req_path, processed_dir / req_processed_name))
 
+                    # TODO: add to body info about location of submission package per request, list of aliquots(?)
+                    #  and corresponded bulk drive attachment path
                     # preps for email notification
                     email_msgs.append(
                         ('Request file <br/>"{}" <br/> was processed and moved/renamed to <br/> "{}".'

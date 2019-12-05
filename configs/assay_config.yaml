@@ -1,54 +1,3 @@
-ASSAY_TEMPLATE:
-    assay_name: # CyTOF
-    mssm_id: # 6
-    mssm_postfix: # _6
-
-    data_sources:
-        - rawdata
-        - attachment
-
-    rawdata:
-        #path to the location where data_retrieval for all projects are stored; this path will be combined with a path for a particular experiment
-        location: # rawdata_location: # E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # /mnt/researchsan02a/Projects
-        #path to the actual folder with assay data files, should be concatenated to manifest location and project path
-        sub_folder: # data_folder: # CyTOF
-
-        search_method: # search_rawdata_summary
-            search_by: file_content #possible options: file_content, folder_name
-            search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.
-            exclude_folders:
-            file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
-                - .xlsx
-                - .xls
-
-        file_content_details:
-            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
-            # 'row_num' - retrieve data from a particular row of the file
-            get_by_row_num: # 'row_num' - retrieve data from a particular row of the file
-                row_num: 2
-            get_by_primary_key:
-                header_row_number: # 1-based numbering
-                pk_column_number: # 1-based numbering
-            excel:
-                sheet_name:
-
-    attachment:
-        location: # E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
-        #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
-        attachment_folder:
-            -
-                folder: /scrna-seq/FASTQs
-                tar_dir: fastq
-            -
-                folder: /scrna-seq
-                tar_dir: processed
-        attachment_search_by: file_name #possible options: file_name and folder_name
-        search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.
-        exclude_folders:
-        attach_object: folder #possible options: folder and file
-        attachment_file_ext: #must include dot (.) in-front of an extension
-            - .fcs
-
 SCRNASEQ:
     assay_name: csRNAseq
     mssm_id: 1
@@ -91,7 +40,9 @@ SCRNASEQ:
         attachment_folder:
             -
                 folder: /scrna-seq/FASTQs
-                tar_dir: fastq
+                tar_dir: # fastq
+                # If set to True, it will include parent folder preceding the aliquot attachment to the tar file
+                tar_include_parent_dir: True
             -
                 folder: /scrna-seq
                 tar_dir: processed
