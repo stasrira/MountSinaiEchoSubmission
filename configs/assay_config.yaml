@@ -43,6 +43,8 @@ SCRNASEQ:
             -
                 folder: /scrnaseq/fastqs
                 tar_dir: # fastq
+                # If set to True, it will include parent folder preceding the aliquot attachment to the tar file
+                tar_include_parent_dir: True
             -
                 folder: /scrnaseq
                 tar_dir: processed
