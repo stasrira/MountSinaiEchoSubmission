@@ -4,7 +4,7 @@ SCRNASEQ:
     mssm_postfix: _1
 
     data_sources:
-        #- rawdata
+        - rawdata
         - attachment
 
     rawdata:

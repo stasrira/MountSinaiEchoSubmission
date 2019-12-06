@@ -135,12 +135,18 @@ if __name__ == '__main__':
                          '<br/> <b>Errors summary:</b> '
                          '<br/> {}'
                          '<br/> <i>Log file location: <br/>"{}"</i>'
+                         '<br/> Submission package locatoin:<br/>"{}"'
+                         '<br/> Data source locatoin:<br/>"{}"'
+                         '<br/> Processed Aliquots:<br/>"{}"'
                          ''.format(req_path,
                                    processed_dir / req_processed_name,
                                    '<font color="red">Check Errors in the log file (attached)</font>'
                                    if req_obj.error.exist()
                                    else '<font color="green">No Errors</font> (the log file is attached)',
-                                   req_obj.log_handler.baseFilename)
+                                   req_obj.log_handler.baseFilename,
+                                   req_obj.submission_package.submission_dir,
+                                   req_obj.attachments.data_loc,
+                                   req_obj.aliquots)
                          )
                     )
                     email_attchms.append(req_obj.log_handler.baseFilename)
