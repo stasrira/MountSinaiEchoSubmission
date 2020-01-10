@@ -63,3 +63,4 @@ submission_forms:
 Tar_ball:
     approach: tarfile # possible value: 1)"tarfile" - a tarfile module will be use
                       #                 2) commandline - system tar command will be used
+    save_md5sum_file: True

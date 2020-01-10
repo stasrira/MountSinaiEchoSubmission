@@ -24,6 +24,7 @@ REQ_PROCESSED_DIR = ''  # path to the folder where all processed (and renamed) r
 OUTPUT_PACKAGES_DIR = ''  # path to the folder where all processed (and renamed) requests will be stored
 SUBMISSION_FORMS_DIR = 'forms'
 TARBALL_APPROACH = 'tarfile'  # "tarfile" (default) and "commandline" are expected values
+TARBALL_SAVE_MD5SUM_FILE = True # set default functionality to create physical MD5sum files
 
 # the following 3 lines are to be removed
 # SUBMISSION_PACKAGES_DIR = "submission_packages"
