@@ -171,10 +171,8 @@ class Attachment(DataRetrieval):
         self.logger.info(_str)
 
     def save_md5sum_file(self, md5_path, md5_value):
-        f = open(md5_path, "w+")
-        f.write(md5_value)
-        f.close()
-
+        with open(md5_path, "w+") as f:
+            f.write(md5_value)
 
     @staticmethod
     # solution used below is based on https://stackoverflow.com/questions/1131220/get-md5-hash-of-big-files-in-python

@@ -33,6 +33,14 @@ Location:
     #log_folder_name: logs
     #processed_folder_name: processed
 
+DataTransfer:
+    # target directory where to submission package files will be transferred over SSH
+    remote_target_dir: /home/gridsan/groups/ECHO_ISMMS/ISMMS/pub
+    #ssh user to be used for transferring
+    ssh_user: srirak
+    #execute permission for data transfer script
+    exec_permis: stat.S_IXUSR #this walue is to be evaluated by the code
+
 Logging:
     #main log - log created by the main application
     #request log - log created for each processed request
