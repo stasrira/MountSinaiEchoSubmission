@@ -73,6 +73,7 @@ if __name__ == '__main__':
         mlog.info('Submission requests to be processed (count = {}): {}'.format(len(requests), requests))
 
         req_proc_cnt = 0
+        errors_present = False
 
         for req_file in requests:
             if req_file.endswith(('xlsx', 'xls')):
@@ -114,6 +115,7 @@ if __name__ == '__main__':
                         mlog.info(_str)
                     else:
                         mlog.warning(_str)
+                        errors_present = True
 
                     # deactivate the current Request logger
                     deactivate_logger_common(req_obj.logger, req_obj.log_handler)
@@ -167,7 +169,12 @@ if __name__ == '__main__':
 
         if req_proc_cnt > 0:
             # collect final details and send email about this study results
-            email_subject = 'Processing Submission Requests for "{}"'.format(gc.PROJECT_NAME)
+            email_subject = 'processing Submission Requests for "{}"'.format(gc.PROJECT_NAME)
+            if not errors_present:
+                email_subject = 'SUCCESSFUL ' + email_subject
+            else:
+                email_subject = 'ERROR(s) present during ' + email_subject
+
             email_body = ('Number of requests processed for "{}": {}.'.format(gc.PROJECT_NAME, req_proc_cnt)
                           + '<br/><br/>'
                           + '<br/><br/>'.join(email_msgs)

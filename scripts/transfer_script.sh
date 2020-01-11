@@ -3,7 +3,7 @@ set -euo pipefail
 
 #file transfer parameters
 source_dir="{!source_dir!}"
-target_dir= {!target_dir!} # "/home/gridsan/groups/ECHO_ISMMS/ISMMS/pub"
+target_dir="{!target_dir!}" # "/home/gridsan/groups/ECHO_ISMMS/ISMMS/pub"
 transfer_log_file=$source_dir/"transfer_log_"$(date +"%Y%m%d_%H%M%S")".log"
 
 #email parameters

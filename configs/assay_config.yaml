@@ -1,18 +1,20 @@
+#release_v1.2
+
 SCRNASEQ:
     assay_name: csRNAseq
     mssm_id: 1
     mssm_postfix: _1
 
     data_sources:
-        - rawdata
+        # - rawdata
         - attachment
 
     rawdata:
         #path to the location where data_retrieval for all projects are stored; this path
         #will be combined with a path for a particular experiment
-        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: /ext_data/shared
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
-        sub_folder: /scrna-seq
+        sub_folder: /scrnaseq
 
         search_method: # search_rawdata_summary
             search_by: folder_name #possible options: file_content, folder_name
@@ -24,7 +26,7 @@ SCRNASEQ:
             single_file_path: /outs/metrics_summary.csv
 
         file_content_details:
-            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
+            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
                                      # 'row_num' - retrieve data from a particular row of the file
             get_by_row_num: # 'row_num' - retrieve data from a particular row of the file
                 row_num: 2
@@ -35,16 +37,16 @@ SCRNASEQ:
                 sheet_name:
 
     attachment:
-        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: /ext_data/shared
         #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
         attachment_folder:
             -
-                folder: /scrna-seq/FASTQs
+                folder: /scrnaseq/fastqs
                 tar_dir: # fastq
                 # If set to True, it will include parent folder preceding the aliquot attachment to the tar file
                 tar_include_parent_dir: True
             -
-                folder: /scrna-seq
+                folder: /scrnaseq
                 tar_dir: processed
         attachment_search_by: folder_name #possible options: file_name and folder_name
         search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
@@ -58,15 +60,15 @@ SCATACSEQ:
     mssm_postfix: _2
 
     data_sources:
-        - rawdata
+        # - rawdata
         - attachment
 
     rawdata:
         #path to the location where data_retrieval for all projects are stored; this path
         #will be combined with a path for a particular experiment
-        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: /ext_data/shared
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
-        sub_folder: /scatac-seq
+        sub_folder: /scatacseq
 
         search_method: # search_rawdata_summary
             search_by: folder_name #possible options: file_content, folder_name
@@ -78,7 +80,7 @@ SCATACSEQ:
             single_file_path: /outs/summary.csv
 
         file_content_details:
-            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
+            get_data_by: row_num #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
                                      # 'row_num' - retrieve data from a particular row of the file
             get_by_row_num: # 'row_num' - retrieve data from a particular row of the file
                 row_num: 2
@@ -89,14 +91,14 @@ SCATACSEQ:
                 sheet_name:
 
     attachment:
-        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: /ext_data/shared # 
         #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
         attachment_folder:
             -
-                folder: /scatac-seq/fastqs
+                folder: /scatacseq/fastqs
                 tar_dir: fastq
             -
-                folder: /scatac-seq
+                folder: /scatacseq
                 tar_dir: processed
         attachment_search_by: folder_name #possible options: file_name and folder_name
         search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
@@ -116,7 +118,7 @@ CYTOF:
     rawdata:
         #path to the location where data_retrieval for all projects are stored; this path
         #will be combined with a path for a particular experiment
-        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: /ext_data/shared
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
         sub_folder: /CyTOF
 
@@ -131,7 +133,7 @@ CYTOF:
             single_file_path:
 
         file_content_details:
-            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
+            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
                                      # 'row_num' - retrieve data from a particular row of the file
             get_by_row_num:
                 # 'row_num' - retrieve data from a particular row of the file
@@ -143,11 +145,11 @@ CYTOF:
                 sheet_name: Sample Log
 
     attachment:
-        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: /ext_data/shared 
         #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
         attachment_folder:
             -
-                folder: /cytof
+                folder: /CyTOF
                 tar_dir: fcs
 
         attachment_search_by: file_name #possible options: file_name and folder_name
@@ -169,7 +171,7 @@ RNASEQ:
     assaydata:
         #path to the location where data_retrieval for all projects are stored; this path
         #will be combined with a path for a particular experiment
-        location: E:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive
+        location: /mnt/researchsan02a/Projects
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
         sub_folder: /AssayData/RNAseq/DataQC
 
@@ -184,7 +186,7 @@ RNASEQ:
             single_file_path:
 
         file_content_details:
-            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
+            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
                                      # 'row_num' - retrieve data from a particular row of the file
             get_by_row_num:
                 # 'row_num' - retrieve data from a particular row of the file
@@ -196,21 +198,18 @@ RNASEQ:
                 sheet_name:
 
     attachment:
-        location: E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # E:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: /ext_data/shared
         #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
         attachment_folder:
             -
-                folder: /cytof
-                tar_dir: fcs
+                folder: /rnaseq/fastqs
+                tar_dir: fastqs
+            -
+                folder: /rnaseq
+                tar_dir: processed
 
-        attachment_search_by: file_name #possible options: file_name and folder_name
-        search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.
+        attachment_search_by: folder_name #possible options: file_name and folder_name
+        search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
         exclude_folders:
-        attach_object: file #possible options: folder and file
+        attach_object: folder #possible options: folder and file
         attachment_file_ext: #must include dot (.) in-front of an extension
-            - .fcs
-
-
-
-
-

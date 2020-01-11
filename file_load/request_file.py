@@ -307,6 +307,9 @@ class Request(File):
 
         with open(sf_path, "w") as sf:
             sf.write(scr_tmpl)
-        os.chmod(sf_path, exec_permission) #stat.S_IXUSR
+        
+        st = os.stat(sf_path)
+        os.chmod(sf_path, st.st_mode | exec_permission) #stat.S_IXUSR
+
         self.logger.info("Finish preparing '{}' file.".format(sf_path))
 
