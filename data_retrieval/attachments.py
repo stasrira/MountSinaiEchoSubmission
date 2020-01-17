@@ -197,8 +197,8 @@ class Attachment(DataRetrieval):
         for fl in files:
             fn = os.path.basename(fl)
             # print('File name = {}'.format(fn))
-            for sa in self.req_obj.sub_aliquots:
+            for sa, al in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots):
                 # print ('Aliquot = {}'.format(sa))
-                if sa in fn:
+                if sa in fn or al in fn:
                     self.add_attachment(sa, fl)
                     break

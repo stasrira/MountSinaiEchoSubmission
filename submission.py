@@ -135,14 +135,18 @@ if __name__ == '__main__':
                     #  and corresponded bulk drive attachment path
                     # preps for email notification
                     email_msgs.append(
-                        ('Request file <br/>"{}" <br/> was processed and moved/renamed to <br/> "{}".'
+                        ('Requested Experiment: {}.'
+                         '<br/> Request file <br/>"{}" <br/> was processed and moved/renamed to <br/> "{}".'
                          '<br/> <b>Errors summary:</b> '
                          '<br/> {}'
                          '<br/> <i>Log file location: <br/>"{}"</i>'
                          '<br/> Submission package locatoin:<br/>"{}"'
                          '<br/> Data source locatoin:<br/>"{}"'
                          '<br/> Processed Aliquots:<br/>"{}"'
-                         ''.format(req_path,
+                         '<br/> Command line to run data transferring: <br/> '
+                         'cd {} | ./transfer_script.sh'
+                         ''.format(req_obj.experiment_id,
+                                   req_path,
                                    processed_dir / req_processed_name,
                                    '<font color="red">Check Errors in the log file (attached)</font>'
                                    if req_obj.error.exist()
@@ -150,7 +154,8 @@ if __name__ == '__main__':
                                    req_obj.log_handler.baseFilename,
                                    req_obj.submission_package.submission_dir,
                                    req_obj.attachments.data_loc,
-                                   req_obj.aliquots)
+                                   req_obj.aliquots,
+                                   req_obj.submission_package.submission_dir)
                          )
                     )
                     email_attchms.append(req_obj.log_handler.baseFilename)

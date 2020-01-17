@@ -1,4 +1,7 @@
 format: fcs
-seq_instrument:
 cytof_metadata:
+    panel_name: Panel for phenotyping of circulating PBMC
+    panel_details_url: https://mountsinai.box.com/s/mwubun8t34xob7xp6a3rqj5beftiy6ph
+    cell_counts: eval!self.get_assaydata_value_by_col_number(2) # Event Counts of Cells-beads
+    percentage_CD45_live_cells: eval!self.get_assaydata_value_by_col_number(3) # % of CD45_live cells in Cells-beads
 

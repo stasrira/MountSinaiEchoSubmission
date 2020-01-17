@@ -19,15 +19,15 @@ DB: # this section currently not in use
 
 Location:
     # path to the folder where new request files are located
-    requests: E:\MounSinai\Darpa\Programming\submission\requests
+    requests: D:\MounSinai\Darpa\Programming\submission\requests
     # path to the folder where processed request files are located
-    requests_processed: E:\MounSinai\Darpa\Programming\submission\requests\processed
+    requests_processed: D:\MounSinai\Darpa\Programming\submission\requests\processed
     # path to the folder where request level log files are located (one log file per request)
-    request_logs: E:\MounSinai\Darpa\Programming\submission\requests\logs
+    request_logs: D:\MounSinai\Darpa\Programming\submission\requests\logs
     # path to the folder where application level log files are located (one per application run)
-    app_logs: E:\MounSinai\Darpa\Programming\submission\logs
+    app_logs: D:\MounSinai\Darpa\Programming\submission\logs
     # path to the folder where created submission packages will be located. One package sub_folder per request.
-    output_packages: E:\MounSinai\Darpa\Programming\submission\submission_packages
+    output_packages: D:\MounSinai\Darpa\Programming\submission\submission_packages
 
     #name of the folder where all logs files will be stored
     #log_folder_name: logs

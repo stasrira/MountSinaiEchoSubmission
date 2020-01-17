@@ -2,7 +2,8 @@ from pathlib import Path
 import os
 import glob
 from data_retrieval import DataRetrievalAliquot
-from file_load import DataRetrievalExcel
+from file_load import DataRetrievalExcel, DataRetrievalText
+from utils import common as cm
 
 
 class DataRetrieval:
@@ -69,18 +70,22 @@ class DataRetrieval:
         files = self.get_file_system_items(self.data_loc, search_deep_level, exclude_dirs, 'file', file_ext_match)
 
         file_index = self.index_data_files(files, file_struct)
-        for sa in file_index:
-            if sa in self.req_obj.sub_aliquots:
-                rda = DataRetrievalAliquot(sa, self)
-                rda.get_data_by_rownum(file_index[sa][1], file_index[sa][0], file_struct['header_row_num'])
+        for id_val in file_index:
+            sa_list = []
+            sa_list  = [(sa, al) for sa, al in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots) if sa in id_val or al in id_val]
+
+            #if id_val in self.req_obj.sub_aliquots:
+            if sa_list:
+                rda = DataRetrievalAliquot(id_val, self)
+                rda.get_data_by_rownum(file_index[id_val][1], file_index[id_val][0], file_struct['header_row_num'])
                 if rda.loaded:
-                    _str = '{} for aliquot "{}" was successfully loaded from file "{}".' \
-                        .format(self.data_source_name, sa, file_index[sa][1])
-                    self.aliquots_data_dict[sa] = rda.data_retrieved
+                    _str = '{} for aliquot "{}" (matching file id value is "{}") was successfully loaded from file "{}".' \
+                        .format(self.data_source_name, sa_list[0][0], id_val, file_index[id_val][1])
+                    self.aliquots_data_dict[sa_list[0][0]] = rda.data_retrieved
                     self.logger.info(_str)
                 else:
                     _str = '{} for aliquot "{}" failed to load from file "{}"; ' \
-                           'see earlier error(s) in this log.'.format(self.data_source_name, sa, file_index[sa][1])
+                           'see earlier error(s) in this log.'.format(self.data_source_name, sa_list[0], file_index[id_val][1])
                     self.logger.warning(_str)
 
     def index_data_files(self, files, file_struct):
@@ -100,7 +105,11 @@ class DataRetrieval:
 
         index_dict = {}
         for file in files:
-            f = DataRetrievalExcel(file, self.error, self.logger, worksheet)
+            # read files differently depending if that is excel or text file
+            if cm.is_excel(file):  # 'xls' in ext:
+                f = DataRetrievalExcel(file, self.error, self.logger, worksheet)
+            else:
+                f = DataRetrievalText(file, self.error, self.logger)
             col_vals = f.get_column_values(col_num, header_row_num, exlude_header)
             if col_vals:
                 # if list of values returned, loop to create a dictionary with key = aliquot_id and
@@ -109,9 +118,9 @@ class DataRetrieval:
                 for i in range(len(col_vals)):
                     if len(str(col_vals[i]).strip()) > 0:
                         if exlude_header:
-                            rn = i + 1
+                            rn = i + 1  # header_row_num +
                         else:
-                            rn = 1
+                            rn = i  # header_row_num +
                         # row number (rn) is increased by 1 to convert to 1-base numbering
                         index_dict[col_vals[i]] = (rn + 1, file)
         return index_dict

@@ -1,6 +1,7 @@
 from file_load import DataRetrievalText
 from file_load import DataRetrievalExcel
 from pathlib import Path
+from utils import common as cm
 
 
 class DataRetrievalAliquot:
@@ -16,9 +17,9 @@ class DataRetrievalAliquot:
         self.loaded = False  # default key
         self.data_retrieved = {}  # dictionary to hold final data_retrieval summary data
 
-    def get_data_by_rownum(self, filepath, data_row_num, header_row_num=1, isexcel=True):
+    def get_data_by_rownum(self, filepath, data_row_num, header_row_num=1):
         self.data_loc_path = filepath
-        if isexcel:
+        if cm.is_excel(filepath):
             self.data_file = DataRetrievalExcel(self.data_loc_path, self.error, self.logger)
         else:
             self.data_file = DataRetrievalText(self.data_loc_path, self.error, self.logger)
