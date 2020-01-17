@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import stat
 import time
 import xlrd
 from utils import global_const as gc
@@ -267,6 +268,8 @@ class Request(File):
 
         self.submission_package = SubmissionPackage(self)
 
+        self.create_trasfer_script_file()
+
         # check for errors and put final log entry for the request.
         if self.error.exist():
             _str = 'Processing of the current request was finished with the following errors: {}\n'.format(
@@ -280,3 +283,33 @@ class Request(File):
     def load_assay_conf(assay):
         cfg_assay = ConfigData(gc.CONFIG_FILE_ASSAY)
         return cfg_assay.get_value(assay.upper())
+
+    def create_trasfer_script_file(self):
+        self.logger.info("Start preparing transfer_script.sh file.")
+        # path for the script file being created
+        sf_path = Path(self.submission_package.submission_dir + "/transfer_script.sh")
+
+        #get script file template
+        with open('scripts/transfer_script.sh', 'r') as ft:
+            scr_tmpl = ft.read()
+
+        #update placeholders in the script with the actual values
+        scr_tmpl = scr_tmpl.replace("{!smtp!}", self.conf_main.get_value("Email/smtp_server") + ":"
+                                    + str(self.conf_main.get_value("Email/smtp_server_port")))
+        scr_tmpl = scr_tmpl.replace("{!to_email!}", self.conf_main.get_value("Email/sent_to_emails"))
+        scr_tmpl = scr_tmpl.replace("{!from_email!}", self.conf_main.get_value("Email/default_from_email"))
+        scr_tmpl = scr_tmpl.replace("{!send_email_flag!}", str(self.conf_main.get_value("Email/send_emails")))
+        scr_tmpl = scr_tmpl.replace("{!source_dir!}", self.submission_package.submission_dir)
+        scr_tmpl = scr_tmpl.replace("{!target_dir!}", self.conf_main.get_value("DataTransfer/remote_target_dir"))
+        scr_tmpl = scr_tmpl.replace("{!ssh_user!}", self.conf_main.get_value("DataTransfer/ssh_user"))
+
+        exec_permission = eval(self.conf_main.get_value("DataTransfer/exec_permis"))
+
+        with open(sf_path, "w") as sf:
+            sf.write(scr_tmpl)
+
+        st = os.stat(sf_path)
+        os.chmod(sf_path, st.st_mode | exec_permission) #stat.S_IXUSR
+
+        self.logger.info("Finish preparing '{}' file.".format(sf_path))
+

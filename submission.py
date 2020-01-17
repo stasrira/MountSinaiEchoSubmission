@@ -37,6 +37,8 @@ if __name__ == '__main__':
     gc.OUTPUT_PACKAGES_DIR = m_cfg.get_value('Location/output_packages')
     # tarball approach to be used for the current deployment
     gc.TARBALL_APPROACH = m_cfg.get_value('Tar_ball/approach')
+    # flag to save calculated md5sum to a physical file
+    gc.TARBALL_SAVE_MD5SUM_FILE = m_cfg.get_value('Tar_ball/save_md5sum_file')
 
     log_folder_name = gc.APP_LOG_DIR  # gc.LOG_FOLDER_NAME
     processed_folder_name = gc.REQ_PROCESSED_DIR  # gc.PROCESSED_FOLDER_NAME
@@ -71,6 +73,7 @@ if __name__ == '__main__':
         mlog.info('Submission requests to be processed (count = {}): {}'.format(len(requests), requests))
 
         req_proc_cnt = 0
+        errors_present = False
 
         for req_file in requests:
             if req_file.endswith(('xlsx', 'xls')):
@@ -112,6 +115,7 @@ if __name__ == '__main__':
                         mlog.info(_str)
                     else:
                         mlog.warning(_str)
+                        errors_present = True
 
                     # deactivate the current Request logger
                     deactivate_logger_common(req_obj.logger, req_obj.log_handler)
@@ -165,7 +169,12 @@ if __name__ == '__main__':
 
         if req_proc_cnt > 0:
             # collect final details and send email about this study results
-            email_subject = 'Processing Submission Requests for "{}"'.format(gc.PROJECT_NAME)
+            email_subject = 'processing Submission Requests for "{}"'.format(gc.PROJECT_NAME)
+            if not errors_present:
+                email_subject = 'SUCCESSFUL ' + email_subject
+            else:
+                email_subject = 'ERROR(s) present during ' + email_subject
+
             email_body = ('Number of requests processed for "{}": {}.'.format(gc.PROJECT_NAME, req_proc_cnt)
                           + '<br/><br/>'
                           + '<br/><br/>'.join(email_msgs)

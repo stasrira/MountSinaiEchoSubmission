@@ -90,6 +90,9 @@ class Attachment(DataRetrieval):
         if not self.error.exist():
             # calculate an md5sum for the created tarball
             self.calculate_md5sum(sa, tarball_path)
+            if gc.TARBALL_SAVE_MD5SUM_FILE:
+                # save md5sum file next to the created tar file
+                self.save_md5sum_file(tarball_path + ".md5", self.aliquots_tarball_dict[sa]["md5"])
 
     def add_tarball_commandline(self, sa, tarball_path):
         self.logger.info('Start preparing a tarball file for aliquot "{}"; command line approach is used.'.format(sa, tarball_path))
@@ -166,6 +169,10 @@ class Attachment(DataRetrieval):
         _str = 'Aliquot "{}" was successfully assigned with a tarball file "{}"; MD5sum = "{}".' \
             .format(sa, tarball_path, md5)
         self.logger.info(_str)
+
+    def save_md5sum_file(self, md5_path, md5_value):
+        with open(md5_path, "w+") as f:
+            f.write(md5_value)
 
     @staticmethod
     # solution used below is based on https://stackoverflow.com/questions/1131220/get-md5-hash-of-big-files-in-python
