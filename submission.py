@@ -188,8 +188,9 @@ if __name__ == '__main__':
                     email.send_yagmail(
                         emails_to=m_cfg.get_value('Email/sent_to_emails'),
                         subject=email_subject,
-                        message=email_body,
-                        attachment_path=email_attchms
+                        message=email_body
+                        # commented adding attachements, since some log files go over 25GB limit and fail email sending
+                        # , attachment_path=email_attchms
                     )
             except Exception as ex:
                 # report unexpected error during sending emails to a log file and continue
