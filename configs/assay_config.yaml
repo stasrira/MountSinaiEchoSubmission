@@ -40,9 +40,10 @@ SCRNASEQ:
         attachment_folder:
             -
                 folder: /scrna-seq/FASTQs
-                tar_dir: # fastq
+                tar_dir: fastqs
                 # If set to True, it will include parent folder preceding the aliquot attachment to the tar file
-                tar_include_parent_dir: True
+                # tar_include_parent_dir: True
+                validate_tar_content: True
             -
                 folder: /scrna-seq
                 tar_dir: processed
@@ -127,7 +128,7 @@ CYTOF:
             exclude_folders:
 
             file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
-                #- .xlsx
+                - .xlsx
                 #- .xls
                 - .csv
             single_file_path:

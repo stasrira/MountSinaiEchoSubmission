@@ -134,8 +134,6 @@ def process_json():
         # get_json_keys(fl.json_data)
         get_json_schema_keys_names_printed(fl.json_data)
 
-
-
 def process_tar():
     output_filename = "packages\sample.tar.gz"
     arch_list = [
@@ -171,8 +169,43 @@ def validate_schema ():
         print('Validation failed with this error: {}'.format(ve))
         pass
 
+def validate_tar():
+    from os import walk
+    att_path = 'D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scrna-seq\FASTQs'
+    (a, b, requests) = next(walk(att_path))
+    pass
+
+def test_loop_through_files(path):
+    walk_dir = path
+
+    print('walk_dir = ' + walk_dir)
+
+    # If your current working directory may change during script execution, it's recommended to
+    # immediately convert program arguments to an absolute path. Then the variable root below will
+    # be an absolute path as well. Example:
+    # walk_dir = os.path.abspath(walk_dir)
+    # print('walk_dir (absolute) = ' + os.path.abspath(walk_dir))
+
+    for root, subdirs, files in os.walk(walk_dir):
+        print('--\nroot = ' + root)
+        #list_file_path = os.path.join(root, 'my-directory-list.txt')
+        #print('list_file_path = ' + list_file_path)
+
+        #with open(list_file_path, 'wb') as list_file:
+        for subdir in subdirs:
+            print('\t- subdirectory ' + subdir)
+
+        for filename in files:
+            file_path = os.path.join(os.path.basename(root), filename)
+            print('\t- file %s (full path: %s)' % (filename, file_path))
+
+
 # process_json()
 
 # process_tar()
 
 # validate_schema()
+
+# validate_tar ()
+
+test_loop_through_files('D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO\HIV\HI\PBMC\scrna-seq\FASTQs')

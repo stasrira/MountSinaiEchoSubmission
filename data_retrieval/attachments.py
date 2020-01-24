@@ -13,6 +13,7 @@ class Attachment(DataRetrieval):
     def __init__(self, request):
         self.tar_folder = None
         self.tar_include_parent_dir = None
+        self.validate_tar_content = None
         self.aliquots_tarball_dict = {}
         self.data_loc = None
         self.cnf_data_source = None
@@ -38,6 +39,8 @@ class Attachment(DataRetrieval):
                     self.tar_folder = last_part_path_item['tar_dir']
                 if 'tar_include_parent_dir' in last_part_path_item:
                     self.tar_include_parent_dir = last_part_path_item['tar_include_parent_dir']
+                if 'validate_tar_content' in last_part_path_item:
+                    self.validate_tar_content = last_part_path_item['validate_tar_content']
             else:
                 last_part_path = last_part_path_item
 
@@ -69,7 +72,11 @@ class Attachment(DataRetrieval):
     def add_attachment(self, sa, attach_path):
         if sa not in self.aliquots_data_dict:
             self.aliquots_data_dict[sa] = []
-        attach_details = {'path': attach_path, 'tar_dir': self.tar_folder, 'incl_prnt_dir': self.tar_include_parent_dir}
+        attach_details = {'path': attach_path,
+                          'tar_dir': self.tar_folder,
+                          'incl_prnt_dir': self.tar_include_parent_dir,
+                          'validate_tar_content': self.validate_tar_content
+                          }
         self.aliquots_data_dict[sa].append(attach_details)
 
         _str = 'Aliquot "{}" was successfully assigned with an attachment object "{}".'.format(sa, attach_details)
@@ -87,12 +94,67 @@ class Attachment(DataRetrieval):
             self.logger.error(_str)
             self.error.add_error(_str)
             return
+
+        self.validate_tarfile_vs_source(sa, tarball_path)
+
         if not self.error.exist():
             # calculate an md5sum for the created tarball
             self.calculate_md5sum(sa, tarball_path)
             if gc.TARBALL_SAVE_MD5SUM_FILE:
                 # save md5sum file next to the created tar file
                 self.save_md5sum_file(tarball_path + ".md5", self.aliquots_tarball_dict[sa]["md5"])
+
+    def validate_tarfile_vs_source(self, sa, tarball_path):
+        self.logger.info('Start validating content of tarball file "{}" against corresponding source directories.'
+                         .format(tarball_path))
+
+        # loop through all files in the source folders and compare those vs. list of files in tar file
+        tf = tarfile.open(tarball_path)
+        # get list of files from created tar
+        tar_names = tf.getnames()
+        # tar_members = tf.getmembers()
+        # for tn in tar_names:
+        #    print(tn)
+        # loop attachments for the given sub-aliquot
+
+        validation_performed = False
+
+        for item in self.aliquots_data_dict[sa]:
+            # TODO: this condition currently is not properly set for different attachment sources within the same assay
+            if item['validate_tar_content']:
+                validation_performed = True
+                # loop through files in the source folders
+                for root, _, files in os.walk(item['path']):
+                    # loop through the list of files in the current folder
+                    for filename in files:
+                        # get relative path of the file starting from given top folder
+                        file_path = os.path.join(os.path.basename(root), filename)
+                        # print('\t- file %s (full path: %s)' % (filename, file_path))
+                        file_found = False
+                        # loop through all tar files
+                        for tar_path in tar_names:
+                            # check if source file name is present in the list of tar files
+                            if str(file_path) in str(Path(tar_path)):
+                                file_found = True
+                                self.logger.info(
+                                    'Successfully matched file "{}" to tar file entry "{}" in the tar file {}.'
+                                    .format(str(file_path), str(Path(tar_path)), tarball_path))
+                                break;
+                        if not file_found:
+                            # report Error
+                            _str = 'File "{}" for aliquot "{}" was not found in created tar file "{}".'\
+                                .format(str(file_path), sa, tarball_path)
+                            self.logger.error(_str)
+                            self.error.add_error(_str)
+                            # since at least 1 error is reported, exit the loop; tar file is compromised
+                            return
+        if validation_performed:
+            self.logger.info('Successfully validated the tarball file "{}" against corresponding source directories.'
+                         .format(tarball_path))
+        else:
+            self.logger.info('No tar file content validation was performed based on the configuration setting '
+                             '("validate_tar_content" = {}) for the attachments of the current assay.'
+                             .format(item['validate_tar_content']))
 
     def add_tarball_commandline(self, sa, tarball_path):
         self.logger.info('Start preparing a tarball file for aliquot "{}"; command line approach is used.'.format(sa, tarball_path))
@@ -106,7 +168,7 @@ class Attachment(DataRetrieval):
             # print(item_dir_path)
             item_to_tar = os.path.basename(item['path'])  # target file to tar
 
-            incl_prnt_dir = item['incl_prnt_dir']  # TODO: this parameter should come from a config file
+            incl_prnt_dir = item['incl_prnt_dir']
             if incl_prnt_dir:
                 parent = os.path.basename(item_dir_path)
                 item_dir_path = str(Path(item_dir_path).parent)
