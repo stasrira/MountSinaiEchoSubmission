@@ -29,6 +29,7 @@ class Attachment(DataRetrieval):
             # set default values
             self.tar_folder = None
             self.tar_include_parent_dir = None
+            self.validate_tar_content = None
 
             # check if key received from config file is a dictionary
             if isinstance(last_part_path_item, dict):

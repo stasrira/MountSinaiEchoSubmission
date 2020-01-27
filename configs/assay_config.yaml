@@ -47,6 +47,7 @@ SCRNASEQ:
             -
                 folder: /scrna-seq
                 tar_dir: processed
+                # validate_tar_content: False
         attachment_search_by: folder_name #possible options: file_name and folder_name
         search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
         exclude_folders:
