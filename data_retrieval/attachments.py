@@ -5,6 +5,7 @@ import tarfile
 import hashlib
 import subprocess
 import shlex
+import traceback
 from utils import global_const as gc
 
 
@@ -84,21 +85,30 @@ class Attachment(DataRetrieval):
         self.logger.info(_str)
 
     def add_tarball(self, sa, tarball_path):
-        # create a tarball based on the approach selected in the main config file
-        if gc.TARBALL_APPROACH == 'tarfile':
-            self.add_tarball_tarfile(sa, tarball_path)
-        elif gc.TARBALL_APPROACH == 'commandline':
-            self.add_tarball_commandline(sa, tarball_path)
+
+        if not sa in self.req_obj.disqualified_sub_aliquots.keys():
+            # create a tarball based on the approach selected in the main config file
+            if gc.TARBALL_APPROACH == 'tarfile':
+                self.add_tarball_tarfile(sa, tarball_path)
+            elif gc.TARBALL_APPROACH == 'commandline':
+                self.add_tarball_commandline(sa, tarball_path)
+            else:
+                _str = 'No tarball file for aliquot "{}" was created. Provided tar ball approach parameter ' \
+                       '(from main config) "{}" was not recognized.'.format(sa, gc.TARBALL_APPROACH)
+                self.logger.warning(_str)
+                self.req_obj.disqualify_sub_aliquot(sa, _str)
+                # self.error.add_error(_str)
+                return
         else:
-            _str = 'No tarball file for aliquot "{}" was created. Provided tar ball approach parameter ' \
-                   '(from main config) "{}" was not recognized.'.format(sa, gc.TARBALL_APPROACH)
-            self.logger.error(_str)
-            self.error.add_error(_str)
+            self.logger.info('Exiting "add_tarball" process since sub-aliquot "{}" is listed as disqualified.'
+                             .format(sa))
             return
 
-        self.validate_tarfile_vs_source(sa, tarball_path)
+        if not sa in self.req_obj.disqualified_sub_aliquots.keys():
+            self.validate_tarfile_vs_source(sa, tarball_path)
 
-        if not self.error.exist():
+        if not sa in self.req_obj.disqualified_sub_aliquots.keys():
+            # if not self.error.exist():
             # calculate an md5sum for the created tarball
             self.calculate_md5sum(sa, tarball_path)
             if gc.TARBALL_SAVE_MD5SUM_FILE:
@@ -113,15 +123,11 @@ class Attachment(DataRetrieval):
         tf = tarfile.open(tarball_path)
         # get list of files from created tar
         tar_names = tf.getnames()
-        # tar_members = tf.getmembers()
-        # for tn in tar_names:
-        #    print(tn)
-        # loop attachments for the given sub-aliquot
+        tf.close()
 
         validation_performed = False
-
+        # loop attachments for the given sub-aliquot
         for item in self.aliquots_data_dict[sa]:
-            # TODO: this condition currently is not properly set for different attachment sources within the same assay
             if item['validate_tar_content']:
                 validation_performed = True
                 # loop through files in the source folders
@@ -146,16 +152,18 @@ class Attachment(DataRetrieval):
                             _str = 'File "{}" for aliquot "{}" was not found in created tar file "{}".'\
                                 .format(str(file_path), sa, tarball_path)
                             self.logger.error(_str)
-                            self.error.add_error(_str)
+                            self.req_obj.disqualify_sub_aliquot(sa, _str)
+                            self.delete_disqualified_tarball (sa, tarball_path)
+                            # self.error.add_error(_str)
                             # since at least 1 error is reported, exit the loop; tar file is compromised
                             return
         if validation_performed:
             self.logger.info('Successfully validated the tarball file "{}" against corresponding source directories.'
                          .format(tarball_path))
         else:
-            self.logger.info('No tar file content validation was performed based on the configuration setting '
-                             '("validate_tar_content" = {}) for the attachments of the current assay.'
-                             .format(item['validate_tar_content']))
+            self.logger.info('No tar file content validation was performed for "{}" aliquot based on the '
+                             '"validate_tar_content" configuration value set for the current assay.'
+                             .format(sa))
 
     def add_tarball_commandline(self, sa, tarball_path):
         self.logger.info('Start preparing a tarball file for aliquot "{}"; command line approach is used.'.format(sa, tarball_path))
@@ -236,6 +244,22 @@ class Attachment(DataRetrieval):
     def save_md5sum_file(self, md5_path, md5_value):
         with open(md5_path, "w+") as f:
             f.write(md5_value)
+
+    def delete_disqualified_tarball (self, sa, tarball_path):
+        if os.path.isfile(tarball_path):
+            try:
+                os.remove(tarball_path)
+                self.logger.info('Tarbal file "{}" for disqualified aliquot "{}" was deleted.'
+                                 .format(tarball_path, sa))
+            except Exception as ex:
+                _str = 'Unexpected error "{}" occurred during deletion of disqualified tarball "{}". \n{} ' \
+                    .format(ex, tarball_path, traceback.format_exc())
+                self.logger.error(_str)
+                self.error.add_error(_str)
+        else:
+            self.logger.warning('Request to delete tarbal file "{}" for disqualified aliquot "{}" failed; '
+                                'the file was not found.'
+                             .format(tarball_path, sa))
 
     @staticmethod
     # solution used below is based on https://stackoverflow.com/questions/1131220/get-md5-hash-of-big-files-in-python

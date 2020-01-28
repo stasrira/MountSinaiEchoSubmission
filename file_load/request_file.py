@@ -41,6 +41,7 @@ class Request(File):
         self.columnlist = []
         self.samples = []
         self.sub_aliquots = []
+        self.disqualified_sub_aliquots = {}
         self.project = ''
         self.exposure = ''
         self.center = ''
@@ -49,6 +50,7 @@ class Request(File):
         self.experiment_id = ''
 
         self.aliquots = None
+        self.qualified_aliquots = None
         self.raw_data = None
         self.assay_data = None
         self.attachments = None
@@ -313,3 +315,20 @@ class Request(File):
 
         self.logger.info("Finish preparing '{}' file.".format(sf_path))
 
+    def disqualify_sub_aliquot(self, sa, details):
+        # adds a sub aliquots to the disctionary of disqualified sub_aliquots
+        # key = sub-aliquot, value = array of details for disqualification; 1 entry can have multiple detail reasons
+        if sa in self.disqualified_sub_aliquots.keys():
+            self.disqualified_sub_aliquots[sa].append(details)
+        else:
+            arr_details = [details]
+            self.disqualified_sub_aliquots[sa]= arr_details
+        self.logger.warning('Sub-aliquot "{}" was disqualified with the following details: "{}"'.format(sa, details))
+
+    def populate_qualified_aliquots(self):
+        # reset self.qualified_aliquots array
+        self.qualified_aliquots = []
+        #select only aliquots that were not disqualified
+        for sa, a in zip(self.sub_aliquots, self.aliquots):
+            if not sa in self.disqualified_sub_aliquots.keys():
+                self.qualified_aliquots.append(a)
