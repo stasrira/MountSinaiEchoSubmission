@@ -21,6 +21,7 @@ APP_LOG_DIR = ''  # path to the folder where all application level log files wil
 REQ_LOG_DIR = ''  # path to the folder where all log files for processing request files will be stored
                           # (one file per request)
 REQ_PROCESSED_DIR = ''  # path to the folder where all processed (and renamed) requests will be stored
+DISQUALIFIED_REQUESTS = '' # path to dir where will be saved dynamically created request files for disqualified aliquots
 OUTPUT_PACKAGES_DIR = ''  # path to the folder where all processed (and renamed) requests will be stored
 SUBMISSION_FORMS_DIR = 'forms'
 TARBALL_APPROACH = 'tarfile'  # "tarfile" (default) and "commandline" are expected values

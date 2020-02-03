@@ -1,6 +1,6 @@
 from pathlib import Path
 import os
-import stat
+# import stat
 import time
 import xlrd
 from utils import global_const as gc
@@ -14,6 +14,7 @@ from file_load.file_error import RequestError
 from data_retrieval import DataSource
 from data_retrieval import Attachment
 from forms import SubmissionPackage
+import xlwt
 
 
 class Request(File):
@@ -120,7 +121,18 @@ class Request(File):
                             cell_value = cell_value_date.strftime("%Y-%m-%directory")
                         column.append(cell_value)
 
-                    self.columnlist.append(','.join(column))
+                    # self.columnlist.append(','.join(column))
+                    self.columnlist.append (column)
+
+                # populate lineList property
+                self.lineList = []
+                for ln in sheet._cell_values:
+                    l = []
+                    for cell in ln:
+                        if ',' in cell:
+                            cell = '"' + cell + '"'
+                        l.append(cell)
+                    self.lineList.append(','.join(l))
 
                 wb.unload_sheet(sheet.name)
 
@@ -159,22 +171,29 @@ class Request(File):
                 self.logger.error(_str)
 
                 self.columnlist = None
+                self.lineList = None
                 self.loaded = False
         return self.lineList
 
     # get all values provided in the request file
     def get_request_parameters(self):
         # self.project = self.columnlist[0].split(',')[1] #project will be stored in the config file
-        self.exposure = self.columnlist[0].split(',')[1]
-        self.center = self.columnlist[1].split(',')[1]
-        self.source_spec_type = self.columnlist[2].split(',')[1]
-        self.assay = self.columnlist[3].split(',')[1].lower()
-        self.sub_aliquots = self.columnlist[4].split(',')
+        # self.exposure = self.columnlist[0].split(',')[1]
+        self.exposure = self.columnlist[0][1]
+        # self.center = self.columnlist[1].split(',')[1]
+        self.center = self.columnlist[1][1]
+        # self.source_spec_type = self.columnlist[2].split(',')[1]
+        self.source_spec_type = self.columnlist[2][1]
+        # self.assay = self.columnlist[3].split(',')[1].lower()
+        self.assay = self.columnlist[3][1].lower()
+        # self.sub_aliquots = self.columnlist[4].split(',')
+        self.sub_aliquots = self.columnlist[4]
         if self.sub_aliquots and len(self.sub_aliquots) > 0:
-            self.sub_aliquots.pop(0)
-        self.samples = self.columnlist[5].split(',')
+            self.sub_aliquots.pop(0) # get rid of the column header
+        # self.samples = self.columnlist[5].split(',')
+        self.samples = self.columnlist[5]
         if self.samples and len(self.samples) > 0:
-            self.samples.pop(0)
+            self.samples.pop(0) # get rid of the column header
         # self.experiment_id = self.columnlist[6].split(',')[1]
 
         # get list of aliquots from list of subaliquots
@@ -270,6 +289,8 @@ class Request(File):
 
         self.submission_package = SubmissionPackage(self)
 
+        self.create_request_for_disqualified_sub_aliquots()
+
         self.create_trasfer_script_file()
 
         # check for errors and put final log entry for the request.
@@ -332,3 +353,46 @@ class Request(File):
         for sa, a in zip(self.sub_aliquots, self.aliquots):
             if not sa in self.disqualified_sub_aliquots.keys():
                 self.qualified_aliquots.append(a)
+
+    def create_request_for_disqualified_sub_aliquots(self):
+
+        # proceed only if some disqualified sub-aliquots are present
+        if self.disqualified_sub_aliquots:
+
+            self.logger.info("Start preparing a request file for disqualified sub-aliquots '{}'."
+                             .format(self.disqualified_sub_aliquots.keys()))
+
+            wb = xlwt.Workbook()  # create empty workbook object
+            sh = wb.add_sheet('Submission_Request')  # sheet name can not be longer than 32 characters
+
+            cur_row = 0 # first row for 0-based array
+            cur_col = 0 # first col for 0-based array
+            #write headers to the file
+            headers = self.get_headers()
+            for val in headers:
+                sh.write (cur_row, cur_col, val)
+                cur_col += 1
+
+            cur_row += 1
+
+            for sa, s in zip (self.sub_aliquots, self.samples):
+                if sa in self.disqualified_sub_aliquots.keys():
+                    sh.write(cur_row, 0, self.exposure)
+                    sh.write(cur_row, 1, self.center)
+                    sh.write(cur_row, 2, self.source_spec_type)
+                    sh.write(cur_row, 3, self.assay)
+                    sh.write(cur_row, 4, sa)
+                    sh.write(cur_row, 5, s)
+                    cur_row += 1
+
+            output_file = Path(gc.DISQUALIFIED_REQUESTS + '/' +
+                            time.strftime("%Y%m%d_%H%M%S", time.localtime()) + '_reprocess_disqualified _' +
+                            Path(self.filename).stem + '.xls')
+
+            # if DISQUALIFIED_REQUESTS folder does not exist, it will be created
+            os.makedirs(gc.DISQUALIFIED_REQUESTS, exist_ok=True)
+
+            wb.save(str(output_file))
+
+            self.logger.info("Successfully prepared the request file for disqualified sub-aliquots and saved in '{}'."
+                             .format(str(output_file)))

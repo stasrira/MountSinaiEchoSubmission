@@ -22,6 +22,8 @@ Location:
     requests: D:\MounSinai\Darpa\Programming\submission\requests
     # path to the folder where processed request files are located
     requests_processed: D:\MounSinai\Darpa\Programming\submission\requests\processed
+    # path to the folder where dynamically created request files for disqualified aliquots will be saved
+    requests_disqualified: D:\MounSinai\Darpa\Programming\submission\requests\disqualified_for_reprocessing
     # path to the folder where request level log files are located (one log file per request)
     request_logs: D:\MounSinai\Darpa\Programming\submission\requests\logs
     # path to the folder where application level log files are located (one per application run)
