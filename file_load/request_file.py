@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
-# import stat
+import stat
+import traceback
 import time
 import xlrd
 from utils import global_const as gc
@@ -43,6 +44,7 @@ class Request(File):
         self.samples = []
         self.sub_aliquots = []
         self.disqualified_sub_aliquots = {}
+        self.disqualified_request_path = ''  # will store path to a request file with disqualified sub-aliquots
         self.project = ''
         self.exposure = ''
         self.center = ''
@@ -326,13 +328,39 @@ class Request(File):
         scr_tmpl = scr_tmpl.replace("{!target_dir!}", self.conf_main.get_value("DataTransfer/remote_target_dir"))
         scr_tmpl = scr_tmpl.replace("{!ssh_user!}", self.conf_main.get_value("DataTransfer/ssh_user"))
 
-        exec_permission = eval(self.conf_main.get_value("DataTransfer/exec_permis"))
+        set_permissions = False
+        set_perm_value = self.conf_main.get_value("DataTransfer/exec_permis")
+        if set_perm_value:
+            try:
+                exec_permission = eval(set_perm_value.strip())
+                set_permissions = True
+            except Exception as ex:
+                _str = 'Unexpected error Error "{}" occurred during evaluating of "DataTransfer/exec_permis" value ' \
+                       '"{}" retrieved from the main config file. Permission setup operation will be skipped. \n{} '\
+                    .format(ex, set_perm_value, traceback.format_exc())
+                self.logger.warning(_str)
+                # self.error.add_error(_str)
+                set_permissions = False
 
         with open(sf_path, "w") as sf:
             sf.write(scr_tmpl)
 
-        st = os.stat(sf_path)
-        os.chmod(sf_path, st.st_mode | exec_permission) #stat.S_IXUSR
+        if set_permissions:
+            try:
+                # if permissions to be set were retrieved from config file, set them here
+                st = os.stat(sf_path)
+                os.chmod(sf_path, st.st_mode | exec_permission) #stat.S_IXUSR
+            except Exception as ex:
+                _str = 'Unexpected error Error "{}" occurred during setting up permissions "{}" for the script file ' \
+                       '"{}". \n{} '\
+                    .format(ex, set_perm_value, sf_path, traceback.format_exc())
+                self.logger.warning(_str)
+                self.error.add_error(_str)
+        else:
+            _str = 'Permission setup was skipped for the transfer script file. ' \
+                   'Note: value of "DataTransfer/exec_permis" from main config was set to "{}".'\
+                                    .format(set_perm_value)
+            self.logger.warning(_str)
 
         self.logger.info("Finish preparing '{}' file.".format(sf_path))
 
@@ -360,7 +388,7 @@ class Request(File):
         if self.disqualified_sub_aliquots:
 
             self.logger.info("Start preparing a request file for disqualified sub-aliquots '{}'."
-                             .format(self.disqualified_sub_aliquots.keys()))
+                             .format([val for val in self.disqualified_sub_aliquots.keys()]))
 
             wb = xlwt.Workbook()  # create empty workbook object
             sh = wb.add_sheet('Submission_Request')  # sheet name can not be longer than 32 characters
@@ -385,14 +413,14 @@ class Request(File):
                     sh.write(cur_row, 5, s)
                     cur_row += 1
 
-            output_file = Path(gc.DISQUALIFIED_REQUESTS + '/' +
+            self.disqualified_request_path = Path(gc.DISQUALIFIED_REQUESTS + '/' +
                             time.strftime("%Y%m%d_%H%M%S", time.localtime()) + '_reprocess_disqualified _' +
                             Path(self.filename).stem + '.xls')
 
             # if DISQUALIFIED_REQUESTS folder does not exist, it will be created
             os.makedirs(gc.DISQUALIFIED_REQUESTS, exist_ok=True)
 
-            wb.save(str(output_file))
+            wb.save(str(self.disqualified_request_path))
 
             self.logger.info("Successfully prepared the request file for disqualified sub-aliquots and saved in '{}'."
-                             .format(str(output_file)))
+                             .format(str(self.disqualified_request_path)))

@@ -145,28 +145,32 @@ if __name__ == '__main__':
                     # preps for email notification
                     email_msgs.append(
                         ('Requested Experiment: {}.'
-                         '<br/> Request file <br/>"{}" <br/> was processed and moved/renamed to <br/> "{}".'
+                         '<br/> Request file <br/>{} <br/> was processed and moved/renamed to <br/> {}.'
                          '<br/> <b>Errors summary:</b> '
                          '<br/> {}'
-                         '<br/> <i>Log file location: <br/>"{}"</i>'
-                         '<br/> Submission package locatoin:<br/>"{}"'
-                         '<br/> Data source locatoin:<br/>"{}"'
-                         '<br/> Processed Aliquots:<br/>"{}"'
-                         '<br/> Disqualified Aliquots (if present, see the log file for more details):<br/>"{}"'
-                         '<br/> Command line to run data transferring: <br/> '
-                         '{}/transfer_script.sh'
+                         '<br/> <i>Log file location: <br/>{}</i>'
+                         '<br/> Submission package locatoin:<br/>{}'
+                         '<br/> Data source locatoin:<br/>{}'
+                         '<br/> Processed Aliquots:<br/>{}'
+                         '<br/> Disqualified Aliquots (if present, see the log file for more details):<br/>{}'
+                         '<br/> A request file for re-processing Disqualified Aliquots was prepared in:<br/>{}'
+                         '<br/> Command line to run data transferring: <br/> {}'
                          ''.format(req_obj.experiment_id,
                                    req_path,
                                    processed_dir / req_processed_name,
-                                   '<font color="red">Check Errors in the log file (attached)</font>'
-                                   if req_obj.error.exist()
-                                   else '<font color="green">No Errors</font> (the log file is attached)',
+                                   '<font color="red">Check Errors in the log file </font>'
+                                                            if req_obj.error.exist()
+                                                            else '<font color="green">No Errors</font> ',
                                    req_obj.log_handler.baseFilename,
                                    req_obj.submission_package.submission_dir,
                                    req_obj.attachments.data_loc,
-                                   req_obj.qualified_aliquots,
-                                   req_obj.disqualified_sub_aliquots,
-                                   req_obj.submission_package.submission_dir)
+                                   req_obj.qualified_aliquots
+                                                            if req_obj.qualified_aliquots else 'None',
+                                   [ val for val in req_obj.disqualified_sub_aliquots.keys()]
+                                                            if req_obj.disqualified_sub_aliquots else 'None',
+                                   req_obj.disqualified_request_path,
+                                   str(Path(req_obj.submission_package.submission_dir) / 'transfer_script.sh')
+                                   )
                          )
                     )
                     email_attchms.append(req_obj.log_handler.baseFilename)
@@ -185,11 +189,11 @@ if __name__ == '__main__':
 
         if req_proc_cnt > 0:
             # collect final details and send email about this study results
-            email_subject = 'processing Submission Requests for "{}"'.format(gc.PROJECT_NAME)
+            email_subject = 'processing of Submission Requests for "{}"'.format(gc.PROJECT_NAME)
             if errors_present == 'OK':
                 email_subject = 'SUCCESSFUL ' + email_subject
             elif errors_present == 'DISQUALIFY':
-                email_subject = 'SUCCESSFUL (with disqualifications)' + email_subject
+                email_subject = 'SUCCESSFUL (with disqualifications) ' + email_subject
             else:
                 email_subject = 'ERROR(s) present during ' + email_subject
 
