@@ -153,6 +153,7 @@ CYTOF:
             -
                 folder: /AssayData/cytof/rawdata
                 tar_dir: fcs
+                validate_tar_content: True
 
         attachment_search_by: file_name #possible options: file_name and folder_name
         search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.

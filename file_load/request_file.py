@@ -102,11 +102,14 @@ class Request(File):
 
                 sheet.cell_value(0, 0)
 
+                lines = []  # will hold content of the request file as an array of arrays (rows)
                 for i in range(sheet.ncols):
                     column = []
                     for j in range(sheet.nrows):
+                        if i == 0:
+                            lines.append([])  # adds an array for each new row in the request file
+
                         # print(sheet.cell_value(i, j))
-                        # column.append('"' + sheet.cell_value(i,j) + '"')
                         cell = sheet.cell(j, i)
                         cell_value = cell.value
                         # take care of number and dates received from Excel and converted to float by default
@@ -121,20 +124,16 @@ class Request(File):
                         if cell.ctype == 3:
                             cell_value_date = xlrd.xldate_as_datetime(cell_value, wb.datemode)
                             cell_value = cell_value_date.strftime("%Y-%m-%directory")
-                        column.append(cell_value)
+                        column.append(cell_value)  # adds value to the current column array
+                        lines[j].append('"' + cell_value + '"')  # adds value in "csv" format for a current row
 
                     # self.columnlist.append(','.join(column))
-                    self.columnlist.append (column)
+                    self.columnlist.append (column)  # adds a column to a list of columns
 
                 # populate lineList property
                 self.lineList = []
-                for ln in sheet._cell_values:
-                    l = []
-                    for cell in ln:
-                        if ',' in cell:
-                            cell = '"' + cell + '"'
-                        l.append(cell)
-                    self.lineList.append(','.join(l))
+                for ln in lines:
+                    self.lineList.append(','.join(ln))
 
                 wb.unload_sheet(sheet.name)
 

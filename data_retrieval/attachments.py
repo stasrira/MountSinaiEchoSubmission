@@ -130,13 +130,32 @@ class Attachment(DataRetrieval):
         for item in self.aliquots_data_dict[sa]:
             if item['validate_tar_content']:
                 validation_performed = True
-                # loop through files in the source folders
-                for root, _, files in os.walk(item['path']):
-                    # loop through the list of files in the current folder
-                    for filename in files:
-                        # get relative path of the file starting from given top folder
-                        file_path = os.path.join(os.path.basename(root), filename)
-                        # print('\t- file %s (full path: %s)' % (filename, file_path))
+
+                if os.path.isdir(item['path']):
+                    # provided path is directory and every file in the directory should be checked
+                    # loop through files in the source folders
+                    for root, _, files in os.walk(item['path']):
+                        # loop through the list of files in the current folder
+                        for filename in files:
+                            # get relative path of the file starting from given top folder
+                            file_path = os.path.join(os.path.basename(root), filename)
+                            # call procedure to check presense of the files from dir in the tar file
+                            file_found= self.validate_file_in_tar(sa, tarball_path, tar_names, file_path)
+
+                            if not file_found:
+                                # if at least one file was not found, the tar validation failed; exit the procedure
+                                return
+                else:
+                    # provided path is a file, only this file has to be checked
+                    # call procedure to check presense of the files from dir in the tar file
+                    file_path = os.path.basename(item['path'])
+                    file_found = self.validate_file_in_tar(sa, tarball_path, tar_names, file_path)
+
+                    if not file_found:
+                        # if at least one file was not found, the tar validation failed; exit the procedure
+                        return
+
+                    """
                         file_found = False
                         # loop through all tar files
                         for tar_path in tar_names:
@@ -157,6 +176,8 @@ class Attachment(DataRetrieval):
                             # self.error.add_error(_str)
                             # since at least 1 error is reported, exit the loop; tar file is compromised
                             return
+                     """
+
         if validation_performed:
             self.logger.info('Successfully validated the tarball file "{}" against corresponding source directories.'
                          .format(tarball_path))
@@ -164,6 +185,28 @@ class Attachment(DataRetrieval):
             self.logger.info('No tar file content validation was performed for "{}" aliquot based on the '
                              '"validate_tar_content" configuration value set for the current assay.'
                              .format(sa))
+
+    def validate_file_in_tar(self, sa, tarball_path, tar_names, file_path):
+        file_found = False
+        # loop through all tar files
+        for tar_path in tar_names:
+            # check if source file name is present in the list of tar files
+            if str(file_path) in str(Path(tar_path)):
+                file_found = True
+                self.logger.info(
+                    'Successfully matched file "{}" to tar file entry "{}" in the tar file {}.'
+                        .format(str(file_path), str(Path(tar_path)), tarball_path))
+                break;
+        if not file_found:
+            # report Error
+            _str = 'File "{}" for aliquot "{}" was not found in created tar file "{}".' \
+                .format(str(file_path), sa, tarball_path)
+            self.logger.error(_str)
+            self.req_obj.disqualify_sub_aliquot(sa, _str)
+            self.delete_disqualified_tarball(sa, tarball_path)
+            # self.error.add_error(_str)
+            # since at least 1 error is reported, exit the loop; tar file is compromised
+        return file_found
 
     def add_tarball_commandline(self, sa, tarball_path):
         self.logger.info('Start preparing a tarball file for aliquot "{}"; command line approach is used.'.format(sa, tarball_path))
