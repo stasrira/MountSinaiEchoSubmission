@@ -111,6 +111,8 @@ venv.bak/
 
 #processed folders
 /requests/processed
+/requests/disqualified_for_reprocessing
 /submission_packages
 /temp
+/data_examples
 

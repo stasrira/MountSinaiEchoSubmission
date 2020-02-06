@@ -25,6 +25,7 @@ if __name__ == '__main__':
     # path to the folder where all new request files will be posted
     requests_loc = m_cfg.get_value('Location/requests')
 
+    gc.DISQUALIFIED_REQUESTS = m_cfg.get_value('Location/requests_disqualified')
     # get path configuration values and save them to global_const module
     # path to the folder where all application level log files will be stored (one file per run)
     gc.APP_LOG_DIR = m_cfg.get_value('Location/app_logs')
@@ -73,7 +74,7 @@ if __name__ == '__main__':
         mlog.info('Submission requests to be processed (count = {}): {}'.format(len(requests), requests))
 
         req_proc_cnt = 0
-        errors_present = False
+        errors_present = 'OK'
 
         for req_file in requests:
             if req_file.endswith(('xlsx', 'xls')):
@@ -104,18 +105,26 @@ if __name__ == '__main__':
 
                     # identify if any errors were identified and set status variable accordingly
                     if not req_obj.error.exist():
-                        fl_status = 'OK'
-                        _str = 'Processing status: "{}". Submission Request: {}'.format(fl_status, req_path)
+                        if not req_obj.disqualified_sub_aliquots:
+                            # no disqualified sub-aliquots present
+                            fl_status = 'OK'
+                            _str = 'Processing status: "{}". Submission Request: {}'.format(fl_status, req_path)
+                            errors_present = 'OK'
+                        else:
+                            # some disqualified sub-aliquots are presetn
+                            fl_status = 'OK with Disqualifications'
+                            _str = 'Processing status: "{}". Submission Request: {}'.format(fl_status, req_path)
+                            errors_present = 'DISQUALIFY'
                     else:
                         fl_status = 'ERROR'
                         _str = 'Processing status: "{}". Check processing log file for this request: {}' \
                             .format(fl_status, req_obj.logger.handlers[0])
+                        errors_present = 'ERROR'
 
                     if fl_status == "OK":
                         mlog.info(_str)
                     else:
                         mlog.warning(_str)
-                        errors_present = True
 
                     # deactivate the current Request logger
                     deactivate_logger_common(req_obj.logger, req_obj.log_handler)
@@ -135,22 +144,33 @@ if __name__ == '__main__':
                     #  and corresponded bulk drive attachment path
                     # preps for email notification
                     email_msgs.append(
-                        ('Request file <br/>"{}" <br/> was processed and moved/renamed to <br/> "{}".'
+                        ('Requested Experiment: {}.'
+                         '<br/> Request file <br/>{} <br/> was processed and moved/renamed to <br/> {}.'
                          '<br/> <b>Errors summary:</b> '
                          '<br/> {}'
-                         '<br/> <i>Log file location: <br/>"{}"</i>'
-                         '<br/> Submission package locatoin:<br/>"{}"'
-                         '<br/> Data source locatoin:<br/>"{}"'
-                         '<br/> Processed Aliquots:<br/>"{}"'
-                         ''.format(req_path,
+                         '<br/> <i>Log file location: <br/>{}</i>'
+                         '<br/> Submission package locatoin:<br/>{}'
+                         '<br/> Data source locatoin:<br/>{}'
+                         '<br/> Processed Aliquots:<br/>{}'
+                         '<br/> Disqualified Aliquots (if present, see the log file for more details):<br/>{}'
+                         '<br/> A request file for re-processing Disqualified Aliquots was prepared in:<br/>{}'
+                         '<br/> Command line to run data transferring: <br/> {}'
+                         ''.format(req_obj.experiment_id,
+                                   req_path,
                                    processed_dir / req_processed_name,
-                                   '<font color="red">Check Errors in the log file (attached)</font>'
-                                   if req_obj.error.exist()
-                                   else '<font color="green">No Errors</font> (the log file is attached)',
+                                   '<font color="red">Check Errors in the log file </font>'
+                                                            if req_obj.error.exist()
+                                                            else '<font color="green">No Errors</font> ',
                                    req_obj.log_handler.baseFilename,
                                    req_obj.submission_package.submission_dir,
                                    req_obj.attachments.data_loc,
-                                   req_obj.aliquots)
+                                   req_obj.qualified_aliquots
+                                                            if req_obj.qualified_aliquots else 'None',
+                                   [ val for val in req_obj.disqualified_sub_aliquots.keys()]
+                                                            if req_obj.disqualified_sub_aliquots else 'None',
+                                   req_obj.disqualified_request_path,
+                                   str(Path(req_obj.submission_package.submission_dir) / 'transfer_script.sh')
+                                   )
                          )
                     )
                     email_attchms.append(req_obj.log_handler.baseFilename)
@@ -169,9 +189,11 @@ if __name__ == '__main__':
 
         if req_proc_cnt > 0:
             # collect final details and send email about this study results
-            email_subject = 'processing Submission Requests for "{}"'.format(gc.PROJECT_NAME)
-            if not errors_present:
+            email_subject = 'processing of Submission Requests for "{}"'.format(gc.PROJECT_NAME)
+            if errors_present == 'OK':
                 email_subject = 'SUCCESSFUL ' + email_subject
+            elif errors_present == 'DISQUALIFY':
+                email_subject = 'SUCCESSFUL (with disqualifications) ' + email_subject
             else:
                 email_subject = 'ERROR(s) present during ' + email_subject
 
@@ -188,8 +210,9 @@ if __name__ == '__main__':
                     email.send_yagmail(
                         emails_to=m_cfg.get_value('Email/sent_to_emails'),
                         subject=email_subject,
-                        message=email_body,
-                        attachment_path=email_attchms
+                        message=email_body
+                        # commented adding attachements, since some log files go over 25GB limit and fail email sending
+                        # ,attachment_path=email_attchms
                     )
             except Exception as ex:
                 # report unexpected error during sending emails to a log file and continue

@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import stat
+import traceback
 import time
 import xlrd
 from utils import global_const as gc
@@ -14,6 +15,7 @@ from file_load.file_error import RequestError
 from data_retrieval import DataSource
 from data_retrieval import Attachment
 from forms import SubmissionPackage
+import xlwt
 
 
 class Request(File):
@@ -41,6 +43,8 @@ class Request(File):
         self.columnlist = []
         self.samples = []
         self.sub_aliquots = []
+        self.disqualified_sub_aliquots = {}
+        self.disqualified_request_path = ''  # will store path to a request file with disqualified sub-aliquots
         self.project = ''
         self.exposure = ''
         self.center = ''
@@ -49,6 +53,7 @@ class Request(File):
         self.experiment_id = ''
 
         self.aliquots = None
+        self.qualified_aliquots = None
         self.raw_data = None
         self.assay_data = None
         self.attachments = None
@@ -97,11 +102,14 @@ class Request(File):
 
                 sheet.cell_value(0, 0)
 
+                lines = []  # will hold content of the request file as an array of arrays (rows)
                 for i in range(sheet.ncols):
                     column = []
                     for j in range(sheet.nrows):
+                        if i == 0:
+                            lines.append([])  # adds an array for each new row in the request file
+
                         # print(sheet.cell_value(i, j))
-                        # column.append('"' + sheet.cell_value(i,j) + '"')
                         cell = sheet.cell(j, i)
                         cell_value = cell.value
                         # take care of number and dates received from Excel and converted to float by default
@@ -116,9 +124,16 @@ class Request(File):
                         if cell.ctype == 3:
                             cell_value_date = xlrd.xldate_as_datetime(cell_value, wb.datemode)
                             cell_value = cell_value_date.strftime("%Y-%m-%directory")
-                        column.append(cell_value)
+                        column.append(cell_value)  # adds value to the current column array
+                        lines[j].append('"' + cell_value + '"')  # adds value in "csv" format for a current row
 
-                    self.columnlist.append(','.join(column))
+                    # self.columnlist.append(','.join(column))
+                    self.columnlist.append (column)  # adds a column to a list of columns
+
+                # populate lineList property
+                self.lineList = []
+                for ln in lines:
+                    self.lineList.append(','.join(ln))
 
                 wb.unload_sheet(sheet.name)
 
@@ -157,22 +172,29 @@ class Request(File):
                 self.logger.error(_str)
 
                 self.columnlist = None
+                self.lineList = None
                 self.loaded = False
         return self.lineList
 
     # get all values provided in the request file
     def get_request_parameters(self):
         # self.project = self.columnlist[0].split(',')[1] #project will be stored in the config file
-        self.exposure = self.columnlist[0].split(',')[1]
-        self.center = self.columnlist[1].split(',')[1]
-        self.source_spec_type = self.columnlist[2].split(',')[1]
-        self.assay = self.columnlist[3].split(',')[1].lower()
-        self.sub_aliquots = self.columnlist[4].split(',')
+        # self.exposure = self.columnlist[0].split(',')[1]
+        self.exposure = self.columnlist[0][1]
+        # self.center = self.columnlist[1].split(',')[1]
+        self.center = self.columnlist[1][1]
+        # self.source_spec_type = self.columnlist[2].split(',')[1]
+        self.source_spec_type = self.columnlist[2][1]
+        # self.assay = self.columnlist[3].split(',')[1].lower()
+        self.assay = self.columnlist[3][1].lower()
+        # self.sub_aliquots = self.columnlist[4].split(',')
+        self.sub_aliquots = self.columnlist[4]
         if self.sub_aliquots and len(self.sub_aliquots) > 0:
-            self.sub_aliquots.pop(0)
-        self.samples = self.columnlist[5].split(',')
+            self.sub_aliquots.pop(0) # get rid of the column header
+        # self.samples = self.columnlist[5].split(',')
+        self.samples = self.columnlist[5]
         if self.samples and len(self.samples) > 0:
-            self.samples.pop(0)
+            self.samples.pop(0) # get rid of the column header
         # self.experiment_id = self.columnlist[6].split(',')[1]
 
         # get list of aliquots from list of subaliquots
@@ -268,6 +290,8 @@ class Request(File):
 
         self.submission_package = SubmissionPackage(self)
 
+        self.create_request_for_disqualified_sub_aliquots()
+
         self.create_trasfer_script_file()
 
         # check for errors and put final log entry for the request.
@@ -303,13 +327,99 @@ class Request(File):
         scr_tmpl = scr_tmpl.replace("{!target_dir!}", self.conf_main.get_value("DataTransfer/remote_target_dir"))
         scr_tmpl = scr_tmpl.replace("{!ssh_user!}", self.conf_main.get_value("DataTransfer/ssh_user"))
 
-        exec_permission = eval(self.conf_main.get_value("DataTransfer/exec_permis"))
+        set_permissions = False
+        set_perm_value = self.conf_main.get_value("DataTransfer/exec_permis")
+        if set_perm_value:
+            try:
+                exec_permission = eval(set_perm_value.strip())
+                set_permissions = True
+            except Exception as ex:
+                _str = 'Unexpected error Error "{}" occurred during evaluating of "DataTransfer/exec_permis" value ' \
+                       '"{}" retrieved from the main config file. Permission setup operation will be skipped. \n{} '\
+                    .format(ex, set_perm_value, traceback.format_exc())
+                self.logger.warning(_str)
+                # self.error.add_error(_str)
+                set_permissions = False
 
         with open(sf_path, "w") as sf:
             sf.write(scr_tmpl)
 
-        st = os.stat(sf_path)
-        os.chmod(sf_path, st.st_mode | exec_permission) #stat.S_IXUSR
+        if set_permissions:
+            try:
+                # if permissions to be set were retrieved from config file, set them here
+                st = os.stat(sf_path)
+                os.chmod(sf_path, st.st_mode | exec_permission) #stat.S_IXUSR
+            except Exception as ex:
+                _str = 'Unexpected error Error "{}" occurred during setting up permissions "{}" for the script file ' \
+                       '"{}". \n{} '\
+                    .format(ex, set_perm_value, sf_path, traceback.format_exc())
+                self.logger.warning(_str)
+                self.error.add_error(_str)
+        else:
+            _str = 'Permission setup was skipped for the transfer script file. ' \
+                   'Note: value of "DataTransfer/exec_permis" from main config was set to "{}".'\
+                                    .format(set_perm_value)
+            self.logger.warning(_str)
 
         self.logger.info("Finish preparing '{}' file.".format(sf_path))
 
+    def disqualify_sub_aliquot(self, sa, details):
+        # adds a sub aliquots to the disctionary of disqualified sub_aliquots
+        # key = sub-aliquot, value = array of details for disqualification; 1 entry can have multiple detail reasons
+        if sa in self.disqualified_sub_aliquots.keys():
+            self.disqualified_sub_aliquots[sa].append(details)
+        else:
+            arr_details = [details]
+            self.disqualified_sub_aliquots[sa]= arr_details
+        self.logger.warning('Sub-aliquot "{}" was disqualified with the following details: "{}"'.format(sa, details))
+
+    def populate_qualified_aliquots(self):
+        # reset self.qualified_aliquots array
+        self.qualified_aliquots = []
+        #select only aliquots that were not disqualified
+        for sa, a in zip(self.sub_aliquots, self.aliquots):
+            if not sa in self.disqualified_sub_aliquots.keys():
+                self.qualified_aliquots.append(a)
+
+    def create_request_for_disqualified_sub_aliquots(self):
+
+        # proceed only if some disqualified sub-aliquots are present
+        if self.disqualified_sub_aliquots:
+
+            self.logger.info("Start preparing a request file for disqualified sub-aliquots '{}'."
+                             .format([val for val in self.disqualified_sub_aliquots.keys()]))
+
+            wb = xlwt.Workbook()  # create empty workbook object
+            sh = wb.add_sheet('Submission_Request')  # sheet name can not be longer than 32 characters
+
+            cur_row = 0 # first row for 0-based array
+            cur_col = 0 # first col for 0-based array
+            #write headers to the file
+            headers = self.get_headers()
+            for val in headers:
+                sh.write (cur_row, cur_col, val)
+                cur_col += 1
+
+            cur_row += 1
+
+            for sa, s in zip (self.sub_aliquots, self.samples):
+                if sa in self.disqualified_sub_aliquots.keys():
+                    sh.write(cur_row, 0, self.exposure)
+                    sh.write(cur_row, 1, self.center)
+                    sh.write(cur_row, 2, self.source_spec_type)
+                    sh.write(cur_row, 3, self.assay)
+                    sh.write(cur_row, 4, sa)
+                    sh.write(cur_row, 5, s)
+                    cur_row += 1
+
+            self.disqualified_request_path = Path(gc.DISQUALIFIED_REQUESTS + '/' +
+                            time.strftime("%Y%m%d_%H%M%S", time.localtime()) + '_reprocess_disqualified _' +
+                            Path(self.filename).stem + '.xls')
+
+            # if DISQUALIFIED_REQUESTS folder does not exist, it will be created
+            os.makedirs(gc.DISQUALIFIED_REQUESTS, exist_ok=True)
+
+            wb.save(str(self.disqualified_request_path))
+
+            self.logger.info("Successfully prepared the request file for disqualified sub-aliquots and saved in '{}'."
+                             .format(str(self.disqualified_request_path)))

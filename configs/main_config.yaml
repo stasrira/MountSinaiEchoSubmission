@@ -19,15 +19,17 @@ DB: # this section currently not in use
 
 Location:
     # path to the folder where new request files are located
-    requests: E:\MounSinai\Darpa\Programming\submission\requests
+    requests: D:\MounSinai\Darpa\Programming\submission\requests
     # path to the folder where processed request files are located
-    requests_processed: E:\MounSinai\Darpa\Programming\submission\requests\processed
+    requests_processed: D:\MounSinai\Darpa\Programming\submission\requests\processed
+    # path to the folder where dynamically created request files for disqualified aliquots will be saved
+    requests_disqualified: D:\MounSinai\Darpa\Programming\submission\requests\disqualified_for_reprocessing
     # path to the folder where request level log files are located (one log file per request)
-    request_logs: E:\MounSinai\Darpa\Programming\submission\requests\logs
+    request_logs: D:\MounSinai\Darpa\Programming\submission\requests\logs
     # path to the folder where application level log files are located (one per application run)
-    app_logs: E:\MounSinai\Darpa\Programming\submission\logs
+    app_logs: D:\MounSinai\Darpa\Programming\submission\logs
     # path to the folder where created submission packages will be located. One package sub_folder per request.
-    output_packages: E:\MounSinai\Darpa\Programming\submission\submission_packages
+    output_packages: D:\MounSinai\Darpa\Programming\submission\submission_packages
 
     #name of the folder where all logs files will be stored
     #log_folder_name: logs
@@ -38,8 +40,8 @@ DataTransfer:
     remote_target_dir: /home/gridsan/groups/ECHO_ISMMS/ISMMS/pub
     #ssh user to be used for transferring
     ssh_user: srirak
-    #execute permission for data transfer script
-    exec_permis: stat.S_IXUSR #this walue is to be evaluated by the code
+    #execute permission for data transfer script, if not set, no permissions will be assigned
+    exec_permis: stat.S_IXUSR #this value is to be evaluated by the code
 
 Logging:
     #main log - log created by the main application

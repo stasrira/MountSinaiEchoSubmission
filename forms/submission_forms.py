@@ -25,10 +25,15 @@ class SubmissionForms:
                 if form['assignment'] == 'aliquot':
                     # prepare an instance of the current form for each aliquot
                     for sa, a, smpl in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots, self.req_obj.samples):
-                        self.logger.info('Prepare submission form "{}" for sub_aliquot "{}".'.format(form['name'], sa))
-                        submission_form = SubmissionForm(form['name'], self.req_obj, sa, a, smpl)
-                        self.add_submission_form(sa, form['assignment'], submission_form)  # .json_form.json_data
+                        if not sa in self.req_obj.disqualified_sub_aliquots.keys():
+                            self.logger.info('Prepare submission form "{}" for sub_aliquot "{}".'
+                                             .format(form['name'], sa))
+                            submission_form = SubmissionForm(form['name'], self.req_obj, sa, a, smpl)
+                            self.add_submission_form(sa, form['assignment'], submission_form)  # .json_form.json_data
                 elif form['assignment'] == 'request':
+                    #populate list of qualifed aliquots (removing all disqualified ones during attachment preps, etc.)
+                    self.req_obj.populate_qualified_aliquots()
+
                     self.logger.info('Prepare submission form "{}" of the request level.'.format(form['name']))
                     submission_form = SubmissionForm(form['name'], self.req_obj, None, None, None)
                     self.add_submission_form(form['assignment'], form['assignment'], submission_form)
