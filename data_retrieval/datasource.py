@@ -17,6 +17,8 @@ class DataSource(DataRetrieval):
         last_part_path = cnf_data_source['sub_folder']
         data_source_loc = cnf_data_source['location']
         self.data_loc = Path(self.convert_aliquot_properties_to_path(data_source_loc, last_part_path))
+        self.logger.info('Data location for the current data source "{}" is "{}"'
+                          .format(self.data_source_name, self.data_loc))
         # print (self.data_loc)
         search_by = cnf_data_source['search_method']['search_by']
         search_deep_level = cnf_data_source['search_method']['search_deep_level_max']
