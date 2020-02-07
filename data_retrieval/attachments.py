@@ -113,7 +113,6 @@ class Attachment(DataRetrieval):
             self.calculate_md5sum(sa, tarball_path)
             if gc.TARBALL_SAVE_MD5SUM_FILE:
                 # save md5sum file next to the created tar file
-                # self.save_md5sum_file(tarball_path + ".md5", self.aliquots_tarball_dict[sa]["md5"])
                 self.save_md5sum_file(self.aliquots_tarball_dict[sa])
 
     def validate_tarfile_vs_source(self, sa, tarball_path):
@@ -284,10 +283,6 @@ class Attachment(DataRetrieval):
         _str = 'Aliquot "{}" was successfully assigned with a tarball file "{}"; MD5sum = "{}".' \
             .format(sa, tarball_path, md5)
         self.logger.info(_str)
-
-    def save_md5sum_file_old(self, md5_path, md5_value):
-        with open(md5_path, "w+") as f:
-            f.write(md5_value)
 
     def save_md5sum_file(self, cur_aliquots_tarball_dict):
         md5_path = cur_aliquots_tarball_dict['path'] + '.md5'
