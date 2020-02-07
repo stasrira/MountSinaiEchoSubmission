@@ -119,7 +119,7 @@ CYTOF:
     assaydata:
         #path to the location where data_retrieval for all projects are stored; this path
         #will be combined with a path for a particular experiment
-        location: D:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive
+        location: D:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive\ECHO\SampleInfo
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
         sub_folder: /AssayData/cytof/DataQC
 
@@ -147,7 +147,7 @@ CYTOF:
                 sheet_name:
 
     attachment:
-        location: D:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive # D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: D:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive\ECHO\SampleInfo # D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
         #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
         attachment_folder:
             -
@@ -174,7 +174,7 @@ RNASEQ:
     assaydata:
         #path to the location where data_retrieval for all projects are stored; this path
         #will be combined with a path for a particular experiment
-        location: D:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive
+        location: D:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive\ECHO\SampleInfo
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
         sub_folder: /AssayData/RNAseq/DataQC
 

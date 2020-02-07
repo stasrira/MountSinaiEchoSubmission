@@ -45,7 +45,7 @@ class DataRetrieval:
 
     def convert_aliquot_properties_to_path(self, data_location, last_part_path):
         return '/'.join([data_location,
-                         self.req_obj.project,
+                         #  self.req_obj.project,
                          self.req_obj.exposure,
                          self.req_obj.center,
                          self.req_obj.source_spec_type,
