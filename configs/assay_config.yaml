@@ -1,4 +1,4 @@
-SCRNASEQ:
+SCRNA_SEQ:
     assay_name: csRNAseq
     mssm_id: 1
     mssm_postfix: _1
@@ -10,7 +10,7 @@ SCRNASEQ:
     rawdata:
         #path to the location where data_retrieval for all projects are stored; this path
         #will be combined with a path for a particular experiment
-        location: D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
         sub_folder: /scrna-seq
 
@@ -35,7 +35,7 @@ SCRNASEQ:
                 sheet_name:
 
     attachment:
-        location: D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO
         #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
         attachment_folder:
             -
@@ -54,7 +54,7 @@ SCRNASEQ:
         attach_object: folder #possible options: folder and file
         attachment_file_ext: #must include dot (.) in-front of an extension
 
-SCATACSEQ:
+SCATAC_SEQ:
     assay_name: csATACseq
     mssm_id: 2
     mssm_postfix: _2
@@ -66,7 +66,7 @@ SCATACSEQ:
     rawdata:
         #path to the location where data_retrieval for all projects are stored; this path
         #will be combined with a path for a particular experiment
-        location: D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
         sub_folder: /scatac-seq
 
@@ -91,7 +91,7 @@ SCATACSEQ:
                 sheet_name:
 
     attachment:
-        location: D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO
         #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
         attachment_folder:
             -
@@ -153,6 +153,7 @@ CYTOF:
             -
                 folder: /AssayData/cytof/rawdata
                 tar_dir: fcs
+                tar_include_parent_dir: True
                 validate_tar_content: True
 
         attachment_search_by: file_name #possible options: file_name and folder_name
@@ -161,6 +162,62 @@ CYTOF:
         attach_object: file #possible options: folder and file
         attachment_file_ext: #must include dot (.) in-front of an extension
             - .fcs
+
+EPIC:
+    assay_name: epic
+    mssm_id: 5
+    mssm_postfix: _5
+
+    data_sources:
+        # - rawdata
+        # - assaydata
+        - attachment
+
+    assaydata:
+        #path to the location where data_retrieval for all projects are stored; this path
+        #will be combined with a path for a particular experiment
+        location: D:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive\ECHO\SampleInfo
+        #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+        sub_folder: /AssayData/cytof/DataQC
+
+        search_method: # search_rawdata_summary
+            search_by: file_content #possible options: file_content, folder_name
+            search_deep_level_max: 1 # 0: root folder, 1:first sub-folder, etc.
+            exclude_folders:
+
+            file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
+                - .xlsx
+                #- .xls
+                - .csv
+            single_file_path:
+
+        file_content_details:
+            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
+                                     # 'row_num' - retrieve data from a particular row of the file
+            get_by_row_num:
+                # 'row_num' - retrieve data from a particular row of the file
+                row_num:
+            get_by_primary_key:
+                header_row_number: 7 # 1-based numbering
+                pk_column_number: 1 # 1-based numbering
+            excel:
+                sheet_name:
+
+    attachment:
+        location: D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO
+        # path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
+        attachment_folder:
+            -
+                folder: /methylome
+                tar_dir: epic
+                tar_include_parent_dir: True
+                validate_tar_content: True
+
+        attachment_search_by: folder_name #possible options: file_name and folder_name
+        search_deep_level_max: 1 # 0: root folder, 1:first sub-folder, etc.
+        exclude_folders:
+        attach_object: folder #possible options: folder and file
+        attachment_file_ext: #must include dot (.) in-front of an extension
 
 RNASEQ:
     assay_name: RNASEQ
@@ -201,12 +258,12 @@ RNASEQ:
                 sheet_name:
 
     attachment:
-        location: D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive # D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive
+        location: D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO
         #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
         attachment_folder:
             -
-                folder: /cytof
-                tar_dir: fcs
+                folder: /rnaseq
+                tar_dir:
 
         attachment_search_by: file_name #possible options: file_name and folder_name
         search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.

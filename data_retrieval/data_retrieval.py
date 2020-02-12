@@ -73,7 +73,8 @@ class DataRetrieval:
         file_index = self.index_data_files(files, file_struct)
         for id_val in file_index:
             sa_list = []
-            sa_list  = [(sa, al) for sa, al in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots) if sa in id_val or al in id_val]
+            sa_list  = [(sa, al) for sa, al in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots)
+                        if sa in id_val or al in id_val]
 
             #if id_val in self.req_obj.sub_aliquots:
             if sa_list:
@@ -136,9 +137,9 @@ class DataRetrieval:
         for d in dirs:
             dbn = os.path.basename(d)
             # print('dbn = |{}|'.format(dbn))
-            for sa in self.req_obj.sub_aliquots:
+            for sa, al in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots):
                 # print ('Aliquot = |{}|'.format(sa))
-                if sa in dbn:
+                if sa in dbn or al in dbn:
                     self.get_data_for_aliquot(sa, d)
 
     def get_data_for_aliquot(self, sa, directory):

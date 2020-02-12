@@ -218,7 +218,7 @@ class Attachment(DataRetrieval):
             else:
                 item_dir_path = str(os.path.dirname(Path(item['path'])))
             # print(item_dir_path)
-            item_to_tar = os.path.basename(item['path'])  # target file to tar
+            item_to_tar = os.path.basename(item['path'])  # target object (folder or file) to tar
 
             incl_prnt_dir = item['incl_prnt_dir']
             if incl_prnt_dir:
@@ -264,10 +264,22 @@ class Attachment(DataRetrieval):
         self.logger.info('Start preparing a tarball file for aliquot "{}"; tarfile library is used.'.format(sa, tarball_path))
         with tarfile.open(Path(tarball_path), "w:") as tar:
             for item in self.aliquots_data_dict[sa]:
-                if item['tar_dir'] and len(item['tar_dir'].strip()) > 0:
-                    _str = '{}/{}'.format(item['tar_dir'], os.path.basename(item['path']))
+                item_to_tar = os.path.basename(item['path'])  # target object (folder or file) to tar
+                if Path(item['path']).is_dir():
+                    item_dir_path = str(Path(item['path']).parent)  # str(Path(item['path']) / '..') # .parent
                 else:
-                    _str = '{}'.format(os.path.basename(item['path']))
+                    item_dir_path = str(os.path.dirname(Path(item['path'])))
+
+                incl_prnt_dir = item['incl_prnt_dir']
+                if incl_prnt_dir:
+                    parent = os.path.basename(item_dir_path)
+                    # item_dir_path = str(Path(item_dir_path).parent)
+                    item_to_tar = str(Path(parent + '/' + item_to_tar))
+
+                if item['tar_dir'] and len(item['tar_dir'].strip()) > 0:
+                    _str = '{}/{}'.format(item['tar_dir'], item_to_tar)
+                else:
+                    _str = '{}'.format(item_to_tar)
                 self.logger.info('Start adding item "{}" to a tarball file "{}".'.format(item['path'], tarball_path))
                 tar.add(str(Path(item['path'])), arcname=_str)
                 self.logger.info('Item "{}" was added to a tarball file "{}".'.format(item['path'], tarball_path))
