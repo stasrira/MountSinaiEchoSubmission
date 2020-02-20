@@ -1,18 +1,17 @@
-from data_retrieval import DataRetrieval
+from data_retrieval import DataRetrieval, DataRetrievalAliquot
 from pathlib import Path
-from data_retrieval import DataRetrievalAliquot
 
 
 class DataSource(DataRetrieval):
     def __init__(self, request_obj, data_source_id, data_source_name):
         self.data_source_id = data_source_id
         self.data_source_name = data_source_name
-        DataRetrieval.__init__(self, request_obj)
         self.cnf_data_source = None
+        DataRetrieval.__init__(self, request_obj)
 
     def init_specific_settings(self):
         # this function is called by the base class to perform actions specific to the current class' needs
-        self.cnf_data_source = self.conf_assay[self.data_source_id]
+        self.cnf_data_source = self.conf_process_entity[self.data_source_id]
         cnf_data_source = self.cnf_data_source
         last_part_path = cnf_data_source['sub_folder']
         data_source_loc = cnf_data_source['location']
@@ -30,7 +29,7 @@ class DataSource(DataRetrieval):
         elif search_by == 'file_content':
             # search_deep_level = cnf_data_source['search_method']['search_deep_level_max']
             # exclude_dirs = cnf_data_source['search_method']['exclude_folders']
-            file_ext = cnf_data_source['search_method']['file_ext']  # self.conf_assay['rawdata_summary_file_ext']
+            file_ext = cnf_data_source['search_method']['file_ext']  # self.conf_process_entity['rawdata_summary_file_ext']
             data_file_struct = {
                 'worksheet': cnf_data_source['file_content_details']['excel']['sheet_name'],
                 'header_row_num': cnf_data_source['file_content_details']['get_by_primary_key']['header_row_number'],

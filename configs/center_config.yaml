@@ -1,35 +1,42 @@
-CENTERS:
-    DEFAULT:
-        #comma delimited list identifying names or column numbers based on the key of "sample_id_method"
-        sample_id_fields: Barcode
-        #expected values: "name" or "number"
-        sample_id_method: name
-        #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
-        sample_id_expression: "{Barcode}"
-        #identifies if validation is required for sample_id_expression - expected values: True/False
-        sample_id_eval_required: False
+HI:
+    data_sources:
+        # - rawdata
+        # - assaydata
+        - metadata_db
 
-        #expected file formats and sheet names (for excel formats only)
-        manifest_file_ext_:
-            - xlsx
-            - xls
-        manifest_sheet_name: Sheet1
+    assaydata:
+        #path to the location where data_retrieval for all projects are stored; this path
+        #will be combined with a path for a particular experiment
+        location: D:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive\ECHO\SampleInfo
+        #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+        sub_folder: /AssayData/cytof/DataQC
 
-    HI:
-        #comma delimited list identifying names or column numbers based on the key of "sample_id_method"
-        sample_id_fields: Barcode
-        #expected values: "name" or "number"
-        sample_id_method: name
-        #sample_id expression, can by a python expression based on specified sample_id_fields; each field has to be presented in figure parentheses
-        sample_id_expression: "{Barcode}"
-        #identifies if validation is required for sample_id_expression - expected values: True/False
-        sample_id_eval_required: False
+        search_method: # search_rawdata_summary
+            search_by: file_content #possible options: file_content, folder_name
+            search_deep_level_max: 1 # 0: root folder, 1:first sub-folder, etc.
+            exclude_folders:
 
-        #expected file formats and sheet names (for excel formats only)
-        manifest_file_ext_:
-            - xlsx
-            - xls
-        manifest_sheet_name: Sheet1
+            file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
+                - .xlsx
+                #- .xls
+                - .csv
+            single_file_path:
+
+        file_content_details:
+            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
+            # 'row_num' - retrieve data from a particular row of the file
+            get_by_row_num:
+                # 'row_num' - retrieve data from a particular row of the file
+                row_num:
+            get_by_primary_key:
+                header_row_number: 7 # 1-based numbering
+                pk_column_number: 1 # 1-based numbering
+            excel:
+                sheet_name:
+
+    metadata_db:
+        mdb_study_id: 7
+        db_config_section_name: MDB
 
 
 

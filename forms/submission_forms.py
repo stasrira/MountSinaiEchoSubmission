@@ -15,7 +15,6 @@ class SubmissionForms:
         self.prepare_submission_forms()
 
     def prepare_submission_forms(self):
-        # forms = self.conf_assay['submission_forms']
         forms = self.conf_main.get_value('submission_forms')
         self.logger.info('Start processing the following submission forms for the current request: {}'.format(forms))
         for form in forms:

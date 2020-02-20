@@ -21,7 +21,7 @@ class Attachment(DataRetrieval):
         DataRetrieval.__init__(self, request)
 
     def init_specific_settings(self):
-        self.cnf_data_source = self.conf_assay['attachment']
+        self.cnf_data_source = self.conf_process_entity['attachment']
         cnf_data_source = self.cnf_data_source
         last_part_path_list = cnf_data_source['attachment_folder']
         data_source_loc = cnf_data_source['location']

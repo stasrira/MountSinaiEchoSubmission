@@ -14,7 +14,7 @@ class DataRetrieval:
         self.req_obj = request  # reference to the current request object
         self.error = self.req_obj.error
         self.logger = self.req_obj.logger
-        self.conf_assay = request.conf_assay
+        self.conf_process_entity = request.conf_process_entity
         self.data_loc = None
         self.init_specific_settings()
         # print ('')
@@ -23,13 +23,13 @@ class DataRetrieval:
         # should be overwritten in classed that inherit this one
         pass
         '''# this is an old  version of code
-        last_part_path = self.conf_assay['data_folder']
+        last_part_path = self.conf_process_entity['data_folder']
         self.data_loc = Path(self.convert_aliquot_properties_to_path(last_part_path))
         # print (self.data_loc)
-        search_by = self.conf_assay['search_rawdata_summary']['search_by']
+        search_by = self.conf_process_entity['search_rawdata_summary']['search_by']
         if search_by == 'folder_name':
-            search_deep_level = self.conf_assay['search_rawdata_summary']['search_deep_level_max']
-            exclude_dirs = self.conf_assay['search_rawdata_summary']['exclude_folders']
+            search_deep_level = self.conf_process_entity['search_rawdata_summary']['search_deep_level_max']
+            exclude_dirs = self.conf_process_entity['search_rawdata_summary']['exclude_folders']
             self.get_data_by_folder_name(search_deep_level, exclude_dirs)
         elif search_by == 'file_content':
             self.get_data_by_file_content()
@@ -50,7 +50,7 @@ class DataRetrieval:
                          self.req_obj.exposure,
                          self.req_obj.center,
                          self.req_obj.source_spec_type,
-                         last_part_path])  # self.conf_assay['data_folder']])
+                         last_part_path])  # self.conf_process_entity['data_folder']])
 
     """
     # get_data_by_file_content function expects the following parameters:
@@ -92,8 +92,8 @@ class DataRetrieval:
 
     def index_data_files(self, files, file_struct):
         # combine content of selected files and create dictionary pr_key/file path
-        worksheet = file_struct['worksheet']  # self.conf_assay['data_retrieved']['sheet_name']
-        header_row_num = file_struct['header_row_num']  # self.conf_assay['data_retrieved']['header_row_number'] # 1
+        worksheet = file_struct['worksheet']  # self.conf_process_entity['data_retrieved']['sheet_name']
+        header_row_num = file_struct['header_row_num']  # self.conf_process_entity['data_retrieved']['header_row_number'] # 1
         if str(header_row_num).isnumeric():
             header_row_num = header_row_num - 1  # accommodate for 0-based numbering
         else:

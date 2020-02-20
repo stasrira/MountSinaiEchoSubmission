@@ -12,8 +12,8 @@ from utils import ConfigData
 from file_load import File  # , MetaFileExcel
 from file_load.file_error import RequestError
 # from data_retrieval import RawData # DataRetrieval
-from data_retrieval import DataSource
-from data_retrieval import Attachment
+from data_retrieval import DataSource, Attachment, DataSourceDB
+# from data_retrieval import Attachment
 from forms import SubmissionPackage
 import xlwt
 
@@ -69,7 +69,7 @@ class Request(File):
         # print (self.sheet_name)
         self.logger.info('Data will be loaded from worksheet: "{}"'.format(self.sheet_name))
 
-        self.conf_assay = None
+        self.conf_process_entity = None
 
         self.get_file_content()
 
@@ -139,15 +139,18 @@ class Request(File):
 
                 # load passed request parameters (by columns)
                 self.get_request_parameters()
+                # Log type of the request being processed
+                self.logger.info('Current request Type was identified as "{}"'.format(self.type))
+
                 # to support decision of not supplying Project Name from Request file,
                 # it will be retrieved from gc module
                 self.project = gc.PROJECT_NAME
 
                 # validate provided information
-                self.logger.info('Validating provided request parameters. Project: "{}", Exposure: "{}", '
+                self.logger.info('Validating provided request parameters. Exposure: "{}", '
                                  'Center: "{}", Source specimen type: "{}", Experiment: {}, '
                                  'Sub-Aliquots: "{}", Aliquots: "{}"'
-                                 .format(self.project, self.exposure, self.center, self.source_spec_type,
+                                 .format(self.exposure, self.center, self.source_spec_type,
                                          self.experiment_id, self.sub_aliquots, self.samples))
                 self.validate_request_params()
 
@@ -179,35 +182,59 @@ class Request(File):
 
     # get all values provided in the request file
     def get_request_parameters(self):
-        # self.project = self.columnlist[0].split(',')[1] #project will be stored in the config file
-        # self.exposure = self.columnlist[0].split(',')[1]
-        self.exposure = self.columnlist[0][1]
-        # self.center = self.columnlist[1].split(',')[1]
-        self.center = self.columnlist[1][1]
-        # self.source_spec_type = self.columnlist[2].split(',')[1]
-        self.source_spec_type = self.columnlist[2][1]
-        # self.assay = self.columnlist[3].split(',')[1].lower()
-        self.assay = self.columnlist[3][1].lower()
-        # self.sub_aliquots = self.columnlist[4].split(',')
-        self.sub_aliquots = self.columnlist[4]
-        if self.sub_aliquots and len(self.sub_aliquots) > 0:
-            self.sub_aliquots.pop(0) # get rid of the column header
-        # self.samples = self.columnlist[5].split(',')
-        self.samples = self.columnlist[5]
-        if self.samples and len(self.samples) > 0:
-            self.samples.pop(0) # get rid of the column header
-        # self.experiment_id = self.columnlist[6].split(',')[1]
+        col_count = len(self.columnlist)
+        if col_count < 7:
+            # if 7th column is not provided, assume that it is a Sequence request and set request's type appropriately
+            # otherwise the type value will be received from the file
+            self.type = gc.DEFAULT_REQUEST_TYPE.lower()
+
+        for i in range(col_count):
+            if len(self.columnlist[i]) > 1:
+                first_val = self.columnlist[i][1]
+            else:
+                first_val = ''
+
+            if i == 0:
+                self.exposure = first_val
+            elif i == 1:
+                self.center = first_val
+            elif i == 2:
+                self.source_spec_type = first_val
+            elif i == 3:
+                self.assay = first_val.lower()
+            elif i == 4:
+                self.sub_aliquots = self.columnlist[i]
+                if self.sub_aliquots and len(self.sub_aliquots) > 0:
+                    self.sub_aliquots.pop(0)  # get rid of the column header
+            elif i == 5:
+                self.samples = self.columnlist[i]
+                if self.samples and len(self.samples) > 0:
+                    self.samples.pop(0)  # get rid of the column header
+            elif i == 6:
+                self.type = first_val.lower()
+            else:
+                break
 
     # validates provided parameters (loaded from the submission request file)
     def validate_request_params(self):
-        # TODO: Optionally add validation for all request parameters (in addition to assay)
+        if self.type == 'sequence':
+            self.validate_request_params_sequence()
+        elif self.type == 'metadata':
+            self.validate_request_params_metadata()
+        else:
+            _str_err = 'Supplied request type value "{}" is not expected! Aborting processing of the ' \
+                       'submission request.'.format(self.type)
+            self.error.add_error(_str_err)
+            self.logger.error(_str_err)
+
+    def validate_request_params_sequence(self):
         _str_err = ''
         _str_warn = ''
         if len(self.sub_aliquots) == 0:
             _str_err = '\n'.join([_str_err, 'List of provided sub-samples is empty. '
                                             'Aborting processing of the submission request.'])
-        # Check if empty sub-samples were provided
-        if '' in self.sub_aliquots:
+        # Check if empty sub-aliquots were provided
+        if self.sub_aliquots and '' in self.sub_aliquots:
             i = 0
             cleaned_cnt = 0
             for s, a in zip(self.sub_aliquots, self.samples):
@@ -222,9 +249,9 @@ class Request(File):
                 _str_warn = '\n'.join([_str_warn, 'Empty sub-aliqouts (count = {}) were removed from the list. '
                                                   'Here is the list of sub-aliqouts after cleaning (count = {}): "{}" '
                                       .format(cleaned_cnt, len(self.sub_aliquots), self.sub_aliquots)])
-        if len(self.project) == 0:
-            _str_err = '\n'.join(
-                [_str_err, 'No Project name was provided. Aborting processing of the submission request.'])
+        # if len(self.project) == 0:
+        #    _str_err = '\n'.join(
+        #        [_str_err, 'No Project name was provided. Aborting processing of the submission request.'])
         if len(self.exposure) == 0:
             _str_err = '\n'.join([_str_err, 'No Exposure was provided. Aborting processing of the submission request.'])
         if len(self.center) == 0:
@@ -244,6 +271,38 @@ class Request(File):
             self.assay = cm2.get_dict_value(self.assay, 'assay')
             # get list of aliquots from list of sub-aliquots
             self.aliquots = [cm2.convert_sub_aliq_to_aliquot(al, self.assay) for al in self.sub_aliquots]
+
+        # report any collected errors
+        if len(_str_err) > 0:
+            _str_err = 'Validation of request parameters:' + _str_err
+            self.error.add_error(_str_err)
+            self.logger.error(_str_err)
+        # report any collected warnings
+        if len(_str_warn) > 0:
+            _str_warn = 'Validation of request parameters:' + _str_warn
+            self.logger.warning(_str_warn)
+
+    def validate_request_params_metadata(self):
+        _str_err = ''
+        _str_warn = ''
+        # Check if empty sub-aliquots were provided
+        if self.samples and '' in self.samples:
+            i = 0
+            cleaned_cnt = 0
+            for sa, s in zip(self.sub_aliquots, self.samples):
+                # check for any empty sub-aliquot values and remove them. Also remove corresponded Aliquot values
+                if len(s.strip()) == 0:
+                    self.sub_aliquots.pop(i)
+                    self.samples.pop(i)
+                    cleaned_cnt += 1
+                else:
+                    i += 1
+            if cleaned_cnt > 0:
+                _str_warn = '\n'.join([_str_warn, 'Empty Samples (count = {}) were removed from the list. '
+                                                  'Here is the list of samples after cleaning (count = {}): "{}" '
+                                      .format(cleaned_cnt, len(self.samples), self.samples)])
+        if len(self.center) == 0:
+            _str_err = '\n'.join([_str_err, 'No Center was provided. Aborting processing of the submission request.'])
 
         # report any collected errors
         if len(_str_err) > 0:
@@ -281,13 +340,19 @@ class Request(File):
         return lg['logger']
 
     def process_request(self):
-        self.conf_assay = self.load_assay_conf(self.assay)
-        self.data_sources = self.conf_assay['data_sources']
+        if self.type == 'sequence':
+            self.conf_process_entity = self.load_assay_conf(self.assay)
+        elif self.type == 'metadata':
+            self.conf_process_entity = self.load_center_conf(self.center)
+
+        self.data_sources = self.conf_process_entity['data_sources']
 
         if self.data_sources and 'rawdata' in self.data_sources:
             self.raw_data = DataSource(self, 'rawdata', 'Raw Data')  # RawData(self)
         if self.data_sources and 'assaydata' in self.data_sources:
             self.assay_data = DataSource(self, 'assaydata', 'Assay Data')  # RawData(self)
+        if self.data_sources and 'metadata_db' in self.data_sources:
+            self.metadata_db = DataSourceDB(self, 'metadata_db', 'Metadata DB')
         if self.data_sources and 'attachment' in self.data_sources:
             self.attachments = Attachment(self)
 
@@ -306,10 +371,13 @@ class Request(File):
             _str = 'Processing of the current request was finished successfully.\n'
             self.logger.info(_str)
 
-    @staticmethod
-    def load_assay_conf(assay):
+    def load_assay_conf(self, assay):
         cfg_assay = ConfigData(gc.CONFIG_FILE_ASSAY)
         return cfg_assay.get_value(assay.upper())
+
+    def load_center_conf(self, center):
+        cfg_assay = ConfigData(gc.CONFIG_FILE_CENTER)
+        return cfg_assay.get_value(center.upper())
 
     def create_trasfer_script_file(self):
         self.logger.info("Start preparing transfer_script.sh file.")
