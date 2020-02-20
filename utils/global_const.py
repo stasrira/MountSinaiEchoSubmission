@@ -42,6 +42,8 @@ DEFAULT_REQUEST_SAMPLE_TYPE_SEPARATOR = '/'
 
 SUBMISSION_YAML_EVAL_FLAG = 'eval!'
 
+ASSAY_CHARS_TO_REPLACE = [' ', '/', '\\']
+
 # default study config file extension
 # DEFAULT_STUDY_CONFIG_FILE_EXT = '.cfg.yaml'
 

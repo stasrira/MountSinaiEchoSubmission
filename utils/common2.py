@@ -16,6 +16,8 @@ def convert_sub_aliq_to_aliquot(sa, assay):
 # get value for the given key from dict_config.yaml file
 def get_dict_value(key, section):
     fl_cfg_dict = ConfigData(gc.CONFIG_FILE_DICTIONARY)
+    # replace spaces and slashes with "_"
+    key = replace_unacceptable_chars(key, gc.ASSAY_CHARS_TO_REPLACE)
     try:
         v = fl_cfg_dict.get_item_by_key(section + "/" + key)
         if v is not None:
@@ -29,6 +31,7 @@ def get_dict_value(key, section):
 # checks if provided key exists in dict_config.yaml file
 def key_exists_in_dict(key, section):
     fl_cfg_dict = ConfigData(gc.CONFIG_FILE_DICTIONARY)
+    key = replace_unacceptable_chars(key, gc.ASSAY_CHARS_TO_REPLACE)
     try:
         v = fl_cfg_dict.get_item_by_key(section + "/" + key)
         if v is not None:
@@ -37,3 +40,12 @@ def key_exists_in_dict(key, section):
             return False
     except Exception:
         return False
+
+def replace_unacceptable_chars (val, bad_chars = ['/', ' ']):
+    # replace not allowed characters with "_"
+    for ch in bad_chars:
+        val = val.replace(ch, '_')
+    # remove repeating "_" symbols
+    while '__' in val:
+        val = val.replace('__', '_')
+    return val

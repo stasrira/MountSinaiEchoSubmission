@@ -1,6 +1,7 @@
 #dictionary etnries for assays (naming conversions)
 assay:
-    #expected values: "rna_seq", "scrna_seq", "atac_seq", "chip_seq", "scatac_seq", "medip_seq", "mint_chip", "wgbs", "snatac_seq", "snmc_seq", "cytof", "epic"
+    # expected values: "rna_seq", "scrna_seq", "atac_seq", "chip_seq", "scatac_seq", "medip_seq", "mint_chip", "wgbs",
+    # "snatac_seq", "snmc_seq", "cytof", "epic"
     rnaseq: rna_seq
     rna-seq: rna_seq
     scrnaseq: scrna_seq
@@ -10,11 +11,15 @@ assay:
     scatacseq: scatac_seq
     scatac-seq: scatac_seq
     cytof: cytof
+    methylation: epic
+    epic: epic
+    methylome: epic
+    "methylation_epic": epic
 
 assay_sub_aliquot_postfix:
-    scrnaseq: _1
-    scatacseq: _2
-    rnaseq: _3
-    atacseq: _4
-    methylation: _5
+    scrna_seq: _1
+    scatac_seq: _2
+    rna_seq: _3
+    atac_seq: _4
+    epic: _5
     cytof: _6

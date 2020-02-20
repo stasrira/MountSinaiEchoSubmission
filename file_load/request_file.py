@@ -142,8 +142,6 @@ class Request(File):
                 # to support decision of not supplying Project Name from Request file,
                 # it will be retrieved from gc module
                 self.project = gc.PROJECT_NAME
-                # calculate Experiment_id out of request paramaters
-                self.experiment_id = "_".join([self.exposure, self.center, self.source_spec_type, self.assay])
 
                 # validate provided information
                 self.logger.info('Validating provided request parameters. Project: "{}", Exposure: "{}", '
@@ -164,6 +162,9 @@ class Request(File):
                     self.loaded = True
                     _str = 'Request parameters were successfully validated - no errors found.'
                 self.logger.info(_str)
+
+                # calculate Experiment_id out of request paramaters
+                self.experiment_id = "_".join([self.exposure, self.center, self.source_spec_type, self.assay])
 
             else:
                 _str = 'Loading content of the file "{}" failed since the file does not appear to exist".'.format(
@@ -196,9 +197,6 @@ class Request(File):
         if self.samples and len(self.samples) > 0:
             self.samples.pop(0) # get rid of the column header
         # self.experiment_id = self.columnlist[6].split(',')[1]
-
-        # get list of aliquots from list of subaliquots
-        self.aliquots = [cm2.convert_sub_aliq_to_aliquot(al, self.assay) for al in self.sub_aliquots]
 
     # validates provided parameters (loaded from the submission request file)
     def validate_request_params(self):
@@ -241,6 +239,11 @@ class Request(File):
                                             '(as stored in "{}" dictionary file). '
                                             'Aborting processing of the submission request.'
                                  .format(self.assay, gc.CONFIG_FILE_DICTIONARY)])
+        else:
+            # if provided assay name is expected, convert it to the name expected by the Submission logic
+            self.assay = cm2.get_dict_value(self.assay, 'assay')
+            # get list of aliquots from list of sub-aliquots
+            self.aliquots = [cm2.convert_sub_aliq_to_aliquot(al, self.assay) for al in self.sub_aliquots]
 
         # report any collected errors
         if len(_str_err) > 0:

@@ -1,0 +1,13 @@
+{
+	"biosample_id": "ECHO_BIOSAMPLE_ID of the biosample used to generate this sequencing dataset",
+	"aliquot_id": "ECHO_ALIQUOT_ID of the aliquot used",
+	"assay_collection_id": "ECHO_EXPERIMENT_ID of the study that this sequencing dataset belongs to",
+	"filename": "The name of the file that contains data from this sequencing dataset",
+	"md5sum": "The md5 sum of this file",
+	"format": "The format of this file (Raw data must be provided in Fast) ",
+	"assay": "rna_seq|atac_seq|scrna_seq|etc...",
+	"seq_platform": "Sequencing platform",
+	"seq_instrument": "Sequencing instrument (ex.HiSeq 2500)",
+	"epic_seq_metadata": {
+	}
+}
