@@ -1,3 +1,6 @@
 format: idat
 seq_instrument: 850K
+"epic_seq_metadata":
+  "Failed CpG Fraction (detection p-value >0.01)": eval!self.get_assaydata_value_by_col_number(2, True),
+  "GCT score (Incomplete bisulfite conversion)": eval!self.get_assaydata_value_by_col_number(3, True)
 

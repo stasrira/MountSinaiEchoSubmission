@@ -339,6 +339,7 @@ class Attachment(DataRetrieval):
     def get_data_by_file_name(self, search_deep_level, exclude_dirs, ext_match):
         # it retrieves all files potentially qualifying to be an attachment and searches through each to match
         # the sub-aliquot name in the name of the file
+        # TODO: add verification that data_loc is exists
         files = self.get_file_system_items(self.data_loc, search_deep_level, exclude_dirs, 'file', ext_match)
         for fl in files:
             fn = os.path.basename(fl)

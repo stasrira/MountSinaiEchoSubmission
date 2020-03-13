@@ -38,8 +38,8 @@ TARBALL_SAVE_MD5SUM_FILE = True # set default functionality to create physical M
 REQUEST_EXCEL_WK_SHEET_NAME = ''  # 'Submission_Request'
 
 # default values for Study config file properties
-DEFAULT_CONFIG_VALUE_LIST_SEPARATOR = ','
-DEFAULT_REQUEST_SAMPLE_TYPE_SEPARATOR = '/'
+# DEFAULT_CONFIG_VALUE_LIST_SEPARATOR = ','
+# DEFAULT_REQUEST_SAMPLE_TYPE_SEPARATOR = '/'
 
 SUBMISSION_YAML_EVAL_FLAG = 'eval!'
 

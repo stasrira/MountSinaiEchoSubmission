@@ -60,6 +60,8 @@ class Request(File):
         self.submission_forms = None
         self.submission_package = None
         self.data_sources = None
+        self.type = None
+        self.metadata_db = None
 
         # self.sheet_name = ''
         self.sheet_name = sheet_name.strip()

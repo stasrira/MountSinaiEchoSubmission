@@ -171,6 +171,7 @@ class DataRetrieval:
         # if deeper than top level search is required, proceed here
         if search_deep_level > 0:
             for d in dirs_top:
+                # TODO: verify supplying 2nd parameter as "search_deep_level-1" - works fine in Download Request Creator
                 dirs.extend(self.get_file_system_items(d, search_deep_level, exclude_dirs, 'dir'))
 
         return dirs
