@@ -170,7 +170,7 @@ EPIC:
 
     data_sources:
         # - rawdata
-        # - assaydata
+        - assaydata
         - attachment
 
     assaydata:
