@@ -9,5 +9,7 @@
 	"seq_platform": "Sequencing platform",
 	"seq_instrument": "Sequencing instrument (ex.HiSeq 2500)",
 	"epic_seq_metadata": {
+		"Failed CpG Fraction (detection p-value >0.01)": "",
+		"GCT score (Incomplete bisulfite conversion)": ""
 	}
 }
