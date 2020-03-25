@@ -1,0 +1,39 @@
+{
+    "biosample_id": "DU.19-02.S12.1234567 : Unique ECHO biosample ID",
+    "subject_id": "S12 : The ECHO ID of the subject who contributed this samples",
+    "sample_cat": "Derived : Sample category (Source or Derived)",
+    "pro_or_ret": "Prospective : Prospective|Retrospective",
+    "collection_time": "1310669017 : Time of collection for this sample",
+    "measurement": "Variable_A : Variable measured",
+    "elapsed_time": "1310667 : Time elapsed between first positive test and collection",
+    "tissue": "Blood-EDTA : Blood-CPT|Blood-EDTA",
+    "sample_celltype": "Tc-Memory : Tc-Naive|Tc-Memory|Th-Naive|Th-Memory|B-cells|Monocytes|NKcells|etc...",
+    "exposure_code": "Expected values: ['HIV', 'MRSA', 'MSSA', 'TNT', 'RAD', 'TBI', 'RDX', 'PETN', 'TDE', 'DENV', 'BSL', 'ANTH', 'MAL', 'OPH', 'GAMMA', 'CO60', 'XRAY', 'CS137', 'LASV', 'MPDC', 'EMPTA', '2DC', 'ZIKA', 'WNILE', 'FENT', 'EBOLA', 'None', '']",
+    "condition_code": "I-infected| E-xposed | C-ontrol | Conva-L-escent | V-accine | W-eapon | M-ed | U-nexposed | H-andled",
+    "collecting_institution": "Code of Institute collecting the sample",
+    "prime_institution": "Code of Institute driving the study",
+
+    "sample_type": ["PBMC : PBMC|Plasma|WBC pellet|DNA|cfDNA|RNA"],
+    "pbmc_metadata": {
+        "tubes_collected": "1 : Number of tubes that were collected; type: number",
+        "total_blood_collected": "10 ml : Total volume of whole blood collected",
+        "vials_available": "1 : Number of PBMC vials stored, or available; type: number",
+        "pbmc_per_vial": "Number of PBMCs per vial; type: number, string"
+    },
+    "plasma_metadata": {
+        "vials_stored": "1 : Number of tubes that were collected; type: number",
+        "plasma_per_vial": "Volume of plasma per vial; type: number, string"
+    },
+    "rna_metadata": {
+        "tubes_collected": "1 : Number of PAXGene tubes collected; type: number",
+        "num_aliquots": "Number of PAXGene tube aliquots; type: number"
+    },
+    "infection_metadata": {
+        "agent": "Exposure agent",
+        "strain": "If applicable, strain of infectious agent",
+        "date_of_diagnosis": "Date of diagnosis",
+        "confirmatory_assay": "Culture|PCR|ELISA|etc... How was this infection confirmed?",
+        "infection_status": "Infection status during collection (Acute, Convalescent)",
+        "agent_load": "Antibody/viral load/bacterial load"
+    }
+}

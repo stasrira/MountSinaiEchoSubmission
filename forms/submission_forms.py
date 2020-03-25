@@ -7,7 +7,7 @@ class SubmissionForms:
         self.req_obj = request  # reference to the current request object
         self.error = self.req_obj.error
         self.logger = self.req_obj.logger
-        self.conf_assay = request.conf_assay
+        # self.conf_assay = request.conf_assay
         self.conf_main = request.conf_main
 
         self.forms_dict = {}
@@ -15,7 +15,10 @@ class SubmissionForms:
         self.prepare_submission_forms()
 
     def prepare_submission_forms(self):
-        forms = self.conf_main.get_value('submission_forms')
+        if self.req_obj.type == 'sequence':
+            forms = self.conf_main.get_value('submission_forms/sequence')
+        elif self.req_obj.type == 'metadata':
+            forms = self.conf_main.get_value('submission_forms/metadata')
         self.logger.info('Start processing the following submission forms for the current request: {}'.format(forms))
         for form in forms:
             self.logger.info('Processing submission form "{}".'.format(form))

@@ -1,12 +1,12 @@
 {
-	"aliquot_id": "ID for this aliquot. Must be unique within a biosample",
-	"biosample_id": "ECHO_BIOSAMPLE_ID of the biosample that spawned this aliquot",
-	"creation_date": "The date at which this aliquot was created",
-	"volume": "Volume of aliquot in mL",
-	"num_cells": "If applicable, the number of cells (in millions)",
-	"transfer": "T|F, was this aliquot sent to another lab?",
-	"sender": "If transfer, who sent this aliquot?",
-	"send_date": "If transfer, date sent",
-	"receiver": "If transfer, who received this aliquot?",
-	"receive_date": "If transfer, date received"
+    "aliquot_id": "DU.19-02.S12.1234567.898 : ID for this aliquot. Must be unique within a biosample",
+    "biosample_id": "DU.19-02.S12.1234567 : ID for this aliquot. Must be unique within a biosample",
+    "creation_date": "12/31/2019 : The date at which this aliquot was created",
+    "volume": "20ml : Volume of aliquot in mL",
+    "num_cells": "2.2M : If applicable, the number of cells (in millions)",
+    "transfer": "T : T|F, was this aliquot sent to another lab?",
+    "sender": "JOE_SENDER : If transfer, who sent this aliquot?",
+    "send_date": "12/31/2019 : If transfer, date sent",
+    "receiver": "joe@examples.com : If transfer, who received this aliquot?",
+    "receive_date": "12/31/2019 : If transfer, date received"
 }

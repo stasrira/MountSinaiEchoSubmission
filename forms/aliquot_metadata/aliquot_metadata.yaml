@@ -5,7 +5,7 @@ creation_date:
 volume:
 num_cells:
 transfer:
-sender:
+sender: ISMMS
 send_date:
-receiver: MSSM
+receiver:
 receive_date:

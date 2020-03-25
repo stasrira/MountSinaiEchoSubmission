@@ -1,0 +1,596 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$comment": "We don't yet have properties for the allOf section for all sample types",
+    "type": "object",
+    "properties": {
+        "biosample_id": {
+            "type": "string",
+            "examples": ["DU.19-02.S12.1234567"],
+            "comment": "Unique ECHO biosample ID"
+        },
+        "subject_id": {
+            "type": "string",
+            "examples": ["S12"],
+            "comment": "The ECHO ID of the subject who contributed this samples"
+        },
+        "sample_cat": {
+            "type": "string",
+            "enum": ["Source", "Derived", ""],
+            "examples": ["Source", "Derived"],
+            "comment": "Sample category (Source or Derived)"
+        },
+        "sample_type": {
+            "type": "string",
+            "enum": ["PBMC", "Plasma", "WBC pellet", "DNA", "cfDNA", "RNA", "Whole Blood"],
+            "examples": ["DNA"],
+            "comment": "PBMC|Plasma|WBC pellet|DNA|cfDNA|RNA|Whole Blood"
+        },
+        "pro_or_ret": {
+            "type": "string",
+            "enum": ["Prospective", "Retrospective"],
+            "examples": ["Prospective", "Retrospective"],
+            "comment": "Prospective|Retrospective"
+        },
+        "collection_time": {
+            "type": "string",
+            "examples": ["1310669017"],
+            "comment": "Time of collection for this sample"
+        },
+        "measurement": {
+            "type": "string",
+            "examples": ["Variable_A"],
+            "comment": "Variable measured"
+        },
+        "elapsed_time": {
+            "type": "string",
+            "examples": ["1310667"],
+            "comment": "Time elapsed between first positive test and collection"
+        },
+        "tissue": {
+            "type": "string",
+            "enum": ["Blood-CPT", "Blood-EDTA", "Blood-ACD", ""],
+            "examples": ["Blood-EDTA"],
+            "comment": "Blood-CPT|Blood-EDTA|Blood-ACD"
+        },
+        "sample_celltype": {
+            "type": "string",
+            "enum": ["Tc-Naive", "Tc-Memory", "Th-Naive", "Th-Memory", "B-cells", "Monocytes", "NKcells", ""],
+            "examples": ["Tc-Memory"],
+            "comment": "Tc-Naive|Tc-Memory|Th-Naive|Th-Memory|B-cells|Monocytes|NKcells|etc..."
+        },
+        "exposure_type": {
+            "type": "string",
+            "enum": ["Radiation", "Infection", "ChemExplosive", "None", ""],
+            "examples": ["Radiation"],
+            "comment": "Broad exposure category if applicable"
+        },
+        "exposure_code": {
+            "type": "string",
+            "enum": ["HIV", "MRSA", "MSSA", "TNT", "RAD", "TBI", "RDX", "PETN", "TDE", "DENV", "BSL", "ANTH", "MAL", "OPH", "GAMMA", "CO60", "XRAY", "CS137", "LASV", "MPDC", "EMPTA", "2DC", "ZIKA", "WNILE", "FENT", "EBOLA", "None", ""],
+            "examples": ["MRSA"],
+            "comment": "Radiation/Infection/ChemExplosive exposure that informs the value of this biosample"
+        },
+        "handler_code": {
+            "type": "array",
+            "minItems": 0,
+            "items": {
+                "type": "string",
+                "enum": ["HIV", "MRSA", "MSSA", "TNT", "RAD", "TBI", "RDX", "PETN", "TDE", "DENV", "BSL", "ANTH", "MAL", "OPH", "GAMMA", "CO60", "XRAY", "CS137", "LASV", "MPDC", "EMPTA", "2DC", "ZIKA", "WNILE", "FENT", "EBOLA"],
+                "examples": ["TNT"],
+                "comment": "Radiation/Infection/ChemExplosive handling that informs the value of this biosample"
+            }
+        },
+        "condition_code": {
+            "type": "string",
+            "examples": ["E"],
+            "comment": "I-infected| E-xposed | C-ontrol | Conva-L-escent | V-accine | W-eapon | M-ed | U-nexposed | H-andled"
+        },
+        "collecting_institution": {
+            "type": "string",
+            "examples": ["DU"],
+            "comment": "Institute collecting the sample"
+        },
+        "prime_institution": {
+            "type": "string",
+            "examples": ["DU"],
+            "comment": "Institute driving the study"
+        },
+        "lifestyle_data": {
+            "type": "object",
+            "properties": {
+                "neighborhood_type": {
+                    "type": "string",
+                    "enum": ["rural", "urban", "suburban", "other", ""],
+                    "examples": ["rural"],
+                    "comment": "rural|urban|suburban|other"
+                },
+                "commute": {
+                    "type": "string",
+                    "enum": ["walk", "bike", "drive", "mass transit", "other", ""],
+                    "examples": ["walk"],
+                    "comment": "walk|bike|drive|mass transit|other"
+                },
+                "pesticide_use": {
+                    "type": "string",
+                    "examples": ["none"],
+                    "comment": "Frequency of pesticide use outside of work over the last 5 years"
+                },
+                "fertilizer_use": {
+                    "type": "string",
+                    "examples": ["low"],
+                    "comment": "Frequency of fertilizer use outside of work over the last 5 years"
+                },
+                "herbicide_use": {
+                    "type": "string",
+                    "examples": ["low"],
+                    "comment": "Frequency of herbicide use outside of work over the last 5 years"
+                }
+            }
+        },
+        "clinical_data": {
+            "type": "object",
+            "properties": {
+                "sex": {
+                    "type": "string",
+                    "enum": ["M", "F", "other", ""],
+                    "examples": ["M"],
+                    "comment": "Biological gender that is reflected in chromosomes"
+                },
+                "age": {
+                    "type": ["number", "string"],
+                    "examples": ["18"],
+                    "comment": "Age in years"
+                },
+                "ethnicity": {
+                    "type": "string",
+                    "examples": ["Irish"],
+                    "comment": "Geographic region or culture self identified"
+                },
+                "race": {
+                    "type": "string",
+                    "examples": ["White"],
+                    "comment": "Biological self identified"
+                },
+                "height": {
+                    "type": ["number", "string"],
+                    "examples": ["170", "160cm"],
+                    "comment": "Height in cm"
+                },
+                "weight": {
+                    "type": ["number", "string"],
+                    "examples": ["80", "80kg"],
+                    "comment": "Weight in kg"
+                },
+                "location": {
+                    "type": "string",
+                    "examples": [""],
+                    "comment": "Location of the subject (City, State, Country)"
+                },
+                "smoker": {
+                    "type": "string",
+                    "enum": ["T", "F", ""],
+                    "examples": ["T", "F"],
+                    "comment": "self identified"
+                },
+                "alcohol_use": {
+                    "type": "string",
+                    "enum": ["High", "Medium", "Low", "None", ""],
+                    "examples": ["None"],
+                    "comment": "self identified usage; NIAAA guidelines: Low < 1 drink/day Moderate <= 1 drink (women) <= 2 drinks (men) per day  High > 1 women and > 2 for men per day"
+                },
+                "num_drinks_per_week": {
+                    "type": ["number", "string"],
+                    "examples": ["2"],
+                    "comment": "self identified usage"
+                },
+                "drug_use": {
+                    "type": "object",
+                    "properties": {
+                        "marijuana": {
+                            "type": "string",
+                            "default": "F",
+                            "examples": ["F"],
+                            "comment": "Mode of ingestion|F"
+                        },
+                        "heroin": {
+                            "type": "string",
+                            "default": "F",
+                            "examples": ["F"],
+                            "comment": "Mode of ingestion|F"
+                        },
+                        "methamphetamines": {
+                            "type": "string",
+                            "default": "F",
+                            "examples": ["F"],
+                            "comment": "Mode of ingestion|F"
+                        }
+                    },
+                    "required": ["heroin", "marijuana", "methamphetamines"]
+                },
+                "recent_infections": {
+                    "type": "array",
+                    "minItems": 0,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "infection_name": {
+                                "type": "string",
+                                "examples": ["M01.X7"],
+                                "comment": "The name of this infection suggest using ICD10 codes"
+                            },
+                            "infection_date": {
+                                "type": "string",
+                                "examples": ["01/19/2019"],
+                                "comment": "The diagnosis date of this infection"
+                            },
+                            "infection_cleared_date": {
+                                "type": "string",
+                                "examples": ["01/19/2019"],
+                                "comment": "The date of last symptoms"
+                            }
+                        },
+                        "required": ["infection_cleared_date", "infection_date", "infection_name"]
+                    }
+                },
+                "chronic_conditions": {
+                    "type": "array",
+                    "minItems": 0,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "condition_name": {
+                                "type": "string",
+                                "examples": ["K50.012"],
+                                "comment": "Name of this condition suggest using ICD10 codes"
+                            },
+                            "date_of_diagnosis": {
+                                "type": "string",
+                                "examples": ["01/19/2019"],
+                                "comment": "Date of diagnosis"
+                            }
+                        },
+                        "required": ["condition_name", "date_of_diagnosis"]
+                    }
+                },
+                "medications": {
+                    "type": "array",
+                    "minItems": 0,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "examples": ["OHYEAH"],
+                                "comment": "Name of medication"
+                            },
+                            "description": {
+                                "type": "string",
+                                "examples": ["Topical cream"],
+                                "comment": "short description"
+                            }
+                        },
+                        "required": ["description", "name"]
+                    }
+                },
+                "vaccinations": {
+                    "type": "array",
+                    "minItems": 0,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "examples": ["MMR"],
+                                "comment": "Name of the vaccine"
+                            },
+                            "agent": {
+                                "type": "string",
+                                "examples": ["MMR"],
+                                "comment": "The agent being vaccinated against"
+                            },
+                            "vaccination_date": {
+                                "type": "string",
+                                "examples": ["01/19/2019"],
+                                "comment": "Date of vaccination"
+                            },
+                            "antibody_titers": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "Antibody titers against agent"
+                            }
+                        },
+                        "required": ["name", "vaccination_date"]
+                    }
+                },
+                "acetylcholinesterase_assay": {
+                    "type": "array",
+                    "minItems": 0,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "is_baseline": {
+                                "enum": ["T", "F"],
+                                "examples": ["T", "F"],
+                                "comment": "Is this measurement the baseline"
+                            },
+                            "date": {
+                                "type": "string",
+                                "examples": ["01/19/2019"],
+                                "comment": "Date of test"
+                            },
+                            "result": {
+                                "type": "string",
+                                "examples": ["0"],
+                                "comment": "result (mU/mL)"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": ["sex"]
+        }
+    },
+    "allOf": [{
+            "if": {
+                "properties": {
+                    "sample_type": {
+                        "const": "PBMC"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "pbmc_metadata": {
+                        "type": "object",
+                        "properties": {
+                            "tubes_collected": {
+                                "type": "number",
+                                "examples": ["1"],
+                                "comment": "Number of tubes that were collected"
+                            },
+                            "total_blood_collected": {
+                                "type": ["number", "string"],
+                                "examples": ["10 ml"],
+                                "comment": "Total volume of whole blood collected"
+                            },
+                            "vials_available": {
+                                "type": "number",
+                                "examples": ["1"],
+                                "comment": "Number of PBMC vials stored, or available"
+                            },
+                            "pbmc_per_vial": {
+                                "type": ["number", "string"],
+                                "examples": [""],
+                                "comment": "Number of PBMCs per vial"
+                            }
+                        }
+                    }
+                }
+            }
+        }, {
+            "if": {
+                "properties": {
+                    "sample_type": {
+                        "const": "Plasma"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "plasma_metadata": {
+                        "type": "object",
+                        "properties": {
+                            "vials_stored": {
+                                "type": "number",
+                                "examples": ["1"],
+                                "comment": "Number of plasma vials stored"
+                            },
+                            "plasma_per_vial": {
+                                "type": ["number", "string"],
+                                "examples": [""],
+                                "comment": "Volume of plasma per vial"
+                            }
+                        }
+                    }
+                }
+            }
+        }, {
+            "if": {
+                "properties": {
+                    "sample_type": {
+                        "const": "RNA"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "rna_metadata": {
+                        "type": "object",
+                        "properties": {
+                            "tubes_collected": {
+                                "type": "number",
+                                "examples": ["1234"],
+                                "comment": "Number of PAXGene tubes collected"
+                            },
+                            "num_aliquots": {
+                                "type": "number",
+                                "examples": ["1234"],
+                                "comment": "Number of PAXGene tube aliquots"
+                            }
+                        }
+                    }
+                }
+            }
+        }, {
+            "if": {
+                "properties": {
+                    "exposure_type": {
+                        "const": "Radiation"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "radiation_metadata": {
+                        "type": "object",
+                        "properties": {
+                            "cancer_history": {
+                                "type": "string",
+                                "examples": ["Lung"],
+                                "comment": "Lung, prostate, uterine, etc..."
+                            },
+                            "radiation_type": {
+                                "type": "string",
+                                "examples": ["gamma rays"],
+                                "comment": "X-rays|gamma/beta rays|electron beams|protons"
+                            },
+                            "exposure_rate": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "Rate of exposure"
+                            },
+                            "dose_regimen": {
+                                "type": "string",
+                                "examples": ["Weekly"],
+                                "comment": "Dosing schedule"
+                            },
+                            "total_dose": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "in Gray"
+                            },
+                            "number_of_fractions": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "..."
+                            },
+                            "last_date_of_rad_therapy": {
+                                "type": "string",
+                                "examples": ["01/19/2019"],
+                                "comment": "Date of last therapy"
+                            },
+                            "site_treated": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "Target of therapy"
+                            },
+                            "normal_tissue_integral_dose": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "..."
+                            },
+                            "bone_dose": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "..."
+                            },
+                            "prior_cancer_dose": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "Dosimetric information from all prior cancer-directed radiation therapy exposures"
+                            }
+                        }
+                    }
+                }
+            }
+        }, {
+            "if": {
+                "properties": {
+                    "exposure_type": {
+                        "const": "Infection"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "infection_metadata": {
+                        "type": "object",
+                        "properties": {
+                            "agent": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "Exposure agent"
+                            },
+                            "strain": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "If applicable, strain of infectious agent"
+                            },
+                            "date_of_diagnosis": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "Date of diagnosis"
+                            },
+                            "confirmatory_assay": {
+                                "type": "string",
+                                "examples": ["PCR"],
+                                "comment": "Culture|PCR|ELISA|etc... How was this infection confirmed?"
+                            },
+                            "infection_status": {
+                                "type": "string",
+                                "examples": ["Acute"],
+                                "comment": "Infection status during collection (Acute, Convalescent)"
+                            },
+                            "agent_load": {
+                                "type": "string",
+                                "examples": ["Antibody"],
+                                "comment": "Antibody/viral load/bacterial load"
+                            }
+                        }
+                    }
+                }
+            }
+        }, {
+            "if": {
+                "properties": {
+                    "exposure_type": {
+                        "const": "ChemExplosive"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "chem_explosive_metadata": {
+                        "type": "object",
+                        "properties": {
+                            "agent": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "Exposure agent"
+                            },
+                            "pot_coexposures": {
+                                "type": "array",
+                                "minItems": 0,
+                                "items": {
+                                    "type": "string",
+                                    "examples": [""],
+                                    "comment": "Potential, Co-, Exposures"
+                                }
+                            },
+                            "work_history": {
+                                "type": "array",
+                                "minItems": 0,
+                                "items": {
+                                    "type": "string",
+                                    "examples": [""],
+                                    "comment": "List of Industries"
+                                }
+                            },
+                            "ppe": {
+                                "type": "string",
+                                "examples": ["F"],
+                                "comment": "Was the subject wearing ppe at the time of exposure"
+                            },
+                            "env_mon_data": {
+                                "type": "string",
+                                "examples": [""],
+                                "comment": "Environmental monitering data from collection site (What's the modality of this data?)"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "required": ["biosample_id", "subject_id", "sample_type", "pro_or_ret", "collecting_institution", "prime_institution", "clinical_data"]
+}

@@ -11,7 +11,7 @@ class SubmissionPackage:
         self.req_obj = request  # reference to the current request object
         self.error = self.req_obj.error
         self.logger = self.req_obj.logger
-        self.conf_assay = request.conf_assay
+        # self.conf_assay = request.conf_process_entity # request.conf_assay
         self.attachments = request.attachments
         self.submission_forms = None
         self.submission_dir = gc.OUTPUT_PACKAGES_DIR + "/" + time.strftime("%Y%m%d_%H%M%S", time.localtime()) \

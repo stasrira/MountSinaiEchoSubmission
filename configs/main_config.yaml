@@ -54,15 +54,21 @@ Email:
     send_emails: True # expected values: True, False
 
 submission_forms:
-    -
-        name: assay_collection
-        assignment: request # expected values are: "request" and "aliquot"
-    #-
-    #    name: aliquot_metadata
-    #    assignment: aliquot
-    -
-        name: sequence_item_metadata
-        assignment: aliquot # expected values are: "request" and "aliquot"
+    sequence:
+        -
+            name: assay_collection
+            assignment: request # expected values are: "request" and "aliquot"
+        #-
+        #    name: aliquot_metadata
+        #    assignment: aliquot
+        -
+            name: sequence_item_metadata
+            assignment: aliquot # expected values are: "request" and "aliquot"
+
+    metadata:
+        -
+            name: assay_collection
+            assignment: request # expected values are: "request" and "aliquot"
 
 Tar_ball:
     approach: tarfile # possible value: 1)"tarfile" - a tarfile module will be use

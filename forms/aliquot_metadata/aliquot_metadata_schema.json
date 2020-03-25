@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "aliquot_id": {
+      "type": "string",
+      "examples": ["DU.19-02.S12.1234567.898"],
+      "comment": "ID for this aliquot. Must be unique within a biosample"
+    },
+    "biosample_id": {
+      "type": "string",
+      "examples": ["DU.19-02.S12.1234567"],
+      "comment": "ID for this aliquot. Must be unique within a biosample"
+    },
+    "creation_date": {
+      "type": "string",
+      "examples": ["12/31/2019"],
+      "comment": "The date at which this aliquot was created"
+    },
+    "volume": {
+      "type": ["number", "string"],
+      "examples": ["20ml", "20"],
+      "comment": "Volume of aliquot in mL"
+    },
+    "num_cells": {
+      "type": ["number", "string"],
+      "examples": ["2M", "2.2"],
+      "comment": "If applicable, the number of cells (in millions)"
+    },
+    "transfer": {
+      "type": "string",
+      "enum": [ "T", "F", "" ],
+      "examples": ["T"],
+      "comment": "T|F, was this aliquot sent to another lab?"
+    },
+    "sender": {
+      "type": "string",
+      "examples": ["JOE_SENDER"],
+      "comment": "If transfer, who sent this aliquot?"
+    },
+    "send_date": {
+      "type": "string",
+      "examples": ["12/31/2019"],
+      "comment": "If transfer, date sent"
+    },
+    "receiver": {
+      "type": "string",
+      "examples": ["JOE RECIEVER"],
+      "comment": "If transfer, who received this aliquot?"
+    },
+    "receive_date": {
+      "type": "string",
+      "examples":  ["12/31/2019"],
+      "comment": "If transfer, date received"
+    }
+  },
+  "required": [
+    "aliquot_id",
+    "biosample_id",
+    "creation_date",
+    "volume",
+    "num_cells"
+  ]
+}
