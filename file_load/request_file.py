@@ -125,7 +125,7 @@ class Request(File):
                             cell_value_date = xlrd.xldate_as_datetime(cell_value, wb.datemode)
                             cell_value = cell_value_date.strftime("%Y-%m-%directory")
                         column.append(cell_value)  # adds value to the current column array
-                        lines[j].append('"' + cell_value + '"')  # adds value in "csv" format for a current row
+                        lines[j].append('"' + str(cell_value) + '"')  # adds value in "csv" format for a current row
 
                     # self.columnlist.append(','.join(column))
                     self.columnlist.append (column)  # adds a column to a list of columns
