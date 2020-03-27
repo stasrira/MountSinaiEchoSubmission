@@ -109,12 +109,13 @@ if __name__ == '__main__':
                             # no disqualified sub-aliquots present
                             fl_status = 'OK'
                             _str = 'Processing status: "{}". Submission Request: {}'.format(fl_status, req_path)
-                            errors_present = 'OK'
+                            # errors_present = 'OK'
                         else:
                             # some disqualified sub-aliquots are presetn
                             fl_status = 'OK with Disqualifications'
                             _str = 'Processing status: "{}". Submission Request: {}'.format(fl_status, req_path)
-                            errors_present = 'DISQUALIFY'
+                            if not errors_present == 'ERROR':
+                                errors_present = 'DISQUALIFY'
                     else:
                         fl_status = 'ERROR'
                         _str = 'Processing status: "{}". Check processing log file for this request: {}' \
