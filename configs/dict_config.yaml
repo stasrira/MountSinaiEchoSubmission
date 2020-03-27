@@ -4,12 +4,16 @@ assay:
     # "snatac_seq", "snmc_seq", "cytof", "epic"
     rnaseq: rna_seq
     rna-seq: rna_seq
+    rna_seq: rna_seq
     scrnaseq: scrna_seq
     scrna-seq: scrna_seq
+    scrna_seq: scrna_seq
     atacseq: atac_seq
     atac-seq: atac_seq
+    atac_seq: atac_seq
     scatacseq: scatac_seq
     scatac-seq: scatac_seq
+    scatac_seq: scatac_seq
     cytof: cytof
     methylation: epic
     epic: epic

@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
                         mlog.info('Processing of Submission request was finished for {}'.format(req_path))
 
-                        req_proc_cnt += 1
+                    req_proc_cnt += 1
 
                     # identify if any errors were identified and set status variable accordingly
                     if not req_obj.error.exist():
@@ -141,8 +141,6 @@ if __name__ == '__main__':
                     mlog.info('Processed Submission request "{}" was moved and renamed as: "{}"'
                               .format(req_path, processed_dir / req_processed_name))
 
-                    # TODO: add to body info about location of submission package per request, list of aliquots(?)
-                    #  and corresponded bulk drive attachment path
                     # preps for email notification
                     email_msgs.append(
                         ('Requested Experiment: {}.'
@@ -163,14 +161,15 @@ if __name__ == '__main__':
                                                             if req_obj.error.exist()
                                                             else '<font color="green">No Errors</font> ',
                                    req_obj.log_handler.baseFilename,
-                                   req_obj.submission_package.submission_dir,
-                                   req_obj.attachments.data_loc,
+                                   req_obj.submission_package.submission_dir if req_obj.submission_package else 'N/A',
+                                   req_obj.attachments.data_loc if req_obj.attachments else 'N/A',
                                    req_obj.qualified_aliquots
                                                             if req_obj.qualified_aliquots else 'None',
                                    [ val for val in req_obj.disqualified_sub_aliquots.keys()]
                                                             if req_obj.disqualified_sub_aliquots else 'None',
                                    req_obj.disqualified_request_path,
                                    str(Path(req_obj.submission_package.submission_dir) / 'transfer_script.sh')
+                                                            if req_obj.submission_package else 'N/A'
                                    )
                          )
                     )
