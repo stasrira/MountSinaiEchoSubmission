@@ -44,8 +44,9 @@ class DataSource(DataRetrieval):
             if sa not in self.aliquots_data_dict:
                 # no data was assigned to aliquot
                 _str = 'Aliquot "{}" was not assigned with any {}.'.format(sa, self.data_source_name)
-                self.logger.error(_str)
-                self.error.add_error(_str)
+                self.logger.warning(_str)
+                self.req_obj.disqualify_sub_aliquot(sa, _str)
+                # self.error.add_error(_str)
 
     def get_data_for_aliquot(self, sa, directory):
         # this function is called from the based class to get data for a particular aliquot found in the give dir

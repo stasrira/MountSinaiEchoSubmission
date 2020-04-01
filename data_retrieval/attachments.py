@@ -64,8 +64,9 @@ class Attachment(DataRetrieval):
                 if sa not in self.aliquots_data_dict:
                     # no attachments were assigned to an aliquot
                     _str = 'Aliquot "{}" was not assigned with any attachments.'.format(sa)
-                    self.logger.error(_str)
-                    self.error.add_error(_str)
+                    self.logger.warning(_str)
+                    self.req_obj.disqualify_sub_aliquot(sa, _str)
+                    # self.error.add_error(_str)
 
     def get_data_for_aliquot(self, sa, attach_dir):
         # this will record path of the found directory as one of the attachments for the request
