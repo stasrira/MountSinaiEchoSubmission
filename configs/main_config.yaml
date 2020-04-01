@@ -31,7 +31,7 @@ Location:
     # path to the folder where application level log files are located (one per application run)
     app_logs: /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/logs/process_logs  # /ext_data/shared/.apps/echo_submission/_submission_input_output/process_logs
     # path to the folder where created submission packages will be located. One package sub_folder per request.
-    output_packages: /data/stas/echo_submission/_submission_input_output/submission_packages   #/ext_data/shared/.apps/echo_submission/_submission_input_output/submission_packages
+    output_packages: /data/stas/echo_submission/_submission_input_output/submission_packages # /home/stas/minerva/sealfon_hydra/stas/echo_submission_packages  #/ext_data/shared/.apps/echo_submission/_submission_input_output/submission_packages
 
 DataTransfer:
     # target directory where to submission package files will be transferred over SSH
