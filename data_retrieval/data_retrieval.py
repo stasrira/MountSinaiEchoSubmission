@@ -172,7 +172,8 @@ class DataRetrieval:
         if search_deep_level > 0:
             for d in dirs_top:
                 # TODO: verify supplying 2nd parameter as "search_deep_level-1" - works fine in Download Request Creator
-                dirs.extend(self.get_file_system_items(d, search_deep_level, exclude_dirs, 'dir'))
+                # the change was applied - has to be tested
+                dirs.extend(self.get_file_system_items(d, search_deep_level-1, exclude_dirs, 'dir'))
 
         return dirs
 
@@ -194,6 +195,36 @@ class DataRetrieval:
 
     @staticmethod
     def get_file_system_items(dir_cur, search_deep_level, exclude_dirs=None, item_type='dir', ext_match=None):
+        # base_loc = self.data_loc / dir_cur
+        if ext_match is None:
+            ext_match = []
+        if exclude_dirs is None:
+            exclude_dirs = []
+        deep_cnt = 0
+        cur_lev = ''
+        items = []
+        while deep_cnt <= search_deep_level:
+            cur_lev = cur_lev + '/*'
+            items_cur = glob.glob(str(Path(str(dir_cur) + cur_lev)))
+
+            if item_type == 'dir':
+                items_clean = [fn for fn in items_cur if
+                               Path.is_dir(Path(fn)) and not os.path.basename(fn) in exclude_dirs]
+            elif item_type == 'file':
+                items_clean = []
+                for ext in ext_match:
+                    items_found = [fn for fn in items_cur if not Path.is_dir(Path(fn))
+                                   and (len(ext_match) == 0 or fn.endswith(ext))]
+                    if items_found:
+                        items_clean.extend(items_found)
+            else:
+                items_clean = None
+            items.extend(items_clean)
+            deep_cnt += 1
+        return items
+
+    @staticmethod
+    def get_file_system_items_todelete(dir_cur, search_deep_level, exclude_dirs=None, item_type='dir', ext_match=None):
         # base_loc = self.data_loc / dir_cur
         if ext_match is None:
             ext_match = []

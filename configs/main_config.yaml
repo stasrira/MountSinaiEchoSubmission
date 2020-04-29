@@ -5,11 +5,15 @@ MDB: # this section currently not in use
     #DB connection string
     conn_str: Driver={SQL Server};Server=localhost\sqlexpress;Database=dw_motrpac;User=mt_internal_user;Password=se@lf0n1nt3rn@l
     # name of the stored procedure to retrieve sample based metadata
-    sqlproc_get_metadata: exec usp_get_metadata @study_id = {study_id}
+    sqlproc_get_metadata: exec usp_get_metadata_by_sampleids @study_ids = '{study_id}', @sids = '{sample_ids}', @show_subject_id = 1  # exec usp_get_metadata @study_id = {study_id}
     # name of the stored procedure to retrieve sample based metadata
-    sqlproc_get_subject_metadata: exec usp_get_subject_metadata @study_id = {study_id}
+    sqlproc_get_manifest_data: exec usp_get_manifest_data @study_ids = '{study_id}', @aliquot_ids = '{aliquot_ids}'
+    # name of the stored procedure to retrieve sample based metadata
+    sqlproc_get_subject_metadata: exec usp_get_subject_metadata @study_id = {study_id}, @sample_ids = '{sample_ids}'
     # name of field templates for updating of stored procedure parameters (specified in "sqlproc_..." variables)
     fld_tmpl_study_id: '{study_id}'
+    fld_tmpl_sample_ids: '{sample_ids}'
+    fld_tmpl_aliquot_ids: '{aliquot_ids}'
 
 Location:
     # path to the folder where new request files are located
@@ -58,17 +62,20 @@ submission_forms:
         -
             name: assay_collection
             assignment: request # expected values are: "request" and "aliquot"
-        #-
-        #    name: aliquot_metadata
-        #    assignment: aliquot
         -
             name: sequence_item_metadata
             assignment: aliquot # expected values are: "request" and "aliquot"
 
     metadata:
         -
-            name: assay_collection
-            assignment: request # expected values are: "request" and "aliquot"
+            name: aliquot_metadata
+            assignment: aliquot # expected values are: "request", "aliquot", "sample", "subject"
+        -
+            name: biosample_metadata
+            assignment: sample # expected values are: "request", "aliquot", "sample", "subject"
+        -
+            name: subject_metadata
+            assignment: subject # expected values are: "request", "aliquot", "sample", "subject"
 
 Tar_ball:
     approach: tarfile # possible value: 1)"tarfile" - a tarfile module will be use

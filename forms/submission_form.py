@@ -19,7 +19,7 @@ class SubmissionForm:
         self.sample = sample
         self.error = self.req_obj.error
         self.logger = self.req_obj.logger
-        self.conf_assay = request.conf_assay
+        self.conf_assay = request.conf_process_entity  # conf_assay
 
         self.fl_json = None
         self.fl_json_schema = None
@@ -27,9 +27,12 @@ class SubmissionForm:
         self.fl_cfg_assay = None
         # self.fl_cfg_dict = None
 
-        self.prepare_form(form_name)
+        if self.req_obj.type == 'sequence':
+            self.prepare_squence_form(form_name)
+        elif self.req_obj.type == 'metadata':
+            self.prepare_metadata_form(form_name)
 
-    def prepare_form(self, form_name):
+    def prepare_squence_form(self, form_name):
         # identify paths for json and config (yaml) files
         fl_path_json_common = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '.json')
         fl_path_json_assay = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_' + str(
@@ -50,6 +53,37 @@ class SubmissionForm:
         self.fl_json_schema = FileJson(fl_path_json_schema, self.req_obj.error, self.req_obj.logger)
         self.fl_cfg_common = ConfigData(fl_path_cfg_common)
         self.fl_cfg_assay = ConfigData(fl_path_cfg_assay)
+        # self.fl_cfg_dict = ConfigData(gc.CONFIG_FILE_DICTIONARY)
+
+        # print(self.fl_json.json_data)
+        # loop through all json keys and fill those with associated data
+        self.get_json_keys(self.fl_json.json_data)
+        # print(self.fl_json.json_data)
+
+        # validate final json file against json schema (if present)
+        self.validate_json(self.fl_json, self.fl_json_schema)
+
+    def prepare_metadata_form(self, form_name):
+        # identify paths for json and config (yaml) files
+        fl_path_json_common = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '.json')
+        fl_path_json_center = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_' + str(
+            self.req_obj.center).lower() + '.json')
+        fl_path_json_schema = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_schema.json')
+        fl_path_cfg_common = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '.yaml')
+        fl_path_cfg_center = Path(gc.SUBMISSION_FORMS_DIR + '/' + form_name + '/' + form_name + '_' + str(
+            self.req_obj.center).lower() + '.yaml')
+
+        # check if center specific json exists; if yes - use it, if not - use common one
+        if cm.file_exists(fl_path_json_center):
+            fl_path_json = fl_path_json_center
+        else:
+            fl_path_json = fl_path_json_common
+
+        # load json and config files
+        self.fl_json = FileJson(fl_path_json, self.req_obj.error, self.req_obj.logger)
+        self.fl_json_schema = FileJson(fl_path_json_schema, self.req_obj.error, self.req_obj.logger)
+        self.fl_cfg_common = ConfigData(fl_path_cfg_common)
+        self.fl_cfg_assay = ConfigData(fl_path_cfg_center)
         # self.fl_cfg_dict = ConfigData(gc.CONFIG_FILE_DICTIONARY)
 
         # print(self.fl_json.json_data)
@@ -144,6 +178,23 @@ class SubmissionForm:
                 elif val_type == 'md5':
                     value = tar_obj['md5']
         return value
+
+    def get_db_object_property(self, dataset, id_main, field_name):
+        db_obj = None
+        value = ''
+        if dataset == 'metadata':
+            db_obj = self.req_obj.metadata_db.metadata
+        if dataset == 'manifest':
+            db_obj = self.req_obj.metadata_db.manifest
+        if dataset == 'subject':
+            db_obj = self.req_obj.metadata_db.subject
+
+        if db_obj:
+            if id_main in db_obj.keys():
+                if field_name in db_obj[id_main]['data'].keys():
+                    value = db_obj[id_main]['data'][field_name]
+        return value
+
 
     # it will retrieve any existing property_val from the request object
     def get_request_value(self, property_name, check_dict=False):

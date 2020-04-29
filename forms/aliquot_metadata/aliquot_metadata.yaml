@@ -1,11 +1,10 @@
-__assay: common
 aliquot_id: eval!self.get_submission_form_value('aliquot')
 biosample_id: eval!self.get_submission_form_value('sample')
 creation_date:
-volume:
-num_cells:
+volume: eval!self.get_db_object_property('manifest', eval!self.get_submission_form_value('aliquot'), 'volume')
+num_cells: eval!self.get_db_object_property('manifest', eval!self.get_submission_form_value('aliquot'), 'num_cel')
 transfer:
 sender: ISMMS
-send_date:
+send_date: eval!self.get_db_object_property('manifest', eval!self.get_submission_form_value('aliquot'), 'ship_date')
 receiver:
 receive_date:

@@ -5,12 +5,12 @@ from utils import common as cm
 
 
 class DataRetrievalAliquot:
-    def __init__(self, sub_aliquot, request_obl):  # sub_aliquot, data_folder, request_obj, file_row_num =''
+    def __init__(self, sub_aliquot, request_obj):  # sub_aliquot, data_folder, request_obj, file_row_num =''
         self.sub_aliquot = sub_aliquot
-        self.req_obj = request_obl
+        self.req_obj = request_obj
         self.error = self.req_obj.error
         self.logger = self.req_obj.logger
-        self.conf_assay = self.req_obj.conf_assay
+        self.conf_assay = self.req_obj.conf_process_entity  # conf_assay
         self.data_loc_path = ''
         self.data_file = None
         self.data_folder = None

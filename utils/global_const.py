@@ -50,23 +50,15 @@ ASSAY_CHARS_TO_REPLACE = [' ', '/', '\\']
 
 # database related constants
 # predefined paths in the main config file for database related parameters
-# CFG_DB_CONN = 'DB/mdb_conn_str'  # name of the config parameter storing DB connection string
-# CFG_DB_SQL_PROC = 'DB/mdb_sql_proc_load_sample'  # name of the config parameter storing DB name of the stored proc
-# predefined names for stored procedure parameters that being passed to procedure specified in "CFG_DB_SQL_PROC"
-# CFG_FLD_TMPL_STUDY_ID = 'DB/fld_tmpl_study_id'
-# CFG_FLD_TMPL_SAMPLE_ID = 'DB/fld_tmpl_sample_id'
-# CFG_FLD_TMPL_ROW_JSON = 'DB/fld_tmpl_row_json'
-# CFG_FLD_TMPL_DICT_JSON = 'DB/fld_tmpl_dict_json'
-# CFG_FLD_TMPL_DICT_PATH = 'DB/fld_tmpl_dict_path'
-# CFG_FLD_TMPL_FILEPATH = 'DB/fld_tmpl_filepath'
-# CFG_FLD_TMPL_DICT_UPD = 'DB/fld_tmpl_dict_update'
-# CFG_FLD_TMPL_SAMPLE_UPD = 'DB/fld_tmpl_samlpe_update'
+CFG_DB_CONN = 'conn_str'  # name of the config parameter storing DB connection string
+CFG_DB_PROC_METADATA = 'sqlproc_get_metadata'  # name of the config parameter storing name of the metadata stored proc
+CFG_DB_PROC_MANIFEST = 'sqlproc_get_manifest_data'  # name of the config parameter storing name of the manifest proc
+CFG_DB_PROC_SUBJECT = 'sqlproc_get_subject_metadata'  # name of the config parameter storing name of the subject proc
 
-# predefined paths in the study config file for database related parameters
-# CFG_DB_STUDY_ID = 'mdb_study_id'  # name of the config parameter storing key of the MDB study id
-# CFG_DICT_PATH = 'dict_tmpl_fields_node'  # name of config parameter storing key of dictionary path to list of fields
-# CFG_DB_ALLOW_DICT_UPDATE = 'mdb_allow_dict_update'  # name of config parameter storing values for "allow dict updates"
-# CFG_DB_ALLOW_SAMPLE_UPDATE = 'mdb_allow_sample_update'# name of config param storing values for "allow sample updates"
+# predefined names for stored procedure parameters that being passed to procedure
+CFG_FLD_TMPL_STUDY_ID = 'fld_tmpl_study_id'
+CFG_FLD_TMPL_SAMPLE_IDS = 'fld_tmpl_sample_ids'
+CFG_FLD_TMPL_ALIQUOT_IDS = 'fld_tmpl_aliquot_ids'
 
 # Excel processing related
 # STUDY_EXCEL_WK_SHEET_NAME = 'wk_sheet_name'  # name of the worksheet name to be used for loading data from

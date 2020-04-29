@@ -26,12 +26,22 @@ class SubmissionForms:
                 # submission_form = None  # reset the submission form reference
                 if form['assignment'] == 'aliquot':
                     # prepare an instance of the current form for each aliquot
-                    for sa, a, smpl in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots, self.req_obj.samples):
-                        if not sa in self.req_obj.disqualified_sub_aliquots.keys():
-                            self.logger.info('Prepare submission form "{}" for sub_aliquot "{}".'
-                                             .format(form['name'], sa))
-                            submission_form = SubmissionForm(form['name'], self.req_obj, sa, a, smpl)
-                            self.add_submission_form(sa, form['assignment'], submission_form)  # .json_form.json_data
+                    if self.req_obj.type == 'sequence':
+                        # proceed here for sequence type submissions
+                        for sa, a, smpl in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots, self.req_obj.samples):
+                            if not sa in self.req_obj.disqualified_sub_aliquots.keys():
+                                self.logger.info('Prepare submission form "{}" for sub_aliquot "{}".'
+                                                 .format(form['name'], sa))
+                                submission_form = SubmissionForm(form['name'], self.req_obj, sa, a, smpl)
+                                self.add_submission_form(sa, form['assignment'], submission_form)  # .json_form.json_data
+                    elif self.req_obj.type == 'metadata':
+                        # proceed here for metadata type submissions
+                        for sa, a, smpl in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots, self.req_obj.samples):
+                            if not sa in self.req_obj.disqualified_sub_aliquots.keys():
+                                self.logger.info('Prepare submission form "{}" for aliquot "{}".'
+                                                 .format(form['name'], a))
+                                submission_form = SubmissionForm(form['name'], self.req_obj, sa, a, smpl)
+                                self.add_submission_form(sa, form['assignment'], submission_form)  # .json_form.json_data
                 elif form['assignment'] == 'request':
                     #populate list of qualifed aliquots (removing all disqualified ones during attachment preps, etc.)
                     self.req_obj.populate_qualified_aliquots()

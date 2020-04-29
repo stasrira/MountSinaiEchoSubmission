@@ -214,6 +214,9 @@ class Request(File):
                     self.samples.pop(0)  # get rid of the column header
             elif i == 6:
                 self.type = first_val.lower()
+                if len(self.type.strip()) == 0:
+                    # if request type was not provided, assume it is a default type
+                    self.type = gc.DEFAULT_REQUEST_TYPE.lower()
             else:
                 break
 
@@ -306,6 +309,10 @@ class Request(File):
         if len(self.center) == 0:
             _str_err = '\n'.join([_str_err, 'No Center was provided. Aborting processing of the submission request.'])
 
+        # TODO: Identify the following fact in requirements for requests
+        # for metadata requests column of Sub-aliquots is expected to hold list of aliquots
+        self.aliquots = self.sub_aliquots
+
         # report any collected errors
         if len(_str_err) > 0:
             _str_err = 'Validation of request parameters:' + _str_err
@@ -355,6 +362,7 @@ class Request(File):
             self.assay_data = DataSource(self, 'assaydata', 'Assay Data')  # RawData(self)
         if self.data_sources and 'metadata_db' in self.data_sources:
             self.metadata_db = DataSourceDB(self, 'metadata_db', 'Metadata DB')
+            self.metadata_db.get_db_data()
         if self.data_sources and 'attachment' in self.data_sources:
             self.attachments = Attachment(self)
 
