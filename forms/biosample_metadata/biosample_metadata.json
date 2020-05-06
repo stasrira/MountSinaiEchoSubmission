@@ -14,7 +14,14 @@
     "collecting_institution": "Code of Institute collecting the sample",
     "prime_institution": "Code of Institute driving the study",
     "clinical_data": {
-        "sex": ["M", "F", "other", ""]
+        "sex": ["M", "F", "other", ""],
+        "age": "Age in years",
+        "ethnicity": "Geographic region or culture self identified",
+        "race": "Biological self identified",
+        "height": "Height in cm",
+        "weight": "Weight in kg",
+        "location": "Location of the subject (City, State, Country)",
+        "smoker": ["T", "F", ""]
     },
     "pbmc_metadata": {
         "tubes_collected": "1 : Number of tubes that were collected; type: number",

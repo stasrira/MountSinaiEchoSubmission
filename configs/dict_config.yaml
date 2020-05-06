@@ -29,15 +29,16 @@ assay_sub_aliquot_postfix:
     cytof: _6
 
 metadata:
+    sample_type:
+        pbmc: PBMC
+        plasma: Plasma
+        whole blood: Whole Blood
+        dna: DNA
+        rna: RNA
     pro_or_ret:
-        retrospective1: Retrospective
+        retrospective: Retrospective
         prospective: Prospective
         _not_defined: Not Defined
-    condition:
-        infected: I
-        i: I
-        control: C
-        c: C
     exposure_code:
         hiv: HIV
         mrsa: MRSA
@@ -45,12 +46,30 @@ metadata:
         denv: DENV
         anth: ANTH
         zika: ZIKA
-    sample_type:
-        pbmc: PBMC
-        plasma: Plasma
+    condition:
+        infected: I
+        i: I
+        control: C
+        c: C
+        e: E
+        l: L
+        v: V
+        w: W
+        m: M
+        u: U
+        h: H
     sex:
         m: M
         male: M
         f: F
         Female: F
         _not_defined: other
+    yes_no-T_F:
+        yes: T
+        y: T
+        no: F
+        n: F
+        true: T
+        t: T
+        false: F
+        f: F
