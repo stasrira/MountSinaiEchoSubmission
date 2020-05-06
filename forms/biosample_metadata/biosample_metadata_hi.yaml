@@ -1,0 +1,21 @@
+# "biosample_id":
+"subject_id": eval!self.get_db_object_property('metadata', eval!self.get_submission_form_value('sample'), 'subject_id')
+"sample_cat": Source
+"sample_type": eval!self.get_db_object_property('metadata', eval!self.get_submission_form_value('sample'), 'Specimen_prep', 'sample_type')
+"pro_or_ret": eval!self.get_db_object_property('metadata', eval!self.get_submission_form_value('sample'), 'prospective_or_retrospective', 'pro_or_ret')
+"collection_time": eval!self.get_db_object_property('metadata', eval!self.get_submission_form_value('sample'), 'Specimen_Collection_Date')
+"measurement":
+"elapsed_time":
+"tissue": eval!self.get_db_object_property('metadata', eval!self.get_submission_form_value('sample'), 'Tissue') #TODO: Verify field assignment ??????????????
+"sample_celltype":
+"exposure_code": eval!self.get_db_object_property('metadata', eval!self.get_submission_form_value('sample'), 'Exposure_Type', 'exposure_code') #"Expected values: ['HIV', 'MRSA', 'MSSA', 'TNT', 'RAD', 'TBI', 'RDX', 'PETN', 'TDE', 'DENV', 'BSL', 'ANTH', 'MAL', 'OPH', 'GAMMA', 'CO60', 'XRAY', 'CS137', 'LASV', 'MPDC', 'EMPTA', '2DC', 'ZIKA', 'WNILE', 'FENT', 'EBOLA', 'None', '']",
+"condition_code": eval!self.get_db_object_property('metadata', eval!self.get_submission_form_value('sample'), 'condition_code', 'condition_code') #"I-infected| E-xposed | C-ontrol | Conva-L-escent | V-accine | W-eapon | M-ed | U-nexposed | H-andled",
+"collecting_institution": HI
+"prime_institution": ISMMS
+
+"pbmc_metadata": {}
+"plasma_metadata": {}
+"rna_metadata": {}
+"infection_metadata": {}
+
+

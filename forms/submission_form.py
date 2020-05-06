@@ -179,8 +179,9 @@ class SubmissionForm:
                     value = tar_obj['md5']
         return value
 
-    def get_db_object_property(self, dataset, id_main, field_name):
+    def get_db_object_property(self, dataset, id_main, field_name, check_dict_field=None):
         db_obj = None
+
         value = ''
         if dataset == 'metadata':
             db_obj = self.req_obj.metadata_db.metadata
@@ -193,6 +194,19 @@ class SubmissionForm:
             if id_main in db_obj.keys():
                 if field_name in db_obj[id_main]['data'].keys():
                     value = db_obj[id_main]['data'][field_name]
+        if check_dict_field:
+            # search through dictionary values for match and use assigned value
+            value, match = cm2.get_dict_value(value.lower(),
+                                              '/'.join([dataset, check_dict_field]).lower(),
+                                              True)
+            if not match:
+                # if no match was found, use "_not_defined" value for the given category
+                nd_value, match = cm2.get_dict_value('_not_defined',
+                                                     '/'.join([dataset, check_dict_field]).lower(),
+                                                     True)
+                if match:
+                    # if _not_defined key returned some value, use it, otherwise use the value from the dataset
+                    value = nd_value
         return value
 
 

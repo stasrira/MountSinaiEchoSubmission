@@ -2,6 +2,7 @@
     "biosample_id": "DU.19-02.S12.1234567 : Unique ECHO biosample ID",
     "subject_id": "S12 : The ECHO ID of the subject who contributed this samples",
     "sample_cat": "Derived : Sample category (Source or Derived)",
+    "sample_type": ["PBMC : PBMC|Plasma|WBC pellet|DNA|cfDNA|RNA"],
     "pro_or_ret": "Prospective : Prospective|Retrospective",
     "collection_time": "1310669017 : Time of collection for this sample",
     "measurement": "Variable_A : Variable measured",
@@ -12,8 +13,9 @@
     "condition_code": "I-infected| E-xposed | C-ontrol | Conva-L-escent | V-accine | W-eapon | M-ed | U-nexposed | H-andled",
     "collecting_institution": "Code of Institute collecting the sample",
     "prime_institution": "Code of Institute driving the study",
-
-    "sample_type": ["PBMC : PBMC|Plasma|WBC pellet|DNA|cfDNA|RNA"],
+    "clinical_data": {
+        "sex": ["M", "F", "other", ""]
+    },
     "pbmc_metadata": {
         "tubes_collected": "1 : Number of tubes that were collected; type: number",
         "total_blood_collected": "10 ml : Total volume of whole blood collected",

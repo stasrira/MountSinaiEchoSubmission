@@ -27,3 +27,30 @@ assay_sub_aliquot_postfix:
     atac_seq: _4
     epic: _5
     cytof: _6
+
+metadata:
+    pro_or_ret:
+        retrospective1: Retrospective
+        prospective: Prospective
+        _not_defined: Not Defined
+    condition:
+        infected: I
+        i: I
+        control: C
+        c: C
+    exposure_code:
+        hiv: HIV
+        mrsa: MRSA
+        mssa: MSSA
+        denv: DENV
+        anth: ANTH
+        zika: ZIKA
+    sample_type:
+        pbmc: PBMC
+        plasma: Plasma
+    sex:
+        m: M
+        male: M
+        f: F
+        Female: F
+        _not_defined: other

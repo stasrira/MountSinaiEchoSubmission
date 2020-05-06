@@ -37,11 +37,37 @@ class SubmissionForms:
                     elif self.req_obj.type == 'metadata':
                         # proceed here for metadata type submissions
                         for sa, a, smpl in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots, self.req_obj.samples):
-                            if not sa in self.req_obj.disqualified_sub_aliquots.keys():
-                                self.logger.info('Prepare submission form "{}" for aliquot "{}".'
-                                                 .format(form['name'], a))
-                                submission_form = SubmissionForm(form['name'], self.req_obj, sa, a, smpl)
-                                self.add_submission_form(sa, form['assignment'], submission_form)  # .json_form.json_data
+                            # if not sa in self.req_obj.disqualified_sub_aliquots.keys(): # TODO: verify that disqualification check is not needed
+                            self.logger.info('Prepare submission form "{}" for aliquot "{}".'
+                                             .format(form['name'], a))
+                            submission_form = SubmissionForm(form['name'], self.req_obj, sa, a, smpl)
+                            self.add_submission_form(sa, form['assignment'], submission_form)  # .json_form.json_data
+                    else:
+                        _str = 'Unexpected value of request type "{}" was received in the SubmissionForms class ' \
+                               'during processing the submission form "{}" with the "{}" configuration assignment; ' \
+                               'the form was not created. '\
+                            .format(self.req_obj.type, form['name'], form['assignment'])
+                        self.logger.error(_str)
+                        self.error.add_error(_str)
+                elif form['assignment'] == 'sample':
+                    if self.req_obj.type == 'metadata':
+                        # proceed here for metadata type submissions
+                        db_samples = self.req_obj.metadata_db.metadata  # dataset of samples received from DB
+                        for smpl in db_samples:
+                            self.logger.info('Prepare submission form "{}" for sample "{}".'
+                                             .format(form['name'], smpl))
+                            submission_form = SubmissionForm(form['name'], self.req_obj, None, None, smpl)
+                            self.add_submission_form(smpl, form['assignment'],
+                                                     submission_form)  # .json_form.json_data
+                    else:
+                        _str = 'Unexpected value of request type "{}" was received in the SubmissionForms class ' \
+                               'during processing the submission form "{}" with the "{}" configuration assignment; ' \
+                               'the form was not created. ' \
+                            .format(self.req_obj.type, form['name'], form['assignment'])
+                        self.logger.error(_str)
+                        self.error.add_error(_str)
+                elif form['assignment'] == 'subject':
+                    pass
                 elif form['assignment'] == 'request':
                     #populate list of qualifed aliquots (removing all disqualified ones during attachment preps, etc.)
                     self.req_obj.populate_qualified_aliquots()

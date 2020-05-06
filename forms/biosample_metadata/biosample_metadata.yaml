@@ -1,17 +1,20 @@
-__assay: common
-"biosample_id":
+"biosample_id": eval!self.get_submission_form_value('sample')
 "subject_id":
 "sample_cat":
+"sample_type":
 "pro_or_ret":
 "collection_time":
 "measurement":
 "elapsed_time":
 "tissue":
 "sample_celltype":
-"sample_type":
+"exposure_code": #"Expected values: ['HIV', 'MRSA', 'MSSA', 'TNT', 'RAD', 'TBI', 'RDX', 'PETN', 'TDE', 'DENV', 'BSL', 'ANTH', 'MAL', 'OPH', 'GAMMA', 'CO60', 'XRAY', 'CS137', 'LASV', 'MPDC', 'EMPTA', '2DC', 'ZIKA', 'WNILE', 'FENT', 'EBOLA', 'None', '']",
+"condition_code": #"I-infected| E-xposed | C-ontrol | Conva-L-escent | V-accine | W-eapon | M-ed | U-nexposed | H-andled",
+"collecting_institution": HI,
+"prime_institution": ISMMS,
+
+
 "pbmc_metadata": {}
 "plasma_metadata": {}
 "rna_metadata": {}
 "infection_metadata": {}
-
-

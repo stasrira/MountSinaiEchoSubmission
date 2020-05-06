@@ -14,18 +14,31 @@ def convert_sub_aliq_to_aliquot(sa, assay):
 
 
 # get value for the given key from dict_config.yaml file
-def get_dict_value(key, section):
+def get_dict_value(key, section, confirm_match = None):
+    out_value = key
+    match = False
     fl_cfg_dict = ConfigData(gc.CONFIG_FILE_DICTIONARY)
     # replace spaces and slashes with "_"
     key = replace_unacceptable_chars(key, gc.ASSAY_CHARS_TO_REPLACE)
     try:
         v = fl_cfg_dict.get_item_by_key(section + "/" + key)
         if v is not None:
-            return v
-        else:
-            return key
+            out_value = v
+            match = True
+            # return v, True
+        # else:
+            # out_value = key
+            # return key, False
     except Exception:
-        return key
+        pass
+        # out_value = key
+        # return key, False
+
+    # if confirm_match is required, the function returns a second parameter, otherwise only the value
+    if confirm_match:
+        return out_value, match
+    else:
+        return out_value
 
 
 # checks if provided key exists in dict_config.yaml file

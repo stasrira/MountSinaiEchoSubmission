@@ -5,7 +5,7 @@ from utils import global_const as gc
 
 
 class MetadataDB:
-
+    # TODO: remove this file
     # CFG_DB_CONN = 'DB/mdb_conn_str'  # name of the config parameter storing DB connection string
     # CFG_DB_SQL_PROC = 'DB/mdb_sql_proc_load_sample'  # name of the config parameter storing DB name of the stored proc
     # CFG_DB_STUDY_ID = 'DB/mdb_study_id'  # name of the config parameter storing key of the MDB study id
