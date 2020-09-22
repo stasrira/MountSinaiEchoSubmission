@@ -219,14 +219,14 @@ EPIC:
         attach_object: folder #possible options: folder and file
         attachment_file_ext: #must include dot (.) in-front of an extension
 
-RNASEQ:
+RNA_SEQ:
     assay_name: RNASEQ
     mssm_id: 3
     mssm_postfix: _3
 
     data_sources:
         - assaydata
-        #- attachment
+        - attachment
 
     assaydata:
         #path to the location where data_retrieval for all projects are stored; this path
@@ -263,14 +263,14 @@ RNASEQ:
         attachment_folder:
             -
                 folder: /rnaseq
-                tar_dir:
+                tar_dir: fastqs
 
-        attachment_search_by: file_name #possible options: file_name and folder_name
-        search_deep_level_max: 2 # 0: root folder, 1:first sub-folder, etc.
+        attachment_search_by: folder_name #possible options: file_name and folder_name
+        search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
         exclude_folders:
-        attach_object: file #possible options: folder and file
+        attach_object: folder #possible options: folder and file
         attachment_file_ext: #must include dot (.) in-front of an extension
-            - .fcs
+
 
 
 

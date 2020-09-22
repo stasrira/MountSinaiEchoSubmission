@@ -46,7 +46,8 @@ metadata:
         denv: DENV
         anth: ANTH
         zika: ZIKA
-    condition:
+        op: OP
+    condition_code:
         infected: I
         i: I
         control: C

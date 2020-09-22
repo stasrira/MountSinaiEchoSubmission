@@ -76,6 +76,7 @@ class DataSourceDB(DataRetrievalDB):
 
         return rs_out
 
+    # TODO: Verify functionality of this function for samples and subjects datasets
     def convert_dataset_to_db_object(self, dataset, id_main_name, id_2_name = None):
         obj_out = {}
         if dataset:

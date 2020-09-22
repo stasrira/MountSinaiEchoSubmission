@@ -1,0 +1,26 @@
+{
+    "biosample_id": "DU.19-02.S12.1234567 : Unique ECHO biosample ID",
+    "subject_id": "S12 : The ECHO ID of the subject who contributed this samples",
+    "sample_cat": "Derived : Sample category (Source or Derived)",
+    "sample_type": ["PBMC : PBMC|Plasma|WBC pellet|DNA|cfDNA|RNA"],
+    "pro_or_ret": "Prospective : Prospective|Retrospective",
+    "collection_time": "1310669017 : Time of collection for this sample",
+    "measurement": "Variable_A : Variable measured",
+    "elapsed_time": "1310667 : Time elapsed between first positive test and collection",
+    "tissue": "Blood-EDTA : Blood-CPT|Blood-EDTA",
+    "sample_celltype": "Tc-Memory : Tc-Naive|Tc-Memory|Th-Naive|Th-Memory|B-cells|Monocytes|NKcells|etc...",
+    "exposure_code": "Expected values: ['HIV', 'MRSA', 'MSSA', 'TNT', 'RAD', 'TBI', 'RDX', 'PETN', 'TDE', 'DENV', 'BSL', 'ANTH', 'MAL', 'OPH', 'GAMMA', 'CO60', 'XRAY', 'CS137', 'LASV', 'MPDC', 'EMPTA', '2DC', 'ZIKA', 'WNILE', 'FENT', 'EBOLA', 'None', '']",
+    "condition_code": "I-infected| E-xposed | C-ontrol | Conva-L-escent | V-accine | W-eapon | M-ed | U-nexposed | H-andled",
+    "collecting_institution": "Code of Institute collecting the sample",
+    "prime_institution": "Code of Institute driving the study",
+    "clinical_data": {
+        "sex": ["M", "F", "other", ""],
+        "age": "Age in years",
+        "ethnicity": "Geographic region or culture self identified",
+        "race": "Biological self identified",
+        "height": "Height in cm",
+        "weight": "Weight in kg",
+        "location": "Location of the subject (City, State, Country)",
+        "smoker": ["T", "F", ""]
+    }
+}
