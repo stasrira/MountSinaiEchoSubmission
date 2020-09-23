@@ -113,6 +113,14 @@ class File:
         row_with_header = OrderedDict()  # output dictionary
         header = self.get_headers()
         for field, title in zip(row, header):
+            # check if the same header already exists in the dictionary and change the field name to make it unique
+            # this should resolve the issue for files with duplicated column header names (like assay data for RNAseq)
+            orig_title = title
+            i = 1
+            while title in row_with_header:
+                title = '{}({})'.format(orig_title, i)
+                i +=1
+
             row_with_header[title] = field
         return row_with_header
 
