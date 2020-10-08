@@ -223,14 +223,14 @@ EPIC:
         attachment_file_ext: #must include dot (.) in-front of an extension
 
 
-RNASEQ:
+RNA_SEQ:
     assay_name: RNASEQ
     mssm_id: 3
     mssm_postfix: _3
 
     data_sources:
         - assaydata
-        #- attachment
+        - attachment
 
     assaydata:
         #path to the location where data_retrieval for all projects are stored; this path
@@ -250,7 +250,7 @@ RNASEQ:
             single_file_path:
 
         file_content_details:
-            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal sub_aliquot id
+            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
                                      # 'row_num' - retrieve data from a particular row of the file
             get_by_row_num:
                 # 'row_num' - retrieve data from a particular row of the file
@@ -266,14 +266,11 @@ RNASEQ:
         #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
         attachment_folder:
             -
-                folder: /rnaseq/fastqs
-                tar_dir: fastqs
-            -
                 folder: /rnaseq
-                tar_dir: processed
+                tar_dir: fastqs
 
         attachment_search_by: folder_name #possible options: file_name and folder_name
         search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
         exclude_folders:
         attach_object: folder #possible options: folder and file
-        attachment_file_ext: #must include dot (.) in-front of an extension
+        attachment_file_ext:
