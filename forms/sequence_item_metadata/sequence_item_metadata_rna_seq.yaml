@@ -18,4 +18,4 @@ rna_seq_metadata:
     lib_umi_cycle_num: 8 #constant key
     lib_adaptor_size: "143" #constant key
     lib_frag_size: eval!self.get_assaydata_value_by_col_number(19)
-    lib_dna_conc: eval!self.get_assaydata_value_by_col_number(20)
+    lib_dna_conc: eval!self.get_assaydata_value_by_col_number(18)

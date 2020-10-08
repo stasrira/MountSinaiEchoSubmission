@@ -201,7 +201,7 @@ class DataRetrieval:
         deep_cnt = 0
         cur_lev = ''
         items = []
-        while deep_cnt < search_deep_level:
+        while deep_cnt <= search_deep_level:
             cur_lev = cur_lev + '/*'
             items_cur = glob.glob(str(Path(str(dir_cur) + cur_lev)))
 
