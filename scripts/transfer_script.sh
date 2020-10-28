@@ -16,7 +16,7 @@ echo "$(date +"%Y-%m-%d %H:%M:%S")-->source_dir = "$source_dir 2>&1 | tee -a "$t
 echo "$(date +"%Y-%m-%d %H:%M:%S")-->target_dir = "$target_dir 2>&1 | tee -a "$transfer_log_file"
 echo "$(date +"%Y-%m-%d %H:%M:%S")-->transfer_log_file = "$transfer_log_file 2>&1 | tee -a "$transfer_log_file"
 
-cmd="rsync -v -r --exclude='transfer_*.*' -e ssh $source_dir {!ssh_user!}@txe1-login.mit.edu:$target_dir" # srirak
+cmd="{!cmd!}" # "rsync -v -r --exclude='transfer_*.*' -e ssh $source_dir {!ssh_user!}@txe1-login.mit.edu:$target_dir"
 
 echo "$(date +"%Y-%m-%d %H:%M:%S")-->Transfer command to be executed: '$cmd'" 2>&1 | tee -a "$transfer_log_file"
 echo "==============================" | tee -a "$transfer_log_file"
