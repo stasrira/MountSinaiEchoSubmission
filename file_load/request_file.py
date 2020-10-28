@@ -326,6 +326,7 @@ class Request(File):
         scr_tmpl = scr_tmpl.replace("{!to_email!}", self.conf_main.get_value("Email/sent_to_emails"))
         scr_tmpl = scr_tmpl.replace("{!from_email!}", self.conf_main.get_value("Email/default_from_email"))
         scr_tmpl = scr_tmpl.replace("{!send_email_flag!}", str(self.conf_main.get_value("Email/send_emails")))
+        scr_tmpl = scr_tmpl.replace("{!cmd!}", self.conf_main.get_value("DataTransfer/transfer_command"))
         scr_tmpl = scr_tmpl.replace("{!source_dir!}", self.submission_package.submission_dir)
         scr_tmpl = scr_tmpl.replace("{!target_dir!}", self.conf_main.get_value("DataTransfer/remote_target_dir"))
         scr_tmpl = scr_tmpl.replace("{!ssh_user!}", self.conf_main.get_value("DataTransfer/ssh_user"))
