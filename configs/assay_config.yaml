@@ -278,7 +278,7 @@ ATAC_SEQ:
     mssm_postfix: _4
 
     data_sources:
-        # - assaydata
+        - assaydata
         - attachment
 
     assaydata:
@@ -286,7 +286,7 @@ ATAC_SEQ:
         #will be combined with a path for a particular experiment
         location: D:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive\ECHO\SampleInfo
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
-        sub_folder: /AssayData/RNAseq/DataQC
+        sub_folder: /AssayData/ATACseq/DataQC
 
         search_method: # search_rawdata_summary
             search_by: file_content #possible options: file_content, folder_name
@@ -294,8 +294,7 @@ ATAC_SEQ:
             exclude_folders:
 
             file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
-                - .xlsx
-                - .xls
+                - .csv
             single_file_path:
 
         file_content_details:
@@ -305,8 +304,8 @@ ATAC_SEQ:
                 # 'row_num' - retrieve data from a particular row of the file
                 row_num:
             get_by_primary_key:
-                header_row_number: 4 # 1-based numbering
-                pk_column_number: 3 # 1-based numbering
+                header_row_number: 1 # 1-based numbering
+                pk_column_number: 1 # 1-based numbering
             excel:
                 sheet_name:
 

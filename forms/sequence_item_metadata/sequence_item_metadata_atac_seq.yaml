@@ -1,7 +1,7 @@
 format: raw=fastq; processed=txt
 atac_seq_metadata:
-    lib_adaptor_1: # constant blank key
-    lib_adaptor_2: # constant blank key
+    lib_adaptor_1_STAS: eval!self.get_assaydata_value('reads_raw') # constant blank key
+    lib_adaptor_2: eval!self.get_assaydata_value_by_col_number(8) # constant blank key
     nuclei_extr_date: # constant blank key
     nuclei_extr_count: # constant blank key
     nuclei_tagmentation: # constant blank key

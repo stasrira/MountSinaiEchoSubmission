@@ -10,6 +10,8 @@
 	"seq_instrument": "Sequencing instrument (ex.HiSeq 2500)",
 
 	"atac_seq_metadata": {
+		"lib_adaptor_1_STAS": "",
+		"lib_adaptor_2": "",
 		"tagmentation_kit_id": "Illumina Nextera kit"
 	}
 }
