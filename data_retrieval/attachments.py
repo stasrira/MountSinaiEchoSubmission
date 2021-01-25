@@ -213,13 +213,22 @@ class Attachment(DataRetrieval):
         self.logger.info('Start preparing a tarball file for aliquot "{}"; command line approach is used.'.format(sa, tarball_path))
         cnt = 0
         for item in self.aliquots_data_dict[sa]:
+
+            # get the "real path" to the item - that should take care of the symlinks and other path manipulations
+            real_path = os.path.realpath(item['path'])
+            if real_path != item['path']:
+                # add a log entry if real path is not matching to the originally identified one
+                self.logger.info(
+                    'The item path "{}" was adjusted to "{}" while identifying the real path to the item.'
+                        .format(item['path'], real_path))
+
             # add holder to the end of path
-            if Path(item['path']).is_dir():
-                item_dir_path = str(Path(item['path']).parent)  # str(Path(item['path']) / '..') # .parent
+            if Path(real_path).is_dir():
+                item_dir_path = str(Path(real_path).parent)  # str(Path(item['path']) / '..') # .parent
             else:
-                item_dir_path = str(os.path.dirname(Path(item['path'])))
+                item_dir_path = str(os.path.dirname(Path(real_path)))
             # print(item_dir_path)
-            item_to_tar = os.path.basename(item['path'])  # target object (folder or file) to tar
+            item_to_tar = os.path.basename(real_path)  # target object (folder or file) to tar
 
             incl_prnt_dir = item['incl_prnt_dir']
             if incl_prnt_dir:
@@ -243,6 +252,7 @@ class Attachment(DataRetrieval):
                 cmd = cmd_tmpl_1.format(Path(item_dir_path), tar_cmd, Path(tarball_path), item_to_tar)
              # print(cmd)
             self.logger.info('Command to append items to a tar file: "{}".'.format(cmd))
+            # run a command to add the item to the tar file
             arg_list = shlex.split (cmd, posix=False)
             # print (arg_list)
             process = subprocess.run(arg_list,
@@ -282,7 +292,15 @@ class Attachment(DataRetrieval):
                 else:
                     _str = '{}'.format(item_to_tar)
                 self.logger.info('Start adding item "{}" to a tarball file "{}".'.format(item['path'], tarball_path))
-                tar.add(str(Path(item['path'])), arcname=_str)
+                # get the "real path" to the item - that should take care of the symlinks and other path manipulations
+                real_path = os.path.realpath(item['path'])
+                if real_path != item['path']:
+                    # add a log entry if real path is not matching to the originally identified one
+                    self.logger.info(
+                        'The item path "{}" was adjusted to "{}" while identifying the real path to the item.'
+                            .format(item['path'], real_path))
+                # run a command to add the item to the tar file
+                tar.add(str(Path(real_path)), arcname=_str)
                 self.logger.info('Item "{}" was added to a tarball file "{}".'.format(item['path'], tarball_path))
             tar.close()
         self.logger.info('Tarball file "{}" was successfully created for aliquot "{}".'.format(tarball_path, sa))

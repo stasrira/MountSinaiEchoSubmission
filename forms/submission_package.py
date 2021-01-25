@@ -51,7 +51,8 @@ class SubmissionPackage:
                     json_file_name = Path(self.submission_dir + "/" + self.req_obj.experiment_id + "_" + form.form_name + ".json")
                 else:
                     # json_file_name = Path(self.submission_dir + "/" + form_grp + "_" + form.form_name + ".json")
-                    json_file_name = Path(self.submission_dir + "/" + file_part_name + "_" + form.form_name + ".json")
+                    # json_file_name = Path(self.submission_dir + "/" + file_part_name + "_" + form.form_name + ".json")
+                    json_file_name = Path(self.submission_dir + "/" + form.form_file_name_id + "_" + form.aliquot + "__" + form.sample + ".json")
 
                 with open(json_file_name, 'w') as fp:
                     json.dump(js_data, fp)
