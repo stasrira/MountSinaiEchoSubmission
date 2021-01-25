@@ -11,8 +11,11 @@ from jsonschema import validate
 
 
 class SubmissionForm:
-    def __init__(self, form_name, request, sub_aliquot, aliquot, sample):
+    def __init__(self, form_name, request, sub_aliquot, aliquot, sample, form_file_name_id = None):
         self.form_name = form_name
+        if not form_file_name_id:
+            form_file_name_id = form_name
+        self.form_file_name_id = form_file_name_id
         self.req_obj = request  # reference to the current request object
         self.sub_aliquot = sub_aliquot
         self.aliquot = aliquot
