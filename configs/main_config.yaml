@@ -67,12 +67,14 @@ submission_forms:
     -
         name: assay_collection
         assignment: request # expected values are: "request" and "aliquot"
+        file_name_id: assay_collection
     #-
     #    name: aliquot_metadata
     #    assignment: aliquot
     -
         name: sequence_item_metadata
         assignment: aliquot # expected values are: "request" and "aliquot"
+        file_name_id: sequence
 
 Tar_ball:
     approach: tarfile # possible value: 1)"tarfile" - a tarfile module will be use
