@@ -28,6 +28,8 @@
 		"lib_umi_cycle_num": "Number of UMI cycles (bases)",
 		"lib_adaptor_size": "The total size of the two adaptors",
 		"lib_frag_size": "Average library fragment size",
-		"lib_dna_conc": "DNA concentration for the library (stock)"
+		"lib_dna_conc": "DNA concentration for the library (stock)",
+		"pct_uniquely_mapped": "",
+		"pct_mrna": ""
 	}
 }

@@ -4,9 +4,9 @@ rna_seq_metadata:
     rna_extr_method: Direct-zol RNA MiniPrep #constant key
     total_cell_num: 200000  #constant key
     cell_type:  PBMC #constant key
-    total_rna_conc: eval!self.get_assaydata_value_by_col_number(11)
+    total_rna_conc: eval!self.get_sourcedata_value_by_col_number('assaydata', 11)
     total_rna_qc_method: Bioanalyzer #constant key
-    rin: eval!self.get_assaydata_value_by_col_number(10)
+    rin: eval!self.get_sourcedata_value_by_col_number('assaydata',10)
     r_260_280: eval!self.get_assaydata_value_by_col_number(5)
     r_260_230: eval!self.get_assaydata_value_by_col_number(6)
     lib_vendor: NuGEN #constant key
@@ -19,3 +19,6 @@ rna_seq_metadata:
     lib_adaptor_size: "143" #constant key
     lib_frag_size: eval!self.get_assaydata_value_by_col_number(19)
     lib_dna_conc: eval!self.get_assaydata_value_by_col_number(18)
+    #TODO: assign the following fields with data values and add them to the JSON schema
+    pct_uniquely_mapped: eval!self.get_sourcedata_value('qcdata', 'pct_uniquely_mapped')
+    pct_mrna: eval!self.get_sourcedata_value('qcdata', 'pct_mrna')
