@@ -21,15 +21,15 @@ DB: # this section currently not in use
 
 Location:
     # path to the folder where new request files are located
-    requests: /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/Requests  # /ext_data/shared/.apps/echo_submission/_submission_input_output/requests # /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/Pending # 
+    requests: /mnt/researchsan02a/SampleInfo/ECHO/LL_MIT_Submissions/Submissions/Requests # /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/Requests  # /ext_data/shared/.apps/echo_submission/_submission_input_output/requests # /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/Pending # 
     # path to the folder where processed request files are located
-    requests_processed: /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/Requests/processed_requests  # /ext_data/shared/.apps/echo_submission/_submission_input_output/requests/processed_requests # /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/Processed # 
+    requests_processed: /mnt/researchsan02a/SampleInfo/ECHO/LL_MIT_Submissions/Submissions/Requests/processed_requests  # /ext_data/shared/.apps/echo_submission/_submission_input_output/requests/processed_requests # /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/Processed # 
     # path to the folder where dynamically created request files for disqualified aliquots will be saved
-    requests_disqualified: /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/Requests/disqualified_for_reprocessing
+    requests_disqualified: /mnt/researchsan02a/SampleInfo/ECHO/LL_MIT_Submissions/Submissions/Requests/disqualified_for_reprocessing
     # path to the folder where request level log files are located (one log file per request)
-    request_logs: /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/logs/request_logs  # /ext_data/shared/.apps/echo_submission/_submission_input_output/request_logs
+    request_logs: /mnt/researchsan02a/SampleInfo/ECHO/LL_MIT_Submissions/Submissions/logs/request_logs  # /ext_data/shared/.apps/echo_submission/_submission_input_output/request_logs
     # path to the folder where application level log files are located (one per application run)
-    app_logs: /mnt/researchsan02a/Projects/ECHO/LL_MIT_Submissions/Submissions/logs/process_logs  # /ext_data/shared/.apps/echo_submission/_submission_input_output/process_logs
+    app_logs: /mnt/researchsan02a/SampleInfo/ECHO/LL_MIT_Submissions/Submissions/logs/process_logs  # /ext_data/shared/.apps/echo_submission/_submission_input_output/process_logs
     # path to the folder where created submission packages will be located. One package sub_folder per request.
     output_packages: /data/stas/echo_submission/_submission_input_output/submission_packages # /home/stas/minerva/sealfon_hydra/stas/echo_submission_packages  #/ext_data/shared/.apps/echo_submission/_submission_input_output/submission_packages
 

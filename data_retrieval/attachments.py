@@ -26,15 +26,28 @@ class Attachment(DataRetrieval):
         last_part_path_list = cnf_data_source['attachment_folder']
         data_source_loc = cnf_data_source['location']
 
+        # get default values for search parameters;
+        # these can be overwritten, if provided separately in the attachment folder section
+        search_by_df = self.cnf_data_source['attachment_search_by']
+        search_deep_level_df = self.cnf_data_source['search_deep_level_max']
+        exclude_dirs_df = self.cnf_data_source['exclude_folders']
+        ext_match_df = self.cnf_data_source['attachment_file_ext']
+
         for last_part_path_item in last_part_path_list:
             # set default values
             self.tar_folder = None
             self.tar_include_parent_dir = None
             self.validate_tar_content = None
 
+            # assign default values to search parameters
+            search_by = search_by_df
+            search_deep_level = search_deep_level_df
+            exclude_dirs = exclude_dirs_df
+            ext_match = ext_match_df
+
             # check if key received from config file is a dictionary
             if isinstance(last_part_path_item, dict):
-                # if it is a dictionary, get values from it to a local variables
+                # if it is a dictionary, get attachment folder parameters to a local variables
                 if 'folder' in last_part_path_item:
                     last_part_path = last_part_path_item['folder']
                 if 'tar_dir' in last_part_path_item:
@@ -43,15 +56,20 @@ class Attachment(DataRetrieval):
                     self.tar_include_parent_dir = last_part_path_item['tar_include_parent_dir']
                 if 'validate_tar_content' in last_part_path_item:
                     self.validate_tar_content = last_part_path_item['validate_tar_content']
+                # check if default search parameters have to be overwritten
+                if 'search_by' in last_part_path_item:
+                    search_by = last_part_path_item['search_by']
+                if 'search_deep_level' in last_part_path_item:
+                    search_deep_level = last_part_path_item['search_deep_level']
+                if 'exclude_dirs' in last_part_path_item:
+                    exclude_dirs = last_part_path_item['exclude_dirs']
+                if 'ext_match' in last_part_path_item:
+                    ext_match = last_part_path_item['ext_match']
             else:
                 last_part_path = last_part_path_item
 
             self.data_loc = Path(self.convert_aliquot_properties_to_path(data_source_loc, last_part_path))
             # print (self.data_loc)
-            search_by = self.cnf_data_source['attachment_search_by']
-            search_deep_level = self.cnf_data_source['search_deep_level_max']
-            exclude_dirs = self.cnf_data_source['exclude_folders']
-            ext_match = self.cnf_data_source['attachment_file_ext']
 
             if search_by == 'folder_name':
                 self.get_data_by_folder_name(search_deep_level, exclude_dirs)

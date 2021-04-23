@@ -158,22 +158,56 @@ class SubmissionForm:
 
     # it will retrieve any existing property_val from rawdata object
     def get_rawdata_value(self, property_name, check_dict=False):
-        return self.get_property_value_from_object(self.req_obj.raw_data.aliquots_data_dict[self.sub_aliquot],
-                                                   property_name, check_dict, 'dict')
+        # return self.get_property_value_from_object(self.req_obj.raw_data.aliquots_data_dict[self.sub_aliquot],
+        #                                            property_name, check_dict, 'dict')
+        return self.get_sourcedata_value('rawdata', property_name, check_dict)
 
     # it will retrieve any existing property_val from assay data object
     def get_assaydata_value_by_col_number(self, col_num, check_dict=False):
-        obj = list(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot].items())
-        val = self.get_property_value_from_object(obj, col_num - 1, check_dict, 'dict', 'number')
-        if isinstance(val, tuple):
-            return val[1]
-        else:
-            return val
+        # obj = list(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot].items())
+        # val = self.get_property_value_from_object(obj, col_num - 1, check_dict, 'dict', 'number')
+        # if isinstance(val, tuple):
+        #     return val[1]
+        # else:
+        #     return val
+        return self.get_sourcedata_value_by_col_number('assaydata', col_num, check_dict)
 
     # it will retrieve any existing property_val from assay data object
     def get_assaydata_value(self, property_name, check_dict=False):
-        return self.get_property_value_from_object(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot],
-                                                   property_name, check_dict, 'dict')
+        # return self.get_property_value_from_object(self.req_obj.assay_data.aliquots_data_dict[self.sub_aliquot],
+        #                                            property_name, check_dict, 'dict')
+        return self.get_sourcedata_value ('assaydata', property_name, check_dict)
+
+    # it will retrieve any existing property_val (specified by the name) from the data source object
+    # specified by the data_source_name
+    def get_sourcedata_value(self, data_source_name, property_name, check_dict=False):
+        if data_source_name in self.req_obj.data_source_names:
+            return self.get_property_value_from_object(
+                self.req_obj.data_source_objects[data_source_name].aliquots_data_dict[self.sub_aliquot],
+                property_name, check_dict, 'dict')
+        else:
+            _str = 'Data source name ({}) requested during populating json submission form "{}" for aliquot id ' \
+                   '"{}" does not exists for the current assay.'.format(data_source_name, self.form_name, self.aliquot)
+            self.logger.error(_str)
+            self.error.add_error(_str)
+            return '#ERROR#'
+
+    # it will retrieve any existing property_val (specified by the column number) from the data source object
+    # specified by the data_source_name
+    def get_sourcedata_value_by_col_number(self, data_source_name, col_num, check_dict=False):
+        if data_source_name in self.req_obj.data_source_names:
+            obj = list(self.req_obj.data_source_objects[data_source_name].aliquots_data_dict[self.sub_aliquot].items())
+            val = self.get_property_value_from_object(obj, col_num - 1, check_dict, 'dict', 'number')
+            if isinstance(val, tuple):
+                return val[1]
+            else:
+                return val
+        else:
+            _str = 'Data source name ({}) requested during populating json submission form "{}" for aliquot id ' \
+                   '"{}" does not exists for the current assay.'.format(data_source_name, self.form_name, self.aliquot)
+            self.logger.error(_str)
+            self.error.add_error(_str)
+            return '#ERROR#'
 
     # it will retrieve a key of a property_val named in "property_val" parameter
     # from the object passed as a reference in "obj" parameter
