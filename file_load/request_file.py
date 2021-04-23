@@ -51,6 +51,8 @@ class Request(File):
         self.source_spec_type = ''
         self.assay = ''
         self.experiment_id = ''
+        self.data_source_names = ''
+        self.data_source_objects = {}  # dictionary to store all collected data sources for the request
 
         self.aliquots = None
         self.qualified_aliquots = None
@@ -59,7 +61,7 @@ class Request(File):
         self.attachments = None
         self.submission_forms = None
         self.submission_package = None
-        self.data_sources = None
+        self.data_source_names = None
 
         # self.sheet_name = ''
         self.sheet_name = sheet_name.strip()
@@ -282,14 +284,28 @@ class Request(File):
 
     def process_request(self):
         self.conf_assay = self.load_assay_conf(self.assay)
-        self.data_sources = self.conf_assay['data_sources']
+        self.data_source_names = self.conf_assay['data_sources']
 
-        if self.data_sources and 'rawdata' in self.data_sources:
-            self.raw_data = DataSource(self, 'rawdata', 'Raw Data')  # RawData(self)
-        if self.data_sources and 'assaydata' in self.data_sources:
-            self.assay_data = DataSource(self, 'assaydata', 'Assay Data')  # RawData(self)
-        if self.data_sources and 'attachment' in self.data_sources:
-            self.attachments = Attachment(self)
+        for data_source_name in self.data_source_names:
+            # if isinstance(data_source_name, tuple)
+            if isinstance(data_source_name, str):
+                if data_source_name == 'attachment':
+                    self.attachments = Attachment(self)
+                else:
+                    self.data_source_objects[data_source_name] = DataSource(self, data_source_name, data_source_name)
+            elif isinstance(data_source_name, tuple):
+                self.data_source_objects[data_source_name[0]] = DataSource(self, data_source_name[0], data_source_name[1])
+            else:
+                self.logger.error('Provided data source name ({}) is of unexpected format and cannot be processed.'
+                                  .format(data_source_name))
+
+        # commented out to try a more generic appraoch of handing data sources
+        # if self.data_source_names and 'rawdata' in self.data_source_names:
+        #     self.raw_data = DataSource(self, 'rawdata', 'Raw Data')  # RawData(self)
+        # if self.data_source_names and 'assaydata' in self.data_source_names:
+        #     self.assay_data = DataSource(self, 'assaydata', 'Assay Data')  # RawData(self)
+        # if self.data_source_names and 'attachment' in self.data_source_names:
+        #     self.attachments = Attachment(self)
 
         self.submission_package = SubmissionPackage(self)
 
