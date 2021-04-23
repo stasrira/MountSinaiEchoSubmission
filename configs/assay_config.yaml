@@ -48,6 +48,13 @@ SCRNA_SEQ:
                 folder: /scrna-seq
                 tar_dir: processed
                 # validate_tar_content: False
+            -
+                # this section was added for testing only
+                folder: /scrna-seq/FASTQs
+                tar_dir: fastqs/fast_222
+                attachment_search_by: folder_name
+                attach_object: folder
+
         attachment_search_by: folder_name #possible options: file_name and folder_name
         search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
         exclude_folders:
@@ -254,7 +261,7 @@ RNA_SEQ:
                 row_num:
             get_by_primary_key:
                 header_row_number: 4 # 1-based numbering
-                pk_column_number: 3 # 1-based numbering
+                pk_column_number: 2 # 1-based numbering
             excel:
                 sheet_name:
 

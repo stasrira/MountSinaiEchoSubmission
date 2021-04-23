@@ -339,6 +339,16 @@
                 "type": "string",
                 "examples": [""],
                 "comment": "DNA concentration for the library (stock)"
+              },
+              "pct_uniquely_mapped": {
+                "type": "string",
+                "examples": [""],
+                "comment": ""
+              },
+              "pct_mrna": {
+                "type": "string",
+                "examples": [""],
+                "comment": ""
               }
             },
             "required": [
