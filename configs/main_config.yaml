@@ -39,11 +39,11 @@ DataTransfer:
     #template of the command used for transfer
     # MITLL (direct ssh transfer approach): rsync -v -r --exclude='transfer_*.*' -e ssh $source_dir {!ssh_user!}@txe1-login.mit.edu:$target_dir
     # Peerless (upload using mounted drive approach): rsync -v -r --exclude='transfer_*.*' $source_dir $target_dir
-    transfer_command: rsync -v -r --exclude='transfer_*.*' -e ssh $source_dir {!ssh_user!}@txe1-login.mit.edu:$target_dir
+    transfer_command: rsync -v -r --exclude='transfer_*.*' -e ssh $source_dir {!ssh_user!}flash.llnl.gov:$target_dir
     # target directory where to submission package files will be transferred over SSH
-    remote_target_dir: /home/gridsan/groups/ECHO_ISMMS/ISMMS/pub
+    remote_target_dir: /usr/workspace/mba-ihmc/submission_packages
     #ssh user to be used for transferring
-    ssh_user: srirak
+    ssh_user: rirak1
     #execute permission for data transfer script, if not set, no permissions will be assigned
     exec_permis: stat.S_IXUSR #this value is to be evaluated by the code
 
