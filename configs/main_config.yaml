@@ -1,9 +1,11 @@
+#Peerless release_v1.5
+
 DB: # this section currently not in use
 
     #dev conn string: Driver={SQL Server};Server=localhost\sqlexpress;Database=dw_motrpac;User=mt_internal_user;Password=se@lf0n1nt3rn@l
-    #prod conn string: Driver={SQL Server};Server=10.160.20.65\SSQL_2016;Database=dw_motrpac;User=mt_internal_user;Password=se@lf0n1nt3rn@l
+    #prod conn string: Driver={SQL Server};Server=10.9.10.59\SQLVP201606;Database=dw_motrpac;User=mt_internal_user;Password=se@lf0n1nt3rn@l3rn@l
     #DB connection string
-    mdb_conn_str: Driver={SQL Server};Server=localhost\sqlexpress;Database=dw_motrpac;User=mt_internal_user;Password=se@lf0n1nt3rn@l
+    mdb_conn_str: Driver={SQL Server};Server=10.9.10.59\SQLVP201606;Database=dw_motrpac;User=mt_internal_user;Password=se@lf0n1nt3rn@l
     # name of the stored proc to be used to load samples to DB
     mdb_sql_proc_load_sample: exec usp_load_single_sample @study_id = {study_id}, @sample_id ='{sample_id}', @forms ='{smpl_json}', @dict_json='{dict_json}', @dict_path='{dict_path}', @filepath='{filepath}', @dict_update={dict_update}, @samlpe_update={samlpe_update}
 
@@ -19,17 +21,17 @@ DB: # this section currently not in use
 
 Location:
     # path to the folder where new request files are located
-    requests: D:\MounSinai\Darpa\Programming\submission\requests
+    requests: /mnt/researchsan02a/SampleInfo/Peerless/Submissions/Requests
     # path to the folder where processed request files are located
-    requests_processed: D:\MounSinai\Darpa\Programming\submission\requests\processed
+    requests_processed: /mnt/researchsan02a/SampleInfo/Peerless/Submissions/Requests/processed_requests
     # path to the folder where dynamically created request files for disqualified aliquots will be saved
-    requests_disqualified: D:\MounSinai\Darpa\Programming\submission\requests\disqualified_for_reprocessing
+    requests_disqualified: /mnt/researchsan02a/SampleInfo/Peerless/Submissions/Requests/disqualified_for_reprocessing
     # path to the folder where request level log files are located (one log file per request)
-    request_logs: D:\MounSinai\Darpa\Programming\submission\requests\logs
+    request_logs: /mnt/researchsan02a/SampleInfo/Peerless/Submissions/logs/request_logs
     # path to the folder where application level log files are located (one per application run)
-    app_logs: D:\MounSinai\Darpa\Programming\submission\logs
+    app_logs: /mnt/researchsan02a/SampleInfo/Peerless/Submissions/logs/process_logs
     # path to the folder where created submission packages will be located. One package sub_folder per request.
-    output_packages: D:\MounSinai\Darpa\Programming\submission\submission_packages
+    output_packages: /data/stas/peerless_submission/_submission_input_output/submission_packages
 
     #name of the folder where all logs files will be stored
     #log_folder_name: logs
@@ -77,6 +79,6 @@ submission_forms:
         file_name_id: sequence
 
 Tar_ball:
-    approach: tarfile # possible value: 1)"tarfile" - a tarfile module will be use
+    approach: commandline # possible value: 1)"tarfile" - a tarfile module will be use
                       #                 2) commandline - system tar command will be used
     save_md5sum_file: True

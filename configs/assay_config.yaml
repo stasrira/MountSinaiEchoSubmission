@@ -239,7 +239,7 @@ RNA_SEQ:
     assaydata:
         #path to the location where data_retrieval for all projects are stored; this path
         #will be combined with a path for a particular experiment
-        location: D:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive\ECHO\SampleInfo
+        location: /mnt/researchsan02a/SampleInfo/Peerless/SampleInfo
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
         sub_folder: /AssayData/RNAseq/AssayQC
 
@@ -268,7 +268,7 @@ RNA_SEQ:
     qcdata:
         #path to the location where data_retrieval for all projects are stored; this path
         #will be combined with a path for a particular experiment
-        location: D:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive\ECHO\SampleInfo
+        location: /mnt/researchsan02a/SampleInfo/Peerless/SampleInfo
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
         sub_folder: /AssayData/RNAseq/DataQC
 
@@ -294,12 +294,16 @@ RNA_SEQ:
                 sheet_name:
 
     attachment:
-        location: D:\MounSinai\Darpa\Programming\submission\data_examples\Bulk_Drive\ECHO
+        location: /ext_data/shared/Peerless
         #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
         attachment_folder:
             -
                 folder: /rnaseq
                 tar_dir: fastqs
+                validate_tar_content: True
+            -
+                folder: /rnaseq/fastqc
+                tar_dir: fastqc
                 validate_tar_content: True
 
         attachment_search_by: folder_name #possible options: file_name and folder_name
