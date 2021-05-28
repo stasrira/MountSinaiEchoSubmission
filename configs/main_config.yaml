@@ -1,11 +1,11 @@
-#release_v1.5
+#ECHO release_v1.5
 
 DB: # this section currently not in use
 
     #dev conn string: Driver={SQL Server};Server=localhost\sqlexpress;Database=dw_motrpac;User=mt_internal_user;Password=se@lf0n1nt3rn@l
-    #prod conn string: Driver={SQL Server};Server=10.160.20.65\SSQL_2016;Database=dw_motrpac;User=mt_internal_user;Password=se@lf0n1nt3rn@l
+    #prod conn string: Driver={SQL Server};Server=10.9.10.59\SQLVP201606;Database=dw_motrpac;User=mt_internal_user;Password=se@lf0n1nt3rn@l
     #DB connection string
-    mdb_conn_str: Driver={SQL Server};Server=localhost\sqlexpress;Database=dw_motrpac;User=mt_internal_user;Password=se@lf0n1nt3rn@l
+    mdb_conn_str: Driver={SQL Server};Server=10.9.10.59\SQLVP201606;Database=dw_motrpac;User=mt_internal_user;Password=se@lf0n1nt3rn@l
     # name of the stored proc to be used to load samples to DB
     mdb_sql_proc_load_sample: exec usp_load_single_sample @study_id = {study_id}, @sample_id ='{sample_id}', @forms ='{smpl_json}', @dict_json='{dict_json}', @dict_path='{dict_path}', @filepath='{filepath}', @dict_update={dict_update}, @samlpe_update={samlpe_update}
 
@@ -39,7 +39,8 @@ DataTransfer:
     #Peerless (upload using mounted drive approach): rsync -v -r --exclude='transfer_*.*' $source_dir $target_dir
     transfer_command: rsync -v -r --exclude='transfer_*.*' -e ssh $source_dir {!ssh_user!}@txe1-login.mit.edu:$target_dir
     #target directory where to submission package files will be transferred over SSH
-    remote_target_dir: /home/gridsan/groups/ECHO_ISMMS/ISMMS/pub
+    #original value - /home/gridsan/groups/ECHO_ISMMS/ISMMS/pub
+    remote_target_dir: /home/gridsan/groups/ECHO_ISMMS/ISMMS/incoming
     #ssh user to be used for transferring
     ssh_user: srirak
     #execute permission for data transfer script
