@@ -12,21 +12,12 @@
 	"rna_seq_metadata": {
 		"rna_extr_date": "RNA extraction date",
 		"rna_extr_method": "RNA extraction method",
-		"total_cell_num": "Total number of cells",
-		"cell_type": "Cell type, if known",
 		"total_rna_conc": "Total RNA concentration",
-		"total_rna_qc_method": "Total RNA QC Method",
 		"rin": "RNA Integrity Number",
-		"r_260_280": "260/280 ratio",
-		"r_260_230": "260/230 ratio",
 		"lib_vendor": "Library prep vendor",
 		"lib_type": "Library prep type",
-		"lib_prep_method": "Library prep method",
-		"lib_qc_method": "Library QC method",
 		"lib_adaptor_1": "Truseq I7 index with 16bp index",
 		"lib_adaptor_2": "Truseq I5 index with 8bp index",
-		"lib_umi_cycle_num": "Number of UMI cycles (bases)",
-		"lib_adaptor_size": "The total size of the two adaptors",
 		"lib_frag_size": "Average library fragment size",
 		"lib_dna_conc": "DNA concentration for the library (stock)"
 	}
