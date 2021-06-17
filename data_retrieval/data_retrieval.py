@@ -16,8 +16,10 @@ class DataRetrieval:
         self.logger = self.req_obj.logger
         self.conf_assay = request.conf_assay
         self.data_loc = None
+        # assign a default value to the exact_aliquot_match; it can be overwritten if an appropriate setting was set
+        # in the assay config file for the current data source
+        self.exact_aliquot_match = 0
         self.init_specific_settings()
-        # print ('')
 
     def init_specific_settings(self):
         # should be overwritten in classed that inherit this one
@@ -73,11 +75,28 @@ class DataRetrieval:
         file_index = self.index_data_files(files, file_struct)
         for id_val in file_index:
             sa_list = []
-            sa_list  = [(sa, al) for sa, al in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots)
-                        if sa in id_val or al in id_val]
+            sa_list_exact = []
+            if self.exact_aliquot_match == 1:
+                # proceed here if exact aliquot match is required
+                sa_list = [(sa, al) for sa, al in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots)
+                           if sa == id_val or al == id_val]
+            else:
+                # proceed here if exact aliquot match is not required (default approach)
+                sa_list = [(sa, al) for sa, al in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots)
+                           if sa in id_val or al in id_val]
+                if sa_list and len(sa_list) > 1:
+                    # if more than one match was found, do an exact match and see if that will pick only 1 item
+                    sa_list_exact = [(sa, al) for sa, al in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots)
+                                 if sa == id_val or al == id_val]
+                    if sa_list_exact and len(sa_list_exact) == 1:
+                        # if exact match found only one item, use that for the following process
+                        sa_list = sa_list_exact
 
             #if id_val in self.req_obj.sub_aliquots:
             if sa_list:
+                if len(sa_list) > 1:
+                    # if sa_list contains more than 1 item, leave only the first item and remove the rest
+                    sa_list = sa_list [:1]
                 rda = DataRetrievalAliquot(id_val, self)
                 rda.get_data_by_rownum(file_index[id_val][1], file_index[id_val][0], file_struct['header_row_num'])
                 if rda.loaded:
@@ -139,8 +158,12 @@ class DataRetrieval:
             # print('dbn = |{}|'.format(dbn))
             for sa, al in zip(self.req_obj.sub_aliquots, self.req_obj.aliquots):
                 # print ('Aliquot = |{}|'.format(sa))
-                if sa in dbn or al in dbn:
-                    self.get_data_for_aliquot(sa, d)
+                if self.exact_aliquot_match == 1:
+                    if sa == dbn or al == dbn:
+                        self.get_data_for_aliquot(sa, d)
+                else:
+                    if sa in dbn or al in dbn:
+                        self.get_data_for_aliquot(sa, d)
 
     def get_data_for_aliquot(self, sa, directory):
         # this retrieves data related to the purpose of the current class - raw data or attachment info.

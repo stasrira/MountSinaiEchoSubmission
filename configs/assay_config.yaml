@@ -243,6 +243,10 @@ RNA_SEQ:
             search_by: file_content #possible options: file_content, folder_name
             search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
             exclude_folders:
+            # if set to 1, exact sub_aliquot/aliquot id match will be expected;
+            # if set to any other value, it will accept if aliquot id is contained in the value being checked
+            #   (i.e. 20_0003-T00-PAX will be assumed matching to the ABC_20_0003-T00-PAX_ABC)
+            exact_aliquot_match: 1
 
             file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
                 - .xlsx
@@ -272,6 +276,10 @@ RNA_SEQ:
 
         attachment_search_by: folder_name #possible options: file_name and folder_name
         search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+        # if set to 1, exact sub_aliquot/aliquot id match will be expected;
+        # if set to any other value, it will accept if aliquot id is contained in the value being checked
+        #   (i.e. 20_0003-T00-PAX will be assumed matching to the ABC_20_0003-T00-PAX_ABC)
+        exact_aliquot_match: 1
         exclude_folders:
         attach_object: folder #possible options: folder and file
         attachment_file_ext:
