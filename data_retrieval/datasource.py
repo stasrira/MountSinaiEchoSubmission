@@ -23,6 +23,12 @@ class DataSource(DataRetrieval):
         search_by = cnf_data_source['search_method']['search_by']
         search_deep_level = cnf_data_source['search_method']['search_deep_level_max']
         exclude_dirs = cnf_data_source['search_method']['exclude_folders']
+
+        # check if exact_aliquot_match value was provided for current data source
+        if 'exact_aliquot_match' in cnf_data_source['search_method']:
+            # if it was provided, save to a object level variable
+            self.exact_aliquot_match = cnf_data_source['search_method']['exact_aliquot_match']
+
         if search_by == 'folder_name':
             # search_deep_level = cnf_data_source['search_method']['search_deep_level_max']
             # exclude_dirs = cnf_data_source['search_method']['exclude_folders']

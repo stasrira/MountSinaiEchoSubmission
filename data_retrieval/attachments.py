@@ -32,6 +32,8 @@ class Attachment(DataRetrieval):
         search_deep_level_df = self.cnf_data_source['search_deep_level_max']
         exclude_dirs_df = self.cnf_data_source['exclude_folders']
         ext_match_df = self.cnf_data_source['attachment_file_ext']
+        if 'exact_aliquot_match' in self.cnf_data_source:
+            self.exact_aliquot_match = self.cnf_data_source['exact_aliquot_match']
 
         for last_part_path_item in last_part_path_list:
             # set default values
