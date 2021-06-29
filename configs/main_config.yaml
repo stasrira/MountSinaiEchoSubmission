@@ -39,7 +39,7 @@ DataTransfer:
     #template of the command used for transfer
     # MITLL (direct ssh transfer approach): rsync -v -r --exclude='transfer_*.*' -e ssh $source_dir {!ssh_user!}@txe1-login.mit.edu:$target_dir
     # Peerless (upload using mounted drive approach): rsync -v -r --exclude='transfer_*.*' $source_dir $target_dir
-    transfer_command: rsync -v -r --exclude='transfer_*.*' -e ssh $source_dir {!ssh_user!}@txe1-login.mit.edu:$target_dir
+    transfer_command: rsync -v -r --info=progress2 --exclude='transfer_*.*' -e ssh $source_dir {!ssh_user!}@txe1-login.mit.edu:$target_dir
     # target directory where to submission package files will be transferred over SSH
     # old value - /home/gridsan/groups/ECHO_ISMMS/ISMMS/pub
     remote_target_dir: /home/gridsan/groups/ECHO_ISMMS/ISMMS/incoming
