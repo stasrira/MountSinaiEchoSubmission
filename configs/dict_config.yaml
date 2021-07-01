@@ -19,6 +19,8 @@ assay:
     epic: epic
     methylome: epic
     "methylation_epic": epic
+    multiome: multiome
+    scmultiome: multiome
 
 assay_sub_aliquot_postfix:
     scrna_seq: _1
@@ -27,3 +29,4 @@ assay_sub_aliquot_postfix:
     atac_seq: _4
     epic: _5
     cytof: _6
+    multiome: _7
