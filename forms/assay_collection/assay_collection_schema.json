@@ -9,14 +9,14 @@
     },
     "assay": {
       "type": "string",
-      "enum": ["rna_seq", "scrna_seq", "atac_seq", "chip_seq", "scatac_seq", "medip_seq", "mint_chip", "wgbs", "snatac_seq", "snmc_seq", "cytof", "epic"],
+      "enum": ["rna_seq", "scrna_seq", "atac_seq", "chip_seq", "scatac_seq", "medip_seq", "mint_chip", "wgbs", "snatac_seq", "snmc_seq", "cytof", "epic", "multiome"],
       "examples": ["chip_seq"],
       "comment": "RNA-seq|scRNA-seq|ATAC-seq|etc..."
     },
     "site": {
       "type": "string",
       "enum": [ "WR", "WRAIR", "DU", "Duke", "BA", "Battelle", "AS", "ASU", "IS", "ISMMS",
-      "SA", "Salk", "CU", "Columbia", "NA", "Northern Arizona University", "GA", "Gryphon Scientific"],
+      "SA", "Salk", "CU", "Columbia", "NA", "Northern Arizona University", "GA", "Gryphon Scientific", "C19"],
       "examples": ["Columbia"],
       "comment": "Performer site that ran the assay"
     },

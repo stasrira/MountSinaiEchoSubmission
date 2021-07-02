@@ -130,6 +130,24 @@
 		"live_cells_perc": "% of live cells",
 		"antibody_staining_date": "Antibody staining date",
 		"facs_sorting_date": "Facs sorting date"
+	},
+
+	"multiome_metadata": {
+		"Estimated_number_of_cells": "Estimated_number_of_cells",
+		"GEX_Mean_raw_reads_per_cell": "GEX_Mean_raw_reads_per_cell",
+		"GEX_Median_UMI_counts_per_cell": "GEX_Median_UMI_counts_per_cell",
+		"GEX_Reads_mapped_confidently_to_exonic_regions": "GEX_Reads_mapped_confidently_to_exonic_regions",
+		"GEX_Q30_bases_in_read_2": "GEX_Q30_bases_in_read_2",
+		"GEX_Fraction_of_transcriptomic_reads_in_cells": "GEX_Fraction_of_transcriptomic_reads_in_cells",
+		"GEX_Mean_Trimmed_Sequence_Length": "GEX_Mean_Trimmed_Sequence_Length",
+		"GEX_Over_20percent_mt_in_Cell": "GEX_Over_20percent_mt_in_Cell",
+		"ATAC_Q30_bases_in_read_1": "ATAC_Q30_bases_in_read_1",
+		"ATAC_Q30_bases_in_read_2": "ATAC_Q30_bases_in_read_2",
+		"ATAC_Median_high.quality_fragments_per_cell": "ATAC_Median_high.quality_fragments_per_cell",
+		"ATAC_Mean_Trimmed_Sequence_Length": "ATAC_Mean_Trimmed_Sequence_Length",
+		"ATAC_Nucleosome_Free_Region_Peak": "ATAC_Nucleosome_Free_Region_Peak",
+		"ATAC_Confidently_mapped_read_pairs": "ATAC_Confidently_mapped_read_pairs",
+		"ATAC_Fraction_of_transposition_events_in_peaks_in_cells": "ATAC_Fraction_of_transposition_events_in_peaks_in_cells"
 	}
 
 }
