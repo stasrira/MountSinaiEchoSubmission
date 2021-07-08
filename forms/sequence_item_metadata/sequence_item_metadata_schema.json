@@ -130,6 +130,11 @@
       "examples": [""],
       "comment": "PCR barcode"
     },
+    "batch": {
+      "name": "string",
+      "examples": ["batch1"],
+      "comment": "Required to trace batch effects in Quality assessment"
+    },
     "comments": {
       "type": "string",
       "examples": ["Additional comments ..."],
@@ -1229,6 +1234,7 @@
 	"aliquot_id",
 	"assay_collection_id",
 	"filename",
-	"assay"
+	"assay",
+    "batch"
   ]
 }
