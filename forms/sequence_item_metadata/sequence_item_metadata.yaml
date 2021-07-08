@@ -23,6 +23,7 @@ seq_flowcell_type:  # constant blank key
 pcr_cycle_nr: eval!None # constant blank key
 sample_barcode:  # constant blank key
 pcr_barcode:  # constant blank key
+batch:  N/A # constant key
 comments: # constant blank key
 spike_ins_present: F  # constant F key
 spike_ins: eval![] # constant blank array key

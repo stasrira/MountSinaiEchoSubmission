@@ -39,7 +39,7 @@
     },
     "assay": {
       "type": "string",
-      "enum": ["rna_seq", "scrna_seq", "atac_seq", "chip_seq", "scatac_seq", "medip_seq", "mint_chip", "wgbs", "snatac_seq", "snmc_seq", "cytof", "epic"],
+      "enum": ["rna_seq", "scrna_seq", "atac_seq", "chip_seq", "scatac_seq", "medip_seq", "mint_chip", "wgbs", "snatac_seq", "snmc_seq", "cytof", "epic", "multiome"],
       "examples": ["rna_seq"],
       "comment": "rna_seq|atac_seq|scrna_seq|etc..."
     },
@@ -129,6 +129,11 @@
       "type": "string",
       "examples": [""],
       "comment": "PCR barcode"
+    },
+    "batch": {
+      "name": "string",
+      "examples": ["batch1"],
+      "comment": "Required to trace batch effects in Quality assessment"
     },
     "comments": {
       "type": "string",
@@ -1128,6 +1133,100 @@
           }
         }
       }
+    },
+    {
+        "if": {
+            "properties": {
+                "assay": {
+                    "const": "multiome"
+                }
+            }
+        },
+        "then": {
+            "properties": {
+                "multiome_seq_metadata": {
+                    "type": "object",
+                    "properties": {
+                        "Estimated_number_of_cells": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "GEX_Mean_raw_reads_per_cell": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "GEX_Median_UMI_counts_per_cell": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "GEX_Reads_mapped_confidently_to_exonic_regions": {
+                            "type": ["number", "null"],
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "GEX_Q30_bases_in_read_2": {
+                            "type": ["number", "null"],
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "GEX_Fraction_of_transcriptomic_reads_in_cells": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "GEX_Mean_Trimmed_Sequence_Length": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "GEX_Over_20percent_mt_in_Cell": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "ATAC_Q30_bases_in_read_1": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "ATAC_Q30_bases_in_read_2": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "ATAC_Median_high.quality_fragments_per_cell": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "ATAC_Mean_Trimmed_Sequence_Length": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "ATAC_Nucleosome_Free_Region_Peak": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "ATAC_Confidently_mapped_read_pairs": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "ATAC_Fraction_of_transposition_events_in_peaks_in_cells": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        }
+                    },
+                    "required": []
+                }
+            }
+        }
     }
   ],
   "required": [
@@ -1135,6 +1234,7 @@
 	"aliquot_id",
 	"assay_collection_id",
 	"filename",
-	"assay"
+	"assay",
+    "batch"
   ]
 }

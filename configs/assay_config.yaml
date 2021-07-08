@@ -377,6 +377,103 @@ ATAC_SEQ:
         attach_object: folder #possible options: folder and file
         attachment_file_ext:
 
+MULTIOME:
+    assay_name: MULTIOME
+    mssm_id: 7
+    mssm_postfix: _7
+
+    data_sources:
+        #- assaydata
+        - qcdata
+        - attachment
+
+        #path to the location where data_retrieval for all projects are stored; this path
+        #will be combined with a path for a particular experiment
+        location: D:\MounSinai\Darpa\Programming\submission\data_examples\J_Drive\Peerless\SampleInfo
+        #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+        sub_folder: /AssayData/RNAseq/AssayQC
+
+        search_method: # search_rawdata_summary
+            search_by: file_content #possible options: file_content, folder_name
+            search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+            exclude_folders:
+            # if set to 1, exact sub_aliquot/aliquot id match will be expected;
+            # if set to any other value, it will accept if aliquot id is contained in the value being checked
+            #   (i.e. 20_0003-T00-PAX will be assumed matching to the ABC_20_0003-T00-PAX_ABC)
+            exact_aliquot_match: 0
+            file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
+                - .xlsx
+                - .xls
+            single_file_path:
+
+        file_content_details:
+            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
+                                     # 'row_num' - retrieve data from a particular row of the file
+            get_by_row_num:
+                # 'row_num' - retrieve data from a particular row of the file
+                row_num:
+            get_by_primary_key:
+                header_row_number: 4 # 1-based numbering
+                pk_column_number: 2 # 1-based numbering
+            excel:
+                sheet_name:
+
+    qcdata:
+        #path to the location where data_retrieval for all projects are stored; this path
+        #will be combined with a path for a particular experiment
+        location: /mnt/researchsan02a/SampleInfo/Peerless/SampleInfo
+        #path to the actual folder with assay data files, should be concatenated to manifest location and project path
+        sub_folder: /AssayData/multiome/DataQC
+
+        search_method: # search_rawdata_summary
+            search_by: file_content #possible options: file_content, folder_name
+            search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+            exclude_folders:
+            # if set to 1, exact sub_aliquot/aliquot id match will be expected;
+            # if set to any other value, it will accept if aliquot id is contained in the value being checked
+            #   (i.e. 20_0003-T00-PAX will be assumed matching to the ABC_20_0003-T00-PAX_ABC)
+            exact_aliquot_match: 0
+
+            file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
+                - .csv
+            single_file_path:
+
+        file_content_details:
+            get_data_by: primary_key #possible values: 'primary_key' - retrieve data from row where PK equal aliquot id
+            # 'row_num' - retrieve data from a particular row of the file
+            get_by_row_num:
+                # 'row_num' - retrieve data from a particular row of the file
+                row_num:
+            get_by_primary_key:
+                header_row_number: 1 # 1-based numbering
+                pk_column_number: 1 # 1-based numbering
+            excel:
+                sheet_name:
+
+    attachment:
+        location: /ext_data/shared/Peerless
+        #path to the actual folder with assay rawdata_attachments, should be concatenated to manifest location and project path
+        attachment_folder:
+            - folder: /multiome
+              tar_dir: processed
+            -
+                folder: /multiome/fastqs/fastqs_atac
+                tar_dir: fastqs_atac
+                validate_tar_content: True
+            -
+                folder: /multiome/fastqs/fastqs_gex
+                tar_dir: fastqs_gex
+                validate_tar_content: True
+
+        attachment_search_by: folder_name #possible options: file_name and folder_name
+        search_deep_level_max: 0 # 0: root folder, 1:first sub-folder, etc.
+        # if set to 1, exact sub_aliquot/aliquot id match will be expected;
+        # if set to any other value, it will accept if aliquot id is contained in the value being checked
+        #   (i.e. 20_0003-T00-PAX will be assumed matching to the ABC_20_0003-T00-PAX_ABC)
+        exact_aliquot_match: 0
+        exclude_folders:
+        attach_object: folder #possible options: folder and file
+        attachment_file_ext:
 
 
 
