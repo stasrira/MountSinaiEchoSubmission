@@ -1,4 +1,5 @@
 format: fcs
+batch: eval!None
 cytof_metadata:
     panel_name: Panel for phenotyping of circulating PBMC
     panel_details_url: https://mountsinai.box.com/s/mwubun8t34xob7xp6a3rqj5beftiy6ph
