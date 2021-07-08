@@ -1,4 +1,5 @@
 format: multiple
+batch: eval!None
 scrna_seq_metadata:
     viability: # constant blank key ; used for testing: eval!self.get_rawdata_value('Mean_Reads_per_Cell')
     number_cells: eval!None # constant blank key ; used for testing: eval!self.get_rawdata_value('Estimated_Number_of_Cells')
