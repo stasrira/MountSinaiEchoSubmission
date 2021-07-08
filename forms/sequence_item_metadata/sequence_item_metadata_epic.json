@@ -8,6 +8,7 @@
 	"assay": "rna_seq|atac_seq|scrna_seq|etc...",
 	"seq_platform": "Sequencing platform",
 	"seq_instrument": "Sequencing instrument (ex.HiSeq 2500)",
+	"batch": "N/A",
 	"epic_seq_metadata": {
 		"Failed CpG Fraction": "Failed CpG Fraction (detection p-value >0.01)",
 		"GCT score": "GCT score (Incomplete bisulfite conversion)"

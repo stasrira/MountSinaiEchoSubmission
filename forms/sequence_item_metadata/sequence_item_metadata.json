@@ -24,7 +24,7 @@
 	"pcr_cycle_nr": "Number of PCR cycles",
 	"sample_barcode": "Sample barcode (adapter)",
 	"pcr_barcode": "PCR barcode",
-	"batch": "",
+	"batch": "N/A",
 	
 	"comments": "Optional text field for additional comments",
 
