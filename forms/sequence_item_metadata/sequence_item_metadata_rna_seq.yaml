@@ -1,4 +1,5 @@
 format: fastq + txt
+batch: eval!None
 rna_seq_metadata:
 #    rna_extr_date: eval!self.get_assaydata_value_by_col_number(2) #1st parameter stands for column number, 2nd if the key is required (True) or can be left blank (False)
 #    rna_extr_method: Direct-zol RNA MiniPrep #constant key
