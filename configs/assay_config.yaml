@@ -121,7 +121,7 @@ CYTOF:
     assaydata:
         #path to the location where data_retrieval for all projects are stored; this path
         #will be combined with a path for a particular experiment
-        location: /mnt/researchsan02a/Projects/ECHO/SampleInfo
+        location: /mnt/researchsan02a/SampleInfo/ECHO/SampleInfo
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
         sub_folder: /AssayData/CyTOF/DataQC
 
@@ -179,7 +179,7 @@ EPIC:
     assaydata:
         #path to the location where data_retrieval for all projects are stored; this path
         #will be combined with a path for a particular experiment
-        location: /mnt/researchsan02a/Projects/ECHO/SampleInfo
+        location: /mnt/researchsan02a/SampleInfo/ECHO/SampleInfo
         #path to the actual folder with assay data files, should be concatenated to manifest location and project path
         sub_folder: /AssayData/Methylome/DataQC
 
@@ -191,7 +191,7 @@ EPIC:
             file_ext: # rawdata_summary_file_ext:  #must include dot (.) in-front of an extension
                 - .xlsx
                 - .xls
-                # - .csv
+                - .csv
             single_file_path:
 
         file_content_details:
