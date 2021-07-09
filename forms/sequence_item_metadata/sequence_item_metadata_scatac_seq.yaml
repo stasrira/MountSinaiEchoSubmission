@@ -1,5 +1,5 @@
 format: multiple
-batch: eval!None
+# batch: eval!None
 scatac_seq_metadata:
     lib_adaptor_1:
     lib_adaptor_2:
