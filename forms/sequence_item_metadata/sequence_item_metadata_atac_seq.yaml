@@ -1,5 +1,5 @@
 format: raw=fastq; processed=txt
-batch: eval!None
+# batch: eval!None
 atac_seq_metadata:
     lib_adaptor_1: # constant blank key
     lib_adaptor_2: # constant blank key
