@@ -5,11 +5,12 @@ from utils import ConfigData
 def convert_sub_aliq_to_aliquot(sa, assay):
     aliquot = sa
     fl_cfg_dict = ConfigData(gc.CONFIG_FILE_DICTIONARY)
-    assay_postfix = fl_cfg_dict.get_item_by_key('assay_sub_aliquot_postfix/' + assay)
-    if assay_postfix is not None:
-        apf_len = len(assay_postfix)
-        if sa[-apf_len:] == assay_postfix:
-            aliquot = sa[:len(sa) - apf_len]
+    assay_postfixes = fl_cfg_dict.get_value('assay_sub_aliquot_postfix/' + assay)  # get_item_by_key
+    if assay_postfixes is not None:
+        for assay_postfix in assay_postfixes:
+            apf_len = len(assay_postfix)
+            if sa[-apf_len:] == assay_postfix:
+                aliquot = sa[:len(sa) - apf_len]
     return aliquot
 
 
