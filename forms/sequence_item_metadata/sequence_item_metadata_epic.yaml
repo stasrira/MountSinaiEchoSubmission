@@ -1,6 +1,6 @@
 format: idat
 seq_instrument: 850K
-batch: eval!None
+# batch: eval!None
 "epic_seq_metadata":
   "Failed CpG Fraction": eval!self.get_assaydata_value_by_col_number(2)
   "GCT score": eval!self.get_assaydata_value_by_col_number(3)
