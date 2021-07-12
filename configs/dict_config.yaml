@@ -23,10 +23,10 @@ assay:
     scmultiome: multiome
 
 assay_sub_aliquot_postfix:
-    scrna_seq: _1
-    scatac_seq: _2
-    rna_seq: _3
-    atac_seq: _4
-    epic: _5
-    cytof: _6
-    multiome: _7
+    scrna_seq: [_1]
+    scatac_seq: [_2,_7]
+    rna_seq: [_3]
+    atac_seq: [_4]
+    epic: [_5]
+    cytof: [_6]
+    multiome: [_7]
