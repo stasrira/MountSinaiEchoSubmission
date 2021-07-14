@@ -25,6 +25,8 @@
 		"ATAC_Mean_Trimmed_Sequence_Length": "ATAC_Mean_Trimmed_Sequence_Length",
 		"ATAC_Nucleosome_Free_Region_Peak": "ATAC_Nucleosome_Free_Region_Peak",
 		"ATAC_Confidently_mapped_read_pairs": "ATAC_Confidently_mapped_read_pairs",
-		"ATAC_Fraction_of_transposition_events_in_peaks_in_cells": "ATAC_Fraction_of_transposition_events_in_peaks_in_cells"
+		"ATAC_Fraction_of_transposition_events_in_peaks_in_cells": "ATAC_Fraction_of_transposition_events_in_peaks_in_cells",
+		"ATAC_TSS_enrichment_score": "ATAC_TSS_enrichment_score",
+		"GEX_Reads_mapped_confidently_to_intronic_regions": "GEX_Reads_mapped_confidently_to_intronic_regions"
 	}
 }
