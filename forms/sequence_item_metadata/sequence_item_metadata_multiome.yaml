@@ -16,4 +16,6 @@ multiome_metadata:
     "ATAC_Nucleosome_Free_Region_Peak": eval!self.get_sourcedata_value('qcdata','ATAC_Nucleosome_Free_Region_Peak')
     "ATAC_Confidently_mapped_read_pairs": eval!self.get_sourcedata_value('qcdata','ATAC_Confidently_mapped_read_pairs')
     "ATAC_Fraction_of_transposition_events_in_peaks_in_cells": eval!self.get_sourcedata_value('qcdata','ATAC_Fraction_of_transposition_events_in_peaks_in_cells')
+    "ATAC_TSS_enrichment_score": eval!self.get_sourcedata_value('qcdata','ATAC_TSS_enrichment_score')
+    "GEX_Reads_mapped_confidently_to_intronic_regions": eval!self.get_sourcedata_value('qcdata','GEX_Reads_mapped_confidently_to_intronic_regions')
 
