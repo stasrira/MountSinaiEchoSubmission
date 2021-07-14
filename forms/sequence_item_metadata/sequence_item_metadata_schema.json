@@ -1221,6 +1221,16 @@
                             "type": "string",
                             "examples": [""],
                             "comment": "..."
+                        },
+                        "ATAC_TSS_enrichment_score": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
+                        },
+                        "GEX_Reads_mapped_confidently_to_intronic_regions": {
+                            "type": "string",
+                            "examples": [""],
+                            "comment": "..."
                         }
                     },
                     "required": []
