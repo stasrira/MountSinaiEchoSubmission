@@ -87,8 +87,15 @@ class SubmissionForm:
                 val = self.eval_cfg_value(full_key_name,
                                           self.fl_cfg_assay.get_value(full_key_name),
                                           self.fl_cfg_common.get_value(full_key_name))
+                if str(val).strip() == '':
+                    # if returned value is blank, create a warning in the log file
+                    self.logger.warning('Blank value was reported for field "{}" '.format(full_key_name))
+
                 # assign retrieved key back to associated json key
                 json_node[key] = val
+
+                self.logger.info('Field "{}" was assigned with "{}" value'.format(key, val))
+
                 '''
                 if not str(val).strip() == '':
                     # if key is not empty, assing it as is
@@ -222,9 +229,9 @@ class SubmissionForm:
         if property_type == 'name':
             # if property_val name is given, proceed here
             if obj_type == 'class':
-                get_item = 'obj.' + property_val
+                get_item = 'obj.' + property_val + ' if hasattr(obj, "' + property_val + '") else ""'
             elif obj_type == 'dict':
-                get_item = 'obj["' + property_val + '"]'
+                get_item = 'obj["' + property_val + '"] if "' + property_val + '" in obj else ""'
             else:
                 get_item = None
         else:

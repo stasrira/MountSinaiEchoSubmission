@@ -103,13 +103,24 @@ if __name__ == '__main__':
 
                     req_proc_cnt += 1
 
+                    # print (req_obj.logger._cache)
+                    # check if any warning were recorded to the log file and set a flag log_warnings
+                    if 30 in req_obj.logger._cache and req_obj.logger._cache[30]:
+                        log_warnings = True
+                    else:
+                        log_warnings = False
+
                     # identify if any errors were identified and set status variable accordingly
                     if not req_obj.error.exist():
                         if not req_obj.disqualified_sub_aliquots:
                             # no disqualified sub-aliquots present
-                            fl_status = 'OK'
-                            _str = 'Processing status: "{}". Submission Request: {}'.format(fl_status, req_path)
-                            # errors_present = 'OK'
+                            if not log_warnings:
+                                fl_status = 'OK'
+                                _str = 'Processing status: "{}". Submission Request: {}'.format(fl_status, req_path)
+                                # errors_present = 'OK'
+                            else:
+                                fl_status = 'OK with Warnings'
+                                _str = 'Processing status: "{}". Submission Request: {}'.format(fl_status, req_path)
                         else:
                             # some disqualified sub-aliquots are presetn
                             fl_status = 'OK with Disqualifications'
@@ -145,8 +156,8 @@ if __name__ == '__main__':
                     email_msgs.append(
                         ('Requested Experiment: {}.'
                          '<br/> Request file <br/>{} <br/> was processed and moved/renamed to <br/> {}.'
-                         '<br/> <b>Errors summary:</b> '
-                         '<br/> {}'
+                         '<br/> <b>Errors summary:</b> {}'
+                         '<br/> <b>Warning(s) reported:</b> {}'
                          '<br/> <i>Log file location: <br/>{}</i>'
                          '<br/> Submission package locatoin:<br/>{}'
                          '<br/> Data source locatoin:<br/>{}'
@@ -160,6 +171,7 @@ if __name__ == '__main__':
                                    '<font color="red">Check Errors in the log file </font>'
                                                             if req_obj.error.exist()
                                                             else '<font color="green">No Errors</font> ',
+                                   '<font color="red">Yes - check the log file!</font>' if log_warnings else 'No',
                                    req_obj.log_handler.baseFilename,
                                    req_obj.submission_package.submission_dir if req_obj.submission_package else 'N/A',
                                    req_obj.attachments.data_loc if req_obj.attachments else 'N/A',
@@ -191,7 +203,10 @@ if __name__ == '__main__':
             # collect final details and send email about this study results
             email_subject = 'processing of Submission Requests for "{}"'.format(gc.PROJECT_NAME)
             if errors_present == 'OK':
-                email_subject = 'SUCCESSFUL ' + email_subject
+                if not log_warnings:
+                    email_subject = 'SUCCESSFUL ' + email_subject
+                else:
+                    email_subject = 'SUCCESSFUL (wit Warnings) ' + email_subject
             elif errors_present == 'DISQUALIFY':
                 email_subject = 'SUCCESSFUL (with disqualifications) ' + email_subject
             else:
